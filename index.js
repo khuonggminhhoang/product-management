@@ -1,6 +1,7 @@
 const express = require("express");
 const {connectDB} = require('./config/connectDB');
-const routes = require('./routes/client/index.route');
+const routeClient = require('./routes/client/index.route');
+const routeAdmin = require('./routes/admin/index.route');
 require('dotenv').config();     // config file .env
 
 
@@ -13,8 +14,11 @@ app.use(express.static('public'));
 app.set("views", "./views");
 app.set("view engine", "pug");
 
-// Routes
-routes(app);
+// Routes client
+routeClient(app);
+
+// Routes admin
+routeAdmin(app);
 
 app.listen(port,() => {
     console.log('server listening on port 3000');
