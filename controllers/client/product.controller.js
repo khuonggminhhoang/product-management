@@ -5,7 +5,6 @@ const index = async (req, res)=> {
         status: 'active',
         deleted: false
     });
-    console.log(products);
     res.render('./client/pages/products/index.pug', {title: 'Products', products})
 }
 
