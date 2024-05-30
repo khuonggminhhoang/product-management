@@ -21,7 +21,6 @@ const index = async (req, res) => {
         }
     ]
     
-
     const query = {
         deleted: false
     }
@@ -35,8 +34,13 @@ const index = async (req, res) => {
         }
     }
 
+    if(req.query['product-name']){
+        query.title = { $regex: new RegExp(req.query['product-name'], 'i')};
+    }
+    console.log(query);
+
     const products = await Product.find(query);     // truy vấn ra tất cả các sản phẩm trong db
-    res.render('./admin/pages/products/index.pug', {title: 'Danh sách sản phẩm', products, filterStatus});
+    res.render('./admin/pages/products/index.pug', {title: 'Danh sách sản phẩm', products, filterStatus, productName: req.query['product-name']});
 };
 
 module.exports = {index};

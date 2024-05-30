@@ -8,6 +8,7 @@ if(btnFilters.length > 0){
         btn.addEventListener('click', () => {
 
             // cập nhật url
+            url.search = '';                            // khi click vào button để lọc thì phải reset lại url để không còn query nào    
             const status = btn.getAttribute('button-status');
             if(status){
                 url.searchParams.set('status', status);
