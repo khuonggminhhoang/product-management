@@ -1,3 +1,4 @@
+/* Xử lý sự kiện các button lọc sản phẩm */
 const btnFilters = document.querySelectorAll('button[button-status]');
 
 if(btnFilters.length > 0){
@@ -18,4 +19,25 @@ if(btnFilters.length > 0){
         });
     }
 }
+/* END  */
+
+
+/* Xử lý sự kiện form tìm kiếm */
+document.querySelector('#form-search').addEventListener('submit', (event) => {
+    event.preventDefault();
+    const productName = (event.target.elements['product-name'].value);
+    // const productName = event.target[0].value;
+
+    const url = new URL(window.location.href);
+
+    if(productName !== ''){
+        url.searchParams.set('product-name', productName);
+    }
+    else{
+        url.searchParams.delete('product-name');                // product-name là name của input, được gửi kèm url khi submit
+    }
+    window.location.href = url.href;
+
+});
+/* END */
 

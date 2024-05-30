@@ -6,12 +6,30 @@ block main
     .card.bg-light.mb-3
         .card-header Bộ lọc và tìm kiếm
         .card-body
-            each item in filterStatus
-                button(
-                    type="button" 
-                    class=`btn btn-outline-success mr-1 ${item.class}`
-                    button-status=item.status
-                ) #{item.name}
+            .row 
+                //- các button để lọc sản phẩm
+                .col-6
+                    each item in filterStatus
+                        button(
+                            type="button" 
+                            class=`btn btn-outline-success mr-1 ${item.class}`
+                            button-status=item.status
+                        ) #{item.name}
+                //- form tìm kiếm
+                .col-6
+                    form(id='form-search')
+                        .input-group
+                            input(
+                                type="text" 
+                                class="form-control" 
+                                placeholder="Nhập tên sản phẩm" 
+                                name="product-name"
+                                )
+                            .input-group-append
+                                button(
+                                    type="submit" 
+                                    class=`btn btn-success`
+                                ) Tìm
 
     .card.bg-light.mb-3
         .card-header Danh sách
