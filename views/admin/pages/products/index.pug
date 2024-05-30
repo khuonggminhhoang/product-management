@@ -3,38 +3,51 @@ extends ./../../layouts/default.pug
 block main 
     h1 Danh sách sản phẩm 
 
-    table.table.table-sm
-        thead
-            tr
-                th STT
-                th Hình ảnh 
-                th Tiêu đề
-                th Giá
-                th Trạng thái
-                th Hành Động
-        tbody
-            //- for như js
-            -for(let i = 0; i < products.length; ++i)
-                tr
-                    td #{i + 1}
-                    td 
-                        img(src=`https://cdn.dummyjson.com/product-images/${i+1}/thumbnail.jpg`
-                            alt="Sản phẩm 1"
-                            width="100px"
-                            style="aspect-ratio: 4/3"
-                        )
-                    td #{products[i].title}
-                    td #{products[i].price}$
-                    //- if else như js
-                    td 
-                        if(products[i].status == 'active')
-                            a(href='#',class="badge badge-success") Hoạt động
-                        else
-                            a(href='#',class="badge badge-danger") Dừng hoạt động
+    .card.bg-light.mb-3
+        .card-header Bộ lọc và tìm kiếm
+        .card-body
+            each item in filterStatus
+                button(
+                    type="button" 
+                    class=`btn btn-outline-success mr-1 ${item.class}`
+                    button-status=item.status
+                ) #{item.name}
 
-                    td 
-                        button(type="button" class="btn btn-warning btn-sm mr-1") Sửa
-                        button(type="button" class="btn btn-danger btn-sm ") Xóa
+    .card.bg-light.mb-3
+        .card-header Danh sách
+        .card-body
+            table.table.table-sm
+                thead
+                    tr
+                        th STT
+                        th Hình ảnh 
+                        th Tiêu đề
+                        th Giá
+                        th Trạng thái
+                        th Hành Động
+                tbody
+                    //- for như js
+                    -for(let i = 0; i < products.length; ++i)
+                        tr
+                            td #{i + 1}
+                            td 
+                                img(src=`https://cdn.dummyjson.com/product-images/${i+1}/thumbnail.jpg`
+                                    alt="Sản phẩm 1"
+                                    width="100px"
+                                    style="aspect-ratio: 4/3"
+                                )
+                            td #{products[i].title}
+                            td #{products[i].price}$
+                            //- if else như js
+                            td 
+                                if(products[i].status == 'active')
+                                    a(href='#',class="badge badge-success") Hoạt động
+                                else
+                                    a(href='#',class="badge badge-danger") Dừng hoạt động
+
+                            td 
+                                button(type="button" class="btn btn-warning btn-sm mr-1") Sửa
+                                button(type="button" class="btn btn-danger btn-sm ") Xóa
 
             
 
