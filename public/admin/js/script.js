@@ -24,21 +24,23 @@ if(btnFilters.length > 0){
 
 
 /* Xử lý sự kiện form tìm kiếm */
-document.querySelector('#form-search').addEventListener('submit', (event) => {
-    event.preventDefault();
-    const productName = (event.target.elements['product-name'].value);
-    // const productName = event.target[0].value;
-
-    const url = new URL(window.location.href);
-
-    if(productName !== ''){
-        url.searchParams.set('product-name', productName);
-    }
-    else{
-        url.searchParams.delete('product-name');                // product-name là name của input, được gửi kèm url khi submit
-    }
-    window.location.href = url.href;
-
-});
+const searchForm = document.querySelector('#form-search');
+if(searchForm){
+    searchForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const productName = event.target.elements['product-name'].value;
+        // const productName = event.target[0].value;
+        
+        const url = new URL(window.location.href);
+        
+        if(productName !== ''){
+            url.searchParams.set('product-name', productName);
+        }
+        else{
+            url.searchParams.delete('product-name');                // product-name là name của input, được gửi kèm url khi submit
+        }
+        window.location.href = url.href;       
+    });
+}
 /* END */
 

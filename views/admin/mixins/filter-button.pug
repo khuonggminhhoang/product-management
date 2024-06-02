@@ -1,0 +1,7 @@
+mixin filter-button(filterStatus)
+    each item in filterStatus
+        button(
+            type="button" 
+            class=`btn btn-outline-success mr-1 ${item.class}`
+            button-status=item.status
+        ) #{item.name}

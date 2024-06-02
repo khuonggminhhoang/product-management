@@ -1,4 +1,6 @@
 extends ./../../layouts/default.pug
+include ./../../mixins/filter-button.pug
+include ./../../mixins/form-search.pug
 
 block main 
     h1 Danh sách sản phẩm 
@@ -9,29 +11,11 @@ block main
             .row 
                 //- các button để lọc sản phẩm
                 .col-6
-                    each item in filterStatus
-                        button(
-                            type="button" 
-                            class=`btn btn-outline-success mr-1 ${item.class}`
-                            button-status=item.status
-                        ) #{item.name}
+                    +filter-button(filterStatus)
+
                 //- form tìm kiếm
                 .col-6
-                    form(id='form-search')
-                        .input-group
-                            input(
-                                type="text" 
-                                class="form-control" 
-                                placeholder="Nhập tên sản phẩm" 
-                                name="product-name"
-                                value=productName
-                                )
-
-                            .input-group-append
-                                button(
-                                    type="submit" 
-                                    class=`btn btn-success`
-                                ) Tìm
+                    +form-search(productName)
 
     .card.bg-light.mb-3
         .card-header Danh sách
@@ -51,7 +35,7 @@ block main
                         tr
                             td #{i + 1}
                             td 
-                                img(src=`https://cdn.dummyjson.com/product-images/${i+1}/thumbnail.jpg`
+                                img(src=products[i].thumbnail
                                     alt="Sản phẩm 1"
                                     width="100px"
                                     style="aspect-ratio: 4/3"

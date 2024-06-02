@@ -1,0 +1,16 @@
+mixin form-search(productName)
+    form(id='form-search')
+        .input-group
+            input(
+                type="text" 
+                class="form-control" 
+                placeholder="Nhập tên sản phẩm" 
+                name="product-name"
+                value=productName
+                )
+
+            .input-group-append
+                button(
+                    type="submit" 
+                    class=`btn btn-success`
+                ) Tìm
