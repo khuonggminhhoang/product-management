@@ -1,10 +1,12 @@
 extends ./../../layouts/default.pug
 include ./../../mixins/filter-button.pug
 include ./../../mixins/form-search.pug
+include ./../../mixins/pagination.pug
 
 block main 
     h1 Danh sách sản phẩm 
 
+    //- Filter
     .card.bg-light.mb-3
         .card-header Bộ lọc và tìm kiếm
         .card-body
@@ -17,6 +19,7 @@ block main
                 .col-6
                     +form-search(productName)
 
+    //- List products
     .card.bg-light.mb-3
         .card-header Danh sách
         .card-body
@@ -53,6 +56,8 @@ block main
                                 button(type="button" class="btn btn-warning btn-sm mr-1") Sửa
                                 button(type="button" class="btn btn-danger btn-sm ") Xóa
 
+    //- Pagination
+    +pagination(pagination)
             
 
 

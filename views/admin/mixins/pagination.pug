@@ -1,0 +1,51 @@
+mixin pagination(pagination)
+    nav 
+        ul(class="pagination justify-content-center")
+            //- button <<
+            li(class=`page-item ${pagination.currentPage - 1 > 0 ? "" : "disabled"}`)
+                button(class="page-link" button-page= pagination.currentPage - 1) 
+                    span(aria-hidden="true") &laquo;
+
+            - if(pagination.totalPage <= 5 )
+                -for(let i = 1; i <= pagination.totalPage; ++i)
+                    li(class=`page-item ${pagination.currentPage == i ? "active" : ""}`)
+                        button(class="page-link" button-page=i) #{i}
+            - else
+                //- button chỉ số trang đầu
+                li(class=`page-item ${pagination.currentPage == 1 ? "active" : ""}`)
+                        button(class="page-link" button-page=1) 1
+
+                //- button ...
+                - if(pagination.currentPage - 1 > 2)
+                    li(class="page-item disabled")
+                            button(class="page-link") ...
+                
+                //- Xử lý logic hiển thị các button phân trang
+                - if(pagination.totalPage - pagination.currentPage < 3)
+                    -for(let i = pagination.totalPage - 3; i < pagination.totalPage; ++i)
+                        li(class=`page-item ${pagination.currentPage == i ? "active" : ""}`)
+                            button(class="page-link" button-page=i) #{i}
+                - else if(pagination.currentPage - 1 < 3)
+                    - for(let i = 2; i <= 4; ++i)
+                        li(class=`page-item ${pagination.currentPage == i ? "active" : ""}`)
+                            button(class="page-link" button-page=i) #{i}
+                - else 
+                    - for(let i = pagination.currentPage - 1; i <= pagination.currentPage + 1; ++i)
+                        li(class=`page-item ${pagination.currentPage == i ? "active" : ""}`)
+                            button(class="page-link" button-page=i) #{i}
+
+                //- button ...
+                -if(pagination.currentPage + 2 < pagination.totalPage)
+                    li(class="page-item disabled")
+                            button(class="page-link") ...
+
+                //- button chỉ số trang cuối
+                li(class=`page-item ${pagination.currentPage == pagination.totalPage ? "active" : ""}`)
+                        button(class="page-link" button-page=pagination.totalPage) #{pagination.totalPage}
+
+            //- button >>
+            li(class=`page-item ${pagination.currentPage + 1 <= pagination.totalPage ? "" : "disabled"}`)
+                button(class="page-link" button-page= pagination.currentPage + 1) 
+                    span(aria-hidden="true") &raquo;
+
+        

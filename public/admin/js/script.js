@@ -44,3 +44,17 @@ if(searchForm){
 }
 /* END */
 
+/* Xử lý sự kiện phân trang */
+const btnPagination = document.querySelectorAll('[button-page]');
+if(btnPagination.length > 0){
+    const url = new URL(window.location.href);
+
+    for(let btn of btnPagination){
+        btn.addEventListener('click', () => {
+            const page = btn.getAttribute('button-page');
+            url.searchParams.set('page', page);
+            window.location.href = url.href; 
+        });
+    }
+}
+/* END */
