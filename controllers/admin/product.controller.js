@@ -57,4 +57,14 @@ const index = async (req, res) => {
  
 };
 
-module.exports = {index};
+
+// [PATCH] /admin/products/change-status/:status/:id
+const changeStatus = async (req, res) => {
+    const id = req.params.id;
+    const status = req.params.status;
+    console.log(id, status);
+    await Product.updateOne({_id: id}, {status: status});
+    res.redirect('back');                               // chuyển hướng trang lại url trang hiện tại
+}
+
+module.exports = {index, changeStatus};

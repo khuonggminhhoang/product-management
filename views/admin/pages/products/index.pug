@@ -48,9 +48,19 @@ block main
                             //- if else như js
                             td 
                                 if(products[i].status == 'active')
-                                    a(href='#',class="badge badge-success") Hoạt động
+                                    a( 
+                                        href='javascript:;'
+                                        class="badge badge-success"
+                                        id = products[i]._id
+                                        status= products[i].status
+                                    ) Hoạt động
                                 else
-                                    a(href='#',class="badge badge-danger") Dừng hoạt động
+                                    a(
+                                        href='javascript:;'
+                                        class="badge badge-danger"
+                                        id = products[i]._id
+                                        status= products[i].status
+                                    ) Dừng hoạt động
 
                             td 
                                 button(type="button" class="btn btn-warning btn-sm mr-1") Sửa
@@ -58,6 +68,15 @@ block main
 
     //- Pagination
     +pagination(pagination)
+
+    form(
+        id='form-change-status-product'
+        method='POST'
+        action=""
+        url-temp=`${prefixAdmin}/products/change-status`
+    )
+
+    script(src="js/product.js")     
             
 
 
