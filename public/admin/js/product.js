@@ -9,9 +9,10 @@ if(btnStatus.length > 0){
         btn.addEventListener('click', () => {
             // console.log(currentStatus, id);
             const formStatus = document.getElementById('form-change-status-product');
-            formStatus.action = `${formStatus.getAttribute('url-temp')}/${status}/${id}?_method=PATCH`;
+            formStatus.action = `/admin/products/change-status/${status}/${id}?_method=PATCH`;
             formStatus.submit();
         });
 
     }
 }
+

@@ -4,7 +4,7 @@ const objectSearchHelper = require('./../../helpers/search');
 const objectPaginationHelper = require('./../../helpers/pagination');
 
 // [GET] /admin/products
-const index = async (req, res) => {
+module.exports.index = async (req, res) => {
     
     // Xử lý các nút lọc
     const filterStatus = filterStatusHelper(req.query);
@@ -59,12 +59,18 @@ const index = async (req, res) => {
 
 
 // [PATCH] /admin/products/change-status/:status/:id
-const changeStatus = async (req, res) => {
+module.exports.changeStatus = async (req, res) => {
     const id = req.params.id;
     const status = req.params.status;
-    console.log(id, status);
     await Product.updateOne({_id: id}, {status: status});
     res.redirect('back');                               // chuyển hướng trang lại url trang hiện tại
 }
 
-module.exports = {index, changeStatus};
+// [PATCH] /admin/products/change-multi
+module.exports.changeMulti = async (req, res) => {
+    const status = req.body.status;
+    const ids = req.body.ids;
+    const arrId = ids.split("; ");
+    await Product.updateMany({_id: {$in: arrId}}, {status: status});
+    res.redirect('back');
+}

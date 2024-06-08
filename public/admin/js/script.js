@@ -58,3 +58,66 @@ if(btnPagination.length > 0){
     }
 }
 /* END */
+
+
+/* Xử lý logic checkbox sản phẩm */
+const checkboxMulti = document.querySelector('[checbox-multi]');
+if(checkboxMulti){
+    const inputCheckAll = checkboxMulti.querySelector('input[name="checkall"]');
+    const inputCheckIds = checkboxMulti.querySelectorAll('input[name="id"]');
+
+    inputCheckAll.addEventListener('click', () => {
+        if(inputCheckAll.checked){
+            inputCheckIds.forEach((item) => {
+                item.checked = true;
+            });
+        }
+        else{
+            inputCheckIds.forEach((item) => {
+                item.checked = false;
+            });
+        }
+    });
+
+    inputCheckIds.forEach((item) => {
+        item.addEventListener('click', () => {
+            const countCheckbox = checkboxMulti.querySelectorAll('input[name="id"]:checked').length;
+            if(countCheckbox == inputCheckIds.length){
+                inputCheckAll.checked = true;
+            }
+            else{
+                inputCheckAll.checked = false;
+            }
+            
+        });
+    })
+}   
+/* END */
+
+/* Form multi  */
+const formMultiStatus = document.querySelector('#form-change-multi');
+if(formMultiStatus) {
+    const btnSubmit = formMultiStatus.querySelector('button[type="submit"]');
+    const btnSelectedState = formMultiStatus.querySelector('select[name="status"]');
+    
+    btnSubmit.addEventListener('click', (event) => {
+        event.preventDefault();
+        const inputsCheckId = checkboxMulti.querySelectorAll('input[name="id"]:checked');
+        if(inputsCheckId.length > 0 && btnSelectedState.selectedIndex > 0){
+            const inputIds = formMultiStatus.querySelector('[name="ids"]')
+            const arr = [];
+            inputsCheckId.forEach((item) => {
+                arr.push(item.value);
+            });
+            inputIds.value = arr.join("; ");
+
+            formMultiStatus.submit();
+        }
+        else{
+            alert("Chọn trạng thái và chọn ít nhất một bản ghi!")
+        }
+
+    });
+}
+
+/* END */

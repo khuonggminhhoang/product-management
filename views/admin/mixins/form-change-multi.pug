@@ -1,0 +1,21 @@
+mixin form-change-multi()
+    form(
+        id='form-change-multi'
+        method="POST"
+        action="/admin/products/change-multi?_method=PATCH"
+    )
+
+        .input-group
+            .input-group-prepend
+                select(class="custom-select" name="status")
+                    option(disabled selected ) --- Chọn trạng thái ---
+                    option(value="active") Hoạt động                            
+                    option(value="inactive") Dừng hoạt động                            
+
+                input(type="text" class="form-control d-none" name="ids" placeholder="id sản phẩm")
+
+            .input-group-append
+                button(
+                    type="submit" 
+                    class=`btn btn-primary`
+                ) Áp dụng
