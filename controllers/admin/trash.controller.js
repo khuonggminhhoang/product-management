@@ -37,9 +37,23 @@ module.exports.trashProducts = async (req, res) => {
                         .skip(skipProduct)     // truy vấn ra các sản phẩm trong db
                         .limit(objectPagination.limitItems);
 
-    res.render('./admin/pages/trash/index.pug', {
-        productName: '',
+    res.render('./admin/pages/trash/product-deleted.pug', {
+        title:'Sản phẩm đã xóa',
+        productName: objectSearch['product-name'],
         products: products,
         pagination: objectPagination
     }) 
+}
+
+// [PATCH] /admin/trash/products/restore/:id
+module.exports.restoredProducts = async (req, res) => {
+    const id = req.params.id;
+    await Product.updateOne({_id: id}, {deleted: false});
+    res.redirect('back');
+}
+
+module.exports.deletedProducts = async (req, res) => {
+    const id = req.params.id;
+    await Product.deleteOne({_id: id});
+    res.redirect('back');
 }

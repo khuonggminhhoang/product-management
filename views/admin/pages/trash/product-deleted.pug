@@ -18,16 +18,9 @@ block main
     .card.bg-light.mb-3
         .card-header Danh sách
         .card-body
-            table(class="table table-sm" checbox-multi)
+            table(class="table table-sm")
                 thead
                     tr
-                        //- th(class="form-check") 
-                        //-     input(
-                        //-         type="checkbox" 
-                        //-         class="form-check-input position-static ml-1"
-                        //-         name="checkall"   
-                        //-     )
-
                         th STT
                         th Hình ảnh 
                         th Tiêu đề
@@ -37,15 +30,7 @@ block main
                 tbody
                     //- for như js
                     -for(let i = 0; i < products.length; ++i)
-                        tr
-                            //- td(class="form-check")
-                            //-     input(
-                            //-         type="checkbox" 
-                            //-         class="form-check-input position-static  ml-1"
-                            //-         name="id"
-                            //-         value=products[i]._id
-                            //-     )
-                                
+                        tr      
                             td #{i + 1}
                             td 
                                 img(src=products[i].thumbnail
@@ -61,25 +46,43 @@ block main
                                     a( 
                                         href='javascript:;'
                                         class="badge badge-success"
-                                        id = products[i]._id
-                                        status= products[i].status
                                     ) Hoạt động
                                 else
                                     a(
                                         href='javascript:;'
                                         class="badge badge-danger"
-                                        id = products[i]._id
-                                        status= products[i].status
                                     ) Dừng hoạt động
 
                             td 
-                                button(type="button" class="btn btn-info btn-sm mr-1") Khôi phục
+                                button(
+                                    type="button" 
+                                    class="btn btn-info btn-sm mr-1"
+                                    data-id=products[i]._id
+                                    restored-button
+                                ) Khôi phục
+
                                 button(
                                     type="button" 
                                     class="btn btn-danger btn-sm"
                                     data-id=products[i]._id 
-                                    button-delete-product
+                                    deleted-permanent-button
                                 ) Xóa vĩnh viễn
 
     //- Pagination
     +pagination(pagination)
+
+    form(
+        id="form-restored"
+        method="POST"
+        action=""
+        path=`${prefixAdmin}/trash/products`
+    )
+
+    form(
+        id="form-deleted-permanent"
+        method="POST"
+        action=""
+        path=`${prefixAdmin}/trash/products`
+    )
+
+    
