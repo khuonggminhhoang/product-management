@@ -33,7 +33,7 @@ module.exports.index = async (req, res) => {
         totalProduct, 
         {
             currentPage: 1,
-            limitItems: 3,   // số sp trong 1 trang sản phẩm khi phân trang
+            limitItems: 5,   // số sp trong 1 trang sản phẩm khi phân trang
             totalPage: 1
         }
     )
@@ -64,7 +64,7 @@ module.exports.changeStatus = async (req, res) => {
     const status = req.params.status;
     await Product.updateOne({_id: id}, {status: status});
     res.redirect('back');                               // chuyển hướng trang lại url trang hiện tại
-}
+};
 
 // [PATCH] /admin/products/change-multi
 module.exports.changeMulti = async (req, res) => {
@@ -73,4 +73,15 @@ module.exports.changeMulti = async (req, res) => {
     const arrId = ids.split("; ");
     await Product.updateMany({_id: {$in: arrId}}, {status: status});
     res.redirect('back');
-}
+};
+
+module.exports.deleteProduct = async (req, res) => {
+    const id = req.params.id;
+    // await Product.deleteOne({_id: id});
+    await Product.updateOne({_id: id}, {
+        deleted: true,
+        deleteAt: new Date()
+    });
+    
+    res.redirect('back');
+};

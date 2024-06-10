@@ -1,21 +1,15 @@
 extends ./../../layouts/default.pug
-include ./../../mixins/filter-button.pug
 include ./../../mixins/form-search.pug
 include ./../../mixins/pagination.pug
-include ./../../mixins/form-change-multi.pug
 
 block main 
-    h1 Danh sách sản phẩm 
+    h1 Danh sách sản phẩm đã xóa 
 
     //- Filter
     .card.bg-light.mb-3
-        .card-header Bộ lọc và tìm kiếm
+        .card-header Tìm kiếm
         .card-body
             .row 
-                //- các button để lọc sản phẩm
-                .col-6
-                    +filter-button(filterStatus)
-
                 //- form tìm kiếm
                 .col-6
                     +form-search(productName)
@@ -23,18 +17,16 @@ block main
     //- List products
     .card.bg-light.mb-3
         .card-header Danh sách
-            +form-change-multi()
-                
         .card-body
             table(class="table table-sm" checbox-multi)
                 thead
                     tr
-                        th(class="form-check") 
-                            input(
-                                type="checkbox" 
-                                class="form-check-input position-static ml-1"
-                                name="checkall"   
-                            )
+                        //- th(class="form-check") 
+                        //-     input(
+                        //-         type="checkbox" 
+                        //-         class="form-check-input position-static ml-1"
+                        //-         name="checkall"   
+                        //-     )
 
                         th STT
                         th Hình ảnh 
@@ -46,13 +38,13 @@ block main
                     //- for như js
                     -for(let i = 0; i < products.length; ++i)
                         tr
-                            td(class="form-check")
-                                input(
-                                    type="checkbox" 
-                                    class="form-check-input position-static  ml-1"
-                                    name="id"
-                                    value=products[i]._id
-                                )
+                            //- td(class="form-check")
+                            //-     input(
+                            //-         type="checkbox" 
+                            //-         class="form-check-input position-static  ml-1"
+                            //-         name="id"
+                            //-         value=products[i]._id
+                            //-     )
                                 
                             td #{i + 1}
                             td 
@@ -81,31 +73,13 @@ block main
                                     ) Dừng hoạt động
 
                             td 
-                                button(type="button" class="btn btn-warning btn-sm mr-1") Sửa
+                                button(type="button" class="btn btn-info btn-sm mr-1") Khôi phục
                                 button(
                                     type="button" 
                                     class="btn btn-danger btn-sm"
                                     data-id=products[i]._id 
                                     button-delete-product
-                                ) Xóa
+                                ) Xóa vĩnh viễn
 
     //- Pagination
     +pagination(pagination)
-
-    form(
-        id='form-change-status-product'
-        method='POST'
-        action=""
-        path=`${prefixAdmin}/products/change-status`
-    )
-
-    form(
-        id='form-delete-product'
-        method='POST'
-        action=""
-        path=`${prefixAdmin}/products/delete`
-    )
-
-
-
-    script(src="js/product.js")     
