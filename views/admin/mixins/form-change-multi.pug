@@ -2,7 +2,7 @@ mixin form-change-multi()
     form(
         id='form-change-multi'
         method="POST"
-        action="/admin/products/change-multi?_method=PATCH"
+        action=`${prefixAdmin}/products/change-multi?_method=PATCH`
     )
 
         .input-group
