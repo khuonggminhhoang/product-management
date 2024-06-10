@@ -98,12 +98,21 @@ if(checkboxMulti){
 const formMultiStatus = document.querySelector('#form-change-multi');
 if(formMultiStatus) {
     const btnSubmit = formMultiStatus.querySelector('button[type="submit"]');
-    const btnSelectedState = formMultiStatus.querySelector('select[name="status"]');
+    const inputSelectedState = formMultiStatus.querySelector('select[name="type"]');
     
     btnSubmit.addEventListener('click', (event) => {
         event.preventDefault();
         const inputsCheckId = checkboxMulti.querySelectorAll('input[name="id"]:checked');
-        if(inputsCheckId.length > 0 && btnSelectedState.selectedIndex > 0){
+
+        if(inputsCheckId.length > 0 && inputSelectedState.selectedIndex > 0){
+            const type = inputSelectedState.value;
+            if(type == 'delete-all'){
+                const isConfirm = confirm('Xác nhận xóa các sản phẩm này?');
+                if(!isConfirm){
+                    return;
+                }
+            }
+
             const inputIds = formMultiStatus.querySelector('[name="ids"]')
             const arr = [];
             inputsCheckId.forEach((item) => {
