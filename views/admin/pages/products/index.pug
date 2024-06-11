@@ -3,9 +3,15 @@ include ./../../mixins/filter-button.pug
 include ./../../mixins/form-search.pug
 include ./../../mixins/pagination.pug
 include ./../../mixins/form-change-multi.pug
+include ./../../mixins/notification-success.pug
+include ./../../mixins/notification-error.pug
 
 block main 
     h1 Danh sách sản phẩm 
+
+    //- notification
+    +notification-success(messages.success)
+    +notification-error(messages.error)
 
     //- Filter
     .card.bg-light.mb-3
@@ -40,6 +46,7 @@ block main
                         th Hình ảnh 
                         th Tiêu đề
                         th Giá
+                        th Vị trí
                         th Trạng thái
                         th Hành Động
                 tbody
@@ -49,7 +56,7 @@ block main
                             td(class="form-check")
                                 input(
                                     type="checkbox" 
-                                    class="form-check-input position-static  ml-1"
+                                    class="form-check-input position-static ml-1"
                                     name="id"
                                     value=products[i]._id
                                 )
@@ -63,6 +70,15 @@ block main
                                 )
                             td #{products[i].title}
                             td #{products[i].price}$
+
+                            td
+                                input(
+                                    type="number"
+                                    class="form-control"
+                                    name="position"
+                                    value=products[i].position    
+                                )
+
                             //- if else như js
                             td 
                                 if(products[i].status == 'active')
@@ -105,3 +121,5 @@ block main
         action=""
         path=`${prefixAdmin}/products/delete`
     )
+
+    script(type='text/javascript' src="/admin/js/product.js")

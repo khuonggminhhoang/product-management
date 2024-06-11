@@ -105,7 +105,9 @@ if(formMultiStatus) {
         const inputsCheckId = checkboxMulti.querySelectorAll('input[name="id"]:checked');
 
         if(inputsCheckId.length > 0 && inputSelectedState.selectedIndex > 0){
+            // giá trị của ô chọn trạng thái
             const type = inputSelectedState.value;
+
             if(type == 'delete-all'){
                 const isConfirm = confirm('Xác nhận xóa các sản phẩm này?');
                 if(!isConfirm){
@@ -115,8 +117,15 @@ if(formMultiStatus) {
 
             const inputIds = formMultiStatus.querySelector('[name="ids"]')
             const arr = [];
+
             inputsCheckId.forEach((item) => {
-                arr.push(item.value);
+                if(type == 'change-position'){
+                    const position = item.closest('.form-check').parentNode.querySelector('input[name="position"]').value;
+                    arr.push(`${item.value}-${position}`);
+                }
+                else{
+                    arr.push(item.value);
+                }
             });
             inputIds.value = arr.join("; ");
 
@@ -139,3 +148,19 @@ if(btnDeleted){
     })
 }
 /* END */
+
+/* Notification */
+const notification = document.querySelector('[show-alert]');
+if(notification){
+    const time = parseInt(notification.getAttribute('data-time'));
+    setTimeout(() => {
+        notification.classList.add('show-hidden');
+    }, time)
+
+    const btnClose = notification.querySelector('.close');
+    btnClose.addEventListener('click', () => {
+        notification.classList.add('show-hidden');
+    });
+}
+
+/* End notification */

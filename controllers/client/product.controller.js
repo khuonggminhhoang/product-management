@@ -5,7 +5,7 @@ const index = async (req, res)=> {
     const products = await Product.find({
         status: 'active',
         deleted: false
-    });
+    }).sort({position: 'desc'});
     res.render('./client/pages/products/index.pug', {title: 'Danh sách sản phẩm', products});
 }
 

@@ -34,6 +34,7 @@ module.exports.trashProducts = async (req, res) => {
     // End Pagination
 
     const products = await Product.find(query)
+                        .sort({position: 'desc'})
                         .skip(skipProduct)     // truy vấn ra các sản phẩm trong db
                         .limit(objectPagination.limitItems);
 
@@ -47,14 +48,26 @@ module.exports.trashProducts = async (req, res) => {
 
 // [PATCH] /admin/trash/products/restore/:id
 module.exports.restoredProducts = async (req, res) => {
-    const id = req.params.id;
-    await Product.updateOne({_id: id}, {deleted: false});
+    try{
+        const id = req.params.id;
+        await Product.updateOne({_id: id}, {deleted: false});
+        req.flash("success", "Khôi phục sản phẩm thành công");
+    }
+    catch(e) {
+        req.flash("success", "Khôi phục sản phẩm thất bại");
+    }
     res.redirect('back');
 }
 
 // [DELETE] /admin/trash/products/delete-permanent/:id
 module.exports.deletedProducts = async (req, res) => {
-    const id = req.params.id;
-    await Product.deleteOne({_id: id});
+    try{
+        const id = req.params.id;
+        await Product.deleteOne({_id: id});
+        req.flash("success", "Xóa sản phẩm thành công");
+    }
+    catch(e) {
+        req.flash("success", "Xóa sản phẩm thất bại");
+    }
     res.redirect('back');
 }

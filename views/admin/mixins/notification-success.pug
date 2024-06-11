@@ -1,0 +1,4 @@
+mixin notification-success(content)
+    - if(content)
+            div(class="btn btn-success" show-alert data-time="3000") #{content}
+                button(type="button" class="close") &times;

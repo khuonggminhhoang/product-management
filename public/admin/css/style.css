@@ -47,3 +47,32 @@
     border-bottom: 1px solid #515151;
     padding: 6px 10px;
 }
+/* End Sider */
+
+
+/* Notification */
+[show-alert]{
+    position: fixed;
+    top: 70px;
+    right: 15px;
+    width: 25%;
+    z-index: 999;
+}
+
+[show-alert].show-hidden {
+    animation-name: alert-hidden;
+    animation-duration: 0.5s;
+    animation-fill-mode: both;
+}
+
+@keyframes alert-hidden {
+    from {
+        right: 15px;
+    }
+    to {
+        right: -100%;
+        display: none;
+    }
+}
+
+/* End Notification */

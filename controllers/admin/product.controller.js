@@ -44,6 +44,7 @@ module.exports.index = async (req, res) => {
 
 
     const products = await Product.find(query)
+                        .sort({position: 'desc'})
                         .skip(skipProduct)     // truy vấn ra các sản phẩm trong db
                         .limit(objectPagination.limitItems);
 
@@ -62,7 +63,14 @@ module.exports.index = async (req, res) => {
 module.exports.changeStatus = async (req, res) => {
     const id = req.params.id;
     const status = req.params.status;
-    await Product.updateOne({_id: id}, {status: status});
+    try{
+        await Product.updateOne({_id: id}, {status: status});
+        req.flash("success", "Cập nhật trạng thái thành công");
+    }
+    catch(e) {
+        req.flash("error", "Cập nhật trạng thái thất bại");
+    }
+
     res.redirect('back');                               // chuyển hướng trang lại url trang hiện tại
 };
 
@@ -74,14 +82,49 @@ module.exports.changeMulti = async (req, res) => {
 
     switch(type){
         case 'active': 
-            await Product.updateMany({_id: {$in: arrId}}, {status: 'active'});
+            try{
+                await Product.updateMany({_id: {$in: arrId}}, {status: 'active'});
+                req.flash("success", "Cập nhật trạng thái thành công")
+            }
+            catch(e) {
+                req.flash("error", "Cập nhật trạng thái thất bại");
+            }
             break;
+
         case 'inactive':
-            await Product.updateMany({_id: {$in: arrId}}, {status: 'inactive'});
+            try{
+                await Product.updateMany({_id: {$in: arrId}}, {status: 'inactive'});
+                req.flash("success", "Cập nhật trạng thái thành công")
+            }
+            catch(e) {
+                req.flash("error", "Cập nhật trạng thái thất bại");
+            }
             break;
+
         case 'delete-all':
-            await Product.updateMany({_id: {$in: arrId}}, {deleted: true, deleteAt: new Date()});
+            try{
+                await Product.updateMany({_id: {$in: arrId}}, {deleted: true, deleteAt: new Date()});
+                req.flash("success", "Xóa sản phẩm thành công")
+            }
+            catch(e) {
+                req.flash("error", "Xóa sản phẩm thất bại");
+            }
             break;
+
+        case 'change-position':
+            try{
+                for(let item of arrId) {
+                    let [id, position] = item.split('-');
+                    position = parseInt(position);
+                    await Product.updateOne({_id: id}, {position: position});
+                }
+                req.flash("success", "Thay đổi vị trí thành công")
+            }
+            catch(e) {
+                req.flash("error", "Thay đổi vị trí thất bại");
+            }
+            break;
+
         default:
             break;
     }
@@ -91,11 +134,16 @@ module.exports.changeMulti = async (req, res) => {
 
 // [DELETE] /admin/products/delete/:id
 module.exports.deleteProduct = async (req, res) => {
-    const id = req.params.id;
-    await Product.updateOne({_id: id}, {
-        deleted: true,
-        deleteAt: new Date()
-    });
-    
+    try{
+        const id = req.params.id;
+        await Product.updateOne({_id: id}, {
+            deleted: true,
+            deleteAt: new Date()
+        });
+        req.flash("success", "Xóa sản phẩm thành công")
+    }
+    catch(e) {
+        req.flash("error", "Xóa sản phẩm thất bại");
+    }
     res.redirect('back');
 };
