@@ -18,8 +18,8 @@ block main
                             )
                         .inner-content  
                             h3.inner-title #{product.title}
-                            .inner-price-new #{product.price}$
-                            .inner-price-old #{(product.price * (1 + product.discountPercentage/100)).toFixed(0)}$
+                            .inner-price-new #{(product.price * (100 - product.discountPercentage)/100).toFixed(0)}$
+                            .inner-price-old #{product.price}$
                             .inner-discount -#{product.discountPercentage}%
 
             

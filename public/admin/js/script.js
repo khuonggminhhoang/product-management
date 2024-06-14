@@ -140,15 +140,6 @@ if(formMultiStatus) {
 
 /* END */
 
-/* Xử lý sự kiện nút đã xóa */
-const btnDeleted = document.querySelector('[button-deleted]');
-if(btnDeleted){
-    btnDeleted.addEventListener('click', () => {
-        window.location.href = '/admin/trash/products';
-    })
-}
-/* END */
-
 /* Notification */
 const notification = document.querySelector('[show-alert]');
 if(notification){

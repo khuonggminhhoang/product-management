@@ -147,3 +147,30 @@ module.exports.deleteProduct = async (req, res) => {
     }
     res.redirect('back');
 };
+
+// [GET] /admin/products/create
+module.exports.create = (req, res) => {
+    res.render('./admin/pages/products/create.pug', {title: "Thêm mới sản phẩm"});
+    }
+    
+// [POST] /admin/products/create
+module.exports.createProduct = async (req, res) => {
+    const qtyProduct = await Product.countDocuments();
+    const dataProduct = req.body;
+    dataProduct.price = dataProduct.price == '' ? 0 : parseInt(dataProduct.price);
+    dataProduct.discountPercentage = dataProduct.discountPercentage == '' ? 0 : parseFloat(dataProduct.discountPercentage);
+    dataProduct.stock = dataProduct.stock == '' ? 0 : parseFloat(dataProduct.stock);
+    dataProduct.position = dataProduct.position == '' ? qtyProduct + 1 : parseInt(dataProduct.position);
+
+    dataProduct.thumbnail = req.file ? `/uploads/${req.file.filename}` : "";
+
+    try{
+        const product = new Product(dataProduct);
+        product.save();
+        req.flash("success", "Tạo mới sản phẩm thành công");
+    }
+    catch(e) {
+        req.flash("error", "Tạo mới sản phẩm thất bại");
+    }
+    res.redirect('/admin/products');
+}
