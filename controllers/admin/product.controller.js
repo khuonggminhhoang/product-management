@@ -220,3 +220,22 @@ module.exports.editProduct = async (req, res) => {
 
     res.redirect('back');
 }
+
+// [GET] /admin/products/detail/:id
+module.exports.detail = async (req, res) => {
+    try{
+        const product = await Product.findOne({
+            deleted: false,
+            _id: req.params.id
+        });
+        
+        
+        res.render('./admin/pages/products/detail.pug', {
+            title: product.title,
+            product: product
+        });
+    }
+    catch(err){
+        res.redirect('/admin/products');
+    }
+}

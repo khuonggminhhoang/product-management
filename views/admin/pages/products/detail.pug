@@ -1,0 +1,48 @@
+extends ../../layouts/default.pug 
+include ../../mixins/notification-error.pug
+include ../../mixins/notification-success.pug
+
+block main 
+    +notification-error(messages.error)
+    +notification-success(messages.success)
+
+    h1 Chi tiết sản phẩm
+
+    if (product.title)
+        div Tên sản phẩm:  <b>#{product.title}</b>
+
+    if (product.thumbnail)
+        img(
+            id="preview-image"
+            class="img-thumbnail m-2"
+            src=product.thumbnail
+            width="150px"
+        )
+    
+    if (product.price)
+        div Giá: <b>#{product.price}</b>
+
+    if (product.discountPercentage)
+        div Giảm giá: <b>#{product.discountPercentage}%</b>
+
+    if (product.stock)
+        div Còn lại: <b>#{product.stock}</b>
+
+    if (product.status == 'active')
+        span Trạng thái: 
+        a(
+            href='javascript:;'
+            class="badge badge-success"
+        ) Hoạt động
+    else 
+        a(
+            href='javascript:;'
+            class="badge badge-danger"
+        ) Dừng hoạt động
+    
+    br
+    a(
+        type="button" 
+        href=`${prefixAdmin}/products/edit/${product._id}`
+        class="btn btn-warning btn-sm mr-1"
+    ) Chỉnh sửa

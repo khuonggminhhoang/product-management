@@ -123,6 +123,11 @@ block main
                             td 
                                 a(
                                     type="button" 
+                                    href=`${prefixAdmin}/products/detail/${products[i]._id}`
+                                    class="btn btn-info btn-sm mr-1"
+                                ) Chi tiết
+                                a(
+                                    type="button" 
                                     href=`${prefixAdmin}/products/edit/${products[i]._id}`
                                     class="btn btn-warning btn-sm mr-1"
                                 ) Sửa
