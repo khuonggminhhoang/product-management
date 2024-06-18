@@ -1,16 +1,20 @@
 extends ../../layouts/default.pug 
 include ../../mixins/notification-error.pug
+include ../../mixins/notification-success.pug
 
 block main 
     +notification-error(messages.error)
+    +notification-success(messages.success)
+    
+    h1 Chỉnh sửa sản phẩm
 
-    h1 Thêm mới sản phẩm
     form(
-        action="/admin/products/create"
+        action=`${prefixAdmin}/products/edit/${product.id}?_method=PATCH`
         method="POST"
-        id="form-create-product"
-        enctype="multipart/form-data"                    
+        id="form-edit-product"
+        enctype="multipart/form-data" 
     )
+        //- Chú ý thuộc tính này đang sử dụng enctype="multipart/form-data" để upload file. Để xử lý loại dữ liệu này, bạn cần dùng một middleware đặc biệt như multer, nếu không, bên backend khi gửi form lên sẽ không nhận được req.body          
 
         div(class="form-group")
             label(for="title") Tiêu đề
@@ -20,6 +24,7 @@ block main
                 id="title"
                 name="title"
                 placeholder="Tiêu đề sản phẩm..."
+                value=product.title
                 required
             )
 
@@ -31,7 +36,7 @@ block main
                 name="description"
                 placeholder="Mô tả..."
                 rows="5"
-            )
+            ) #{product.description}
 
         div(class="form-group")
             label(for="price") Giá
@@ -42,6 +47,7 @@ block main
                 name="price"
                 placeholder="0"
                 min="0"
+                value=product.price
             )
 
         div(class="form-group")
@@ -55,6 +61,7 @@ block main
                 min="0"
                 max="100"
                 step="0.01"
+                value=product.discountPercentage
             )
 
         div(class="form-group")
@@ -66,6 +73,7 @@ block main
                 name="stock"
                 placeholder="0"
                 min="0"
+                value=product.stock
             )
 
         div(class="form-group")
@@ -75,14 +83,14 @@ block main
                 class="form-control-file"
                 id="thumbnail"
                 name="thumbnail"
-                placeholder="image.jpg"
+                placeholder=".jpg/png"
                 accept="image/*"
             )
             div(class="preview")
                 img(
                     id="preview-image"
                     class="img-thumbnail"
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxKjw7UKMErGf4sBC7uz44m65E6QemoO7Tbw&s"
+                    src=product.thumbnail
                     width="150px"
                 )
                 a(class="btn btn-danger btn-sm" deleted) x
@@ -96,6 +104,7 @@ block main
                 name="position"
                 min="0"
                 placeholder="Tự động tăng"
+                value=product.position
             )
 
         div(class="form-check form-check-inline")
@@ -105,7 +114,7 @@ block main
                     name="status" 
                     id="active" 
                     value="active"
-                    checked
+                    checked=(product.status == 'active' ? true : false)
                 ) 
                 label(for="active" 
                 class="form-check-label"
@@ -117,9 +126,10 @@ block main
                     name="status" 
                     id="inactive" 
                     value="inactive"
+                    checked=(product.status == 'inactive' ? true : false)
                 ) 
                 label(for="inactive" 
                 class="form-check-label"
                 ) Dừng hoạt động
         br
-        button(type="submit" class="btn btn-primary") Tạo mới
+        button(type="submit" class="btn btn-primary") Cập nhật

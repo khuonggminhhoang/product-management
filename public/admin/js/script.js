@@ -159,29 +159,23 @@ if(notification){
 /* Preview Image */
 const preview = document.querySelector('.preview');
 const inputImage = document.querySelector('#thumbnail');
-const previewImage = preview.querySelector('#preview-image')
+const previewImage = document.querySelector('#preview-image')
 if(inputImage){
-    inputImage.onchange = evt => {
+
+    inputImage.onchange = () => {
         const [file] = inputImage.files;
-        if(preview.classList.contains('d-none')){
-            preview.classList.remove('d-none');
-        }
-        else{
-            preview.classList.add('d-none');
-        }
         if(file && previewImage) {
             previewImage.src = URL.createObjectURL(file);                  // tham khảo stackoverflow https://stackoverflow.com/questions/4459379/preview-an-image-before-it-is-uploaded
             console.log(previewImage.src);
         }
     };
 }
-
+// xử lý sự kiện nút close ảnh
 const btnDeleted = document.querySelector('[deleted]');
 if(btnDeleted) {
     btnDeleted.addEventListener('click', () => {
         inputImage.value = "";
-        previewImage.src="";
-        preview.classList.add('d-none');
+        previewImage.src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxKjw7UKMErGf4sBC7uz44m65E6QemoO7Tbw&s";
     });
 }
 /* End Preview Image */

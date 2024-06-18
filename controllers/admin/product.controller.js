@@ -161,7 +161,7 @@ module.exports.createProduct = async (req, res) => {
     dataProduct.discountPercentage = dataProduct.discountPercentage == '' ? 0 : parseFloat(dataProduct.discountPercentage);
     dataProduct.stock = dataProduct.stock == '' ? 0 : parseFloat(dataProduct.stock);
     dataProduct.position = dataProduct.position == '' ? qtyProduct + 1 : parseInt(dataProduct.position);
-
+    
     dataProduct.thumbnail = req.file ? `/uploads/${req.file.filename}` : "";
     //=====================
     console.log(req.file);          // req.file của thư viện multer
@@ -175,4 +175,48 @@ module.exports.createProduct = async (req, res) => {
         req.flash("error", "Tạo mới sản phẩm thất bại");
     }
     res.redirect('/admin/products');
+}
+
+// [GET] /admin/products/edit/:id
+module.exports.edit = async (req, res) => {
+    try{
+        const product = await Product.findOne({
+            deleted: false,
+            _id: req.params.id
+        });
+        
+        
+        res.render('./admin/pages/products/edit.pug', {
+            title: "Chỉnh sửa sản phẩm",
+            product: product
+        });
+    }
+    catch(err){
+        res.redirect('/admin/products');
+    }
+}
+
+// [PATCH] /admin/products/edit/:id
+module.exports.editProduct = async (req, res) => {
+    const id = req.params.id;
+    const dataProduct = req.body;
+    const qtyProduct = await Product.countDocuments();
+
+    dataProduct.price = dataProduct.price == '' ? 0 : parseInt(dataProduct.price);
+    dataProduct.discountPercentage = dataProduct.discountPercentage == '' ? 0 : parseFloat(dataProduct.discountPercentage);
+    dataProduct.stock = dataProduct.stock == '' ? 0 : parseFloat(dataProduct.stock);
+    dataProduct.position = dataProduct.position == '' ? qtyProduct : parseInt(dataProduct.position);
+    
+    if(req.file){
+        dataProduct.thumbnail = `/uploads/${req.file.filename}`;
+    }
+    try{
+        await Product.updateOne({_id: id}, dataProduct);
+        req.flash("success", "Cập nhật sản phẩm thành công");
+    }
+    catch(err) {
+        req.flash("error", "Cập nhật sản phẩm không thành công");
+    }
+
+    res.redirect('back');
 }

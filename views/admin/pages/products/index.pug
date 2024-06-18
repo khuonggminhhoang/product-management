@@ -121,8 +121,12 @@ block main
                                     ) Dừng hoạt động
 
                             td 
-                                button(type="button" class="btn btn-warning btn-sm mr-1") Sửa
-                                button(
+                                a(
+                                    type="button" 
+                                    href=`${prefixAdmin}/products/edit/${products[i]._id}`
+                                    class="btn btn-warning btn-sm mr-1"
+                                ) Sửa
+                                a(
                                     type="button" 
                                     class="btn btn-danger btn-sm"
                                     data-id=products[i]._id 
