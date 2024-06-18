@@ -76,6 +76,14 @@ block main
                 placeholder="image.jpg"
                 accept="image/*"
             )
+            div(class="preview d-none")
+                img(
+                    id="preview-image"
+                    class="img-thumbnail"
+                    src="#"
+                    width="150px"
+                )
+                a(class="btn btn-danger btn-sm" deleted) x
 
         div(class="form-group")
             label(for="position") Vị trí

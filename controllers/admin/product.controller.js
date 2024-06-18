@@ -151,7 +151,7 @@ module.exports.deleteProduct = async (req, res) => {
 // [GET] /admin/products/create
 module.exports.create = (req, res) => {
     res.render('./admin/pages/products/create.pug', {title: "Thêm mới sản phẩm"});
-    }
+}
     
 // [POST] /admin/products/create
 module.exports.createProduct = async (req, res) => {
@@ -163,7 +163,9 @@ module.exports.createProduct = async (req, res) => {
     dataProduct.position = dataProduct.position == '' ? qtyProduct + 1 : parseInt(dataProduct.position);
 
     dataProduct.thumbnail = req.file ? `/uploads/${req.file.filename}` : "";
-
+    //=====================
+    console.log(req.file);          // req.file của thư viện multer
+    //=====================
     try{
         const product = new Product(dataProduct);
         product.save();
