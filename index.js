@@ -24,10 +24,11 @@ const systemConfig = require('./config/system');
 // App local variable: dùng được mọi nơi ở trong file pug
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
 
-app.use(express.static('public'));
+
+app.use(express.static(`${__dirname}/public`));
 
 // setup pug
-app.set("views", "./views");
+app.set("views", `${__dirname}/views`);
 app.set("view engine", "pug");
 
 //setup flash
@@ -45,3 +46,6 @@ app.listen(port,() => {
     console.log('server listening on port 3000');
 }); 
 
+
+console.log("Đang ở folder:",__dirname);
+module.exports = app;
