@@ -163,9 +163,9 @@ module.exports.createProduct = async (req, res) => {
     dataProduct.stock = dataProduct.stock == '' ? 0 : parseFloat(dataProduct.stock);
     dataProduct.position = dataProduct.position == '' ? qtyProduct + 1 : parseInt(dataProduct.position);
     
-    dataProduct.thumbnail = req.file ? `/uploads/${req.file.filename}` : "";
     //=====================
-    console.log(req.file);          // req.file của thư viện multer
+    // console.log(req.file);          // req.file của thư viện multer
+    console.log(req.body);          // req.file của thư viện multer
     //=====================
     try{
         const product = new Product(dataProduct);
@@ -208,9 +208,6 @@ module.exports.editProduct = async (req, res) => {
     dataProduct.stock = dataProduct.stock == '' ? 0 : parseFloat(dataProduct.stock);
     dataProduct.position = dataProduct.position == '' ? qtyProduct : parseInt(dataProduct.position);
     
-    if(req.file){
-        dataProduct.thumbnail = `/uploads/${req.file.filename}`;
-    }
     try{
         await Product.updateOne({_id: id}, dataProduct);
         req.flash("success", "Cập nhật sản phẩm thành công");
