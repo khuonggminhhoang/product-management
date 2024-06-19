@@ -47,5 +47,3 @@ app.listen(port,() => {
 }); 
 
 
-console.log("Đang ở folder:",__dirname);
-module.exports = app;
