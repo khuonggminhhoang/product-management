@@ -2,6 +2,7 @@ const Product = require('./../../models/product.model');
 const filterStatusHelper = require('./../../helpers/filterStatus');
 const objectSearchHelper = require('./../../helpers/search');
 const objectPaginationHelper = require('./../../helpers/pagination');
+const systemConfig = require('./../../config/system');
 
 // [GET] /admin/products
 module.exports.index = async (req, res) => {
@@ -174,7 +175,7 @@ module.exports.createProduct = async (req, res) => {
     catch(e) {
         req.flash("error", "Tạo mới sản phẩm thất bại");
     }
-    res.redirect('/admin/products');
+    res.redirect(`${systemConfig.prefixAdmin}/products`);
 }
 
 // [GET] /admin/products/edit/:id
@@ -192,7 +193,7 @@ module.exports.edit = async (req, res) => {
         });
     }
     catch(err){
-        res.redirect('/admin/products');
+        res.redirect(`${systemConfig.prefixAdmin}/products`);
     }
 }
 
@@ -236,6 +237,6 @@ module.exports.detail = async (req, res) => {
         });
     }
     catch(err){
-        res.redirect('/admin/products');
+        res.redirect(`${systemConfig.prefixAdmin}/products`);
     }
 }

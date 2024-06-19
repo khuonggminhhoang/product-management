@@ -6,6 +6,6 @@ router.get('/products', controller.trashProducts);
 
 router.patch('/products/restore/:id', controller.restoredProducts);
 
-router.delete('/products/delete-permanent/:id', controller.deletedProducts);
+router.delete('/products/delete-permanent/:id', controller.deletedProducts);           // xóa vĩnh viễn một sản phẩm
 
 module.exports = router;
