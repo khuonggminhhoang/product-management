@@ -4,6 +4,7 @@ const methodOverride = require('method-override');              // thư viện h
 const flash = require('express-flash');                         // thư viện hỗ trợ in thông báo
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
+const path = require('path');                                   // path để ghép chuỗi đường dẫn
 require('dotenv').config();                                     // config file .env
 
 
@@ -27,6 +28,9 @@ app.locals.prefixAdmin = systemConfig.prefixAdmin;
 
 app.use(express.static(`${__dirname}/public`));
 
+// tinyMce
+app.use('/tinymce', express.static(path.join(__dirname, 'node_modules', 'tinymce')));
+
 // setup pug
 app.set("views", `${__dirname}/views`);
 app.set("view engine", "pug");
@@ -45,5 +49,3 @@ routeAdmin(app);
 app.listen(port,() => {
     console.log('server listening on port 3000');
 }); 
-
-
