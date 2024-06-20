@@ -42,10 +42,19 @@ module.exports.index = async (req, res) => {
     const skipProduct = (objectPagination.currentPage - 1) * objectPagination.limitItems;
     // End Pagination
 
-
+    // Sort
+    const sort = {};
+    if(req.query.sortBy && req.query.order){
+        sort[req.query.sortBy] = req.query.order;
+    }
+    else{
+        sort.position = 'desc';
+    }
+    
+    // End Sort
 
     const products = await Product.find(query)
-                        .sort({position: 'desc'})
+                        .sort(sort)
                         .skip(skipProduct)     // truy vấn ra các sản phẩm trong db
                         .limit(objectPagination.limitItems);
 

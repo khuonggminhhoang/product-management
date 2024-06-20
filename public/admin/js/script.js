@@ -179,3 +179,28 @@ if(btnDeleted) {
     });
 }
 /* End Preview Image */
+
+/* Sort product */
+const sortSelect = document.querySelector('[sort]');
+if(sortSelect){
+    let url = new URL(window.location.href);
+    sortSelect.addEventListener('change', (e) => {
+        const value = e.target.value;
+        const [sortBy, order] = value.split('-');
+
+        url.searchParams.set('sortBy', sortBy);
+        url.searchParams.set('order', order);
+
+        window.location.href = url.href;
+    });
+
+    const sortBy = url.searchParams.get('sortBy');
+    const order = url.searchParams.get('order');
+    if(sortBy && order){
+        const stringValue = `${sortBy}-${order}`;
+        const option = sortSelect.querySelector(`[value=${stringValue}]`);
+        option.selected = true;
+    }
+}   
+
+/* End Sort product */

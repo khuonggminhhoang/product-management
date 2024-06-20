@@ -30,9 +30,19 @@ block main
     .card.bg-light.mb-3
         .card-header Danh sách
             .row 
-                .col-9
+                .col-7
                     +form-change-multi()
-
+                
+                .col-2
+                    select(class="form-control dropdown-toggle" name="type" sort)
+                        option(disabled selected ) ---Chọn tiêu chí sắp xếp---
+                        option(value="price-asc") Giá: Thấp đến cao                            
+                        option(value="price-desc") Giá: Cao đến thấp                           
+                        option(value="position-asc") Vị trí tăng dần                           
+                        option(value="position-desc") Vị trí giảm dần  
+                        option(value="title-asc")  Tên: A - Z
+                        option(value="title-desc") Tên: Z - A  
+                    
                 .col-3
                     a(
                         type="button" 
