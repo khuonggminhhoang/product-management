@@ -16,7 +16,7 @@ module.exports.upload = (req, res, next) => {
             let stream = cloudinary.uploader.upload_stream(
                 (error, result) => {
                     if (result) {
-                        resolve(result);
+                        resolve(result);                    // Khi Promise được giải quyết bằng resolve(result) trong hàm streamUpload, kết quả result sẽ được truyền đến nơi mà streamUpload được gọi
                     } else {
                         reject(error);
                     }
@@ -43,3 +43,5 @@ module.exports.upload = (req, res, next) => {
         next();
     }
 }
+
+// end
