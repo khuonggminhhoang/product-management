@@ -174,7 +174,6 @@ module.exports.createProduct = async (req, res) => {
     
     //=====================
     // console.log(req.file);          // req.file của thư viện multer
-    console.log(req.body);          // req.file của thư viện multer
     //=====================
     try{
         const product = new Product(dataProduct);
