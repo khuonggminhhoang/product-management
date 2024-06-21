@@ -28,16 +28,16 @@ const searchForm = document.querySelector('#form-search');
 if(searchForm){
     searchForm.addEventListener('submit', (event) => {
         event.preventDefault();
-        const productName = event.target.elements['product-name'].value;
+        const productName = event.target.elements.keyword.value;
         // const productName = event.target[0].value;
         
         const url = new URL(window.location.href);
         
         if(productName !== ''){
-            url.searchParams.set('product-name', productName);
+            url.searchParams.set('keyword', productName);
         }
         else{
-            url.searchParams.delete('product-name');                // product-name là name của input, được gửi kèm url khi submit
+            url.searchParams.delete('keyword');                // product-name là name của input, được gửi kèm url khi submit
         }
         window.location.href = url.href;       
     });

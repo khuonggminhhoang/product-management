@@ -4,12 +4,12 @@ include ../../mixins/notification-error.pug
 block main 
     +notification-error(messages.error)
 
-    h1 Thêm mới sản phẩm
+    h1 Thêm mới danh mục
     form(
-        action="/admin/products/create"
+        action="/admin/products-category/create"
         method="POST"
-        id="form-create-product"
-        enctype="multipart/form-data"                    
+        id="form-create-product-category"
+        enctype="multipart/form-data" 
     )
 
         div(class="form-group")
@@ -19,8 +19,18 @@ block main
                 class="form-control"
                 id="title"
                 name="title"
-                placeholder="Tiêu đề sản phẩm..."
+                placeholder="Tên danh mục..."
                 required
+            )
+
+        div(class="form-group")
+            label(for="parentId") Danh mục cha
+            input(
+                type="text" 
+                class="form-control"
+                id="parentId"
+                name="parentId"
+                placeholder="id danh mục cha..."
             )
 
         div(class="form-group")
@@ -31,41 +41,6 @@ block main
                 name="description"
                 placeholder="Mô tả..."
                 rows="5"
-            )
-
-        div(class="form-group")
-            label(for="price") Giá
-            input(
-                type="number" 
-                class="form-control"
-                id="price"
-                name="price"
-                placeholder="0"
-                min="0"
-            )
-
-        div(class="form-group")
-            label(for="discountPercentage") % Giảm giá
-            input(
-                type="number"
-                class="form-control"
-                id="discountPercentage"
-                name="discountPercentage"
-                placeholder="0"
-                min="0"
-                max="100"
-                step="0.01"
-            )
-
-        div(class="form-group")
-            label(for="stock") Số lượng
-            input(
-                type="number"
-                class="form-control"
-                id="stock"
-                name="stock"
-                placeholder="0"
-                min="0"
             )
 
         div(class="form-group")

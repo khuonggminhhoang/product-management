@@ -22,7 +22,7 @@ module.exports.index = async (req, res) => {
     // Xử lý tìm kiếm sản phẩm
     const objectSearch = objectSearchHelper(req.query);
 
-    if(objectSearch['product-name']){
+    if(objectSearch.target){
         query.title = objectSearch.regex;
     }
     // End
@@ -62,7 +62,7 @@ module.exports.index = async (req, res) => {
         title: 'Danh sách sản phẩm', 
         products: products,
         filterStatus: filterStatus, 
-        productName: objectSearch['product-name'],
+        productName: objectSearch.target,
         pagination: objectPagination
     });
  
@@ -164,7 +164,7 @@ module.exports.create = (req, res) => {
 }
     
 // [POST] /admin/products/create
-module.exports.createProduct = async (req, res) => {
+module.exports.createPOST = async (req, res) => {
     const qtyProduct = await Product.countDocuments();
     const dataProduct = req.body;
     dataProduct.price = dataProduct.price == '' ? 0 : parseInt(dataProduct.price);
@@ -177,7 +177,7 @@ module.exports.createProduct = async (req, res) => {
     //=====================
     try{
         const product = new Product(dataProduct);
-        product.save();
+        await product.save();
         req.flash("success", "Tạo mới sản phẩm thành công");
     }
     catch(e) {

@@ -1,12 +1,12 @@
-mixin form-search(productName)
+mixin form-search(keyword)
     form(id='form-search')
         .input-group
             input(
                 type="text" 
                 class="form-control" 
-                placeholder="Nhập tên sản phẩm" 
-                name="product-name"
-                value=productName
+                placeholder="Tìm kiếm..." 
+                name="keyword"
+                value=keyword
                 )
 
             .input-group-append

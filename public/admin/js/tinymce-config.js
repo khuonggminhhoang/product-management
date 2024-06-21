@@ -1,5 +1,5 @@
 tinymce.init({
-    selector: 'textarea',
+    selector: 'textarea#description',
     license_key: 'gpl',
     browser_spellcheck: true,
     plugins: [

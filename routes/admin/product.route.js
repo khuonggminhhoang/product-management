@@ -17,7 +17,7 @@ router.delete('/delete/:id', controller.deleteProduct);
 
 router.get('/create', controller.create);
 
-router.post('/create', upload.single('thumbnail'), middleware.upload, validate.productValid, controller.createProduct);  // thumbnail là name của input trong form
+router.post('/create', upload.single('thumbnail'), middleware.upload, validate.productValid, controller.createPOST);  // thumbnail là name của input trong form
 
 router.get('/edit/:id', controller.edit);
 

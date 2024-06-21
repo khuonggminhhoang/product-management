@@ -1,11 +1,11 @@
 module.exports = (query) => {
     const objectSearch = {
-        'product-name': ''
+        target: ''
     }
 
-    if(query['product-name']){
-        objectSearch['product-name'] = query['product-name'];
-        objectSearch.regex = { $regex: new RegExp(query['product-name'], 'i')}
+    if(query.keyword){
+        objectSearch.target = query.keyword;
+        objectSearch.regex = { $regex: new RegExp(query.keyword, 'i')}
     }
 
     return objectSearch;
