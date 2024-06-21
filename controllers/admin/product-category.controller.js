@@ -3,6 +3,7 @@ const filterStatusHelper = require('./../../helpers/filterStatus');
 const objectSearchHelper = require('./../../helpers/search');
 const objectPaginationHelper = require('./../../helpers/pagination');
 const systemConfig = require('./../../config/system');
+const { response } = require('express');
 
 // [GET] /admin/products-category
 module.exports.index = async (req, res) => {
@@ -87,4 +88,86 @@ module.exports.createPOST = async (req, res) => {
         req.flash("error", "Tạo mới danh mục thất bại");
     }
     res.redirect(`${systemConfig.prefixAdmin}/products-category`);
+}
+
+// [PATCH] /admin/products-category/change-status/:status/:id
+module.exports.changeStatus = async (req, res) => {
+    try {
+        const status = req.params.status;
+        const id = req.params.id;
+        await ProductCategory.updateOne({_id: id}, {status: status});
+        req.flash('success', 'Thay đổi trạng thái thành công');
+    }
+    catch(err){
+        req.flash('error', 'Thay đổi trạng thái thất bại');
+    }
+    res.redirect('back');
+}
+
+// [GET] /admin/products-category/detail/:id
+module.exports.detail = async (req, res) => {
+    try{
+        const id = req.params.id;
+        const productCategory =await ProductCategory.findOne({
+            deleted: false,
+            _id: id
+        });
+
+        res.render('./admin/pages/product-category/detail.pug', {
+            title: 'Chi tiết danh mục',
+            productCategory: productCategory
+        })
+    }
+    catch(err){
+        res.redirect(`${systemConfig.prefixAdmin}/products-category`);
+    }
+}
+
+// [GET] /admin/products-category/edit/:id
+module.exports.edit = async (req, res) => {
+    try{
+        const productCategory = await ProductCategory.findOne({
+            deleted: false,
+            _id: req.params.id 
+        })
+
+        res.render('./admin/pages/product-category/edit.pug', {
+            title: "Chỉnh sửa danh mục",
+            productCategory: productCategory
+        })
+    }   
+    catch(err){
+        res.redirect(`${systemConfig.prefixAdmin}/products-category`);
+    }
+}
+
+// [PATCH] /admin/products-category/edit/:id
+module.exports.editPOST = async (req, res) => {
+    const id = req.params.id;
+    const qty = await ProductCategory.countDocuments();
+    req.body.position = req.body.position == '' ? qty : parseInt(req.body.position);
+    try{
+        await ProductCategory.updateOne({_id: id}, req.body);
+        req.flash("success", "Cập nhật danh mục thành công");
+    }
+    catch(err) {
+        req.flash("error", "Cập nhật danh mục thất bại");
+    }
+    res.redirect('back');
+}
+
+// [DELETE] /admin/products-category/delete/:id
+module.exports.delete = async (req, res) => {
+    try{
+        const id = req.params.id;
+        await ProductCategory.updateOne({_id: id}, {
+            deleted: true,
+            deleteAt: new Date()
+        })
+        req.flash("success", "Xóa danh mục thành công")
+    }
+    catch(err) {
+        req.flash("error", "Xóa danh mục thất bại");
+    }
+    res.redirect('back');
 }

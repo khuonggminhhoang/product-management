@@ -221,7 +221,7 @@ module.exports.editProduct = async (req, res) => {
         req.flash("success", "Cập nhật sản phẩm thành công");
     }
     catch(err) {
-        req.flash("error", "Cập nhật sản phẩm không thành công");
+        req.flash("error", "Cập nhật sản phẩm thất bại");
     }
 
     res.redirect('back');

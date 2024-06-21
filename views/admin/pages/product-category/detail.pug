@@ -1,0 +1,44 @@
+extends ../../layouts/default.pug 
+include ../../mixins/notification-error.pug
+include ../../mixins/notification-success.pug
+
+block main 
+    +notification-error(messages.error)
+    +notification-success(messages.success)
+
+    h1 Chi tiết danh mục
+
+    if (productCategory.title)
+        div Tên danh mục:  <b>#{productCategory.title}</b>
+
+    if (productCategory.thumbnail)
+        img(
+            id="preview-image"
+            class="img-thumbnail m-2"
+            src=productCategory.thumbnail
+            width="150px"
+        )
+    br
+    if (productCategory.status == 'active')
+        span Trạng thái: 
+        a(
+            href='javascript:;'
+            class="badge badge-success"
+        ) Hoạt động
+    else 
+        a(
+            href='javascript:;'
+            class="badge badge-danger"
+        ) Dừng hoạt động
+    
+    
+    if (productCategory.description)
+        div <i>!{productCategory.description}</i>
+        
+    br
+    a(
+        type="button" 
+        href=`${prefixAdmin}/products-category/edit/${productCategory._id}`
+        class="btn btn-warning btn-sm mr-1"
+    ) Chỉnh sửa
+    
