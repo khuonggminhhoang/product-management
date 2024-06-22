@@ -80,70 +80,9 @@ block main
                         th Trạng thái
                         th Hành Động
                 tbody
+                    //-  biến cnt là để nhúng vào hàm mixin bên dưới
+                    - let cnt = 1
                     +record-level-table(records)
-                    //- //- for như js
-                    //- -for(let i = 0; i < records.length; ++i) 
-
-                    //-     tr 
-                    //-         td(class="form-check")
-                    //-             input(
-                    //-                 type="checkbox" 
-                    //-                 class="form-check-input position-static ml-1"
-                    //-                 name="id"
-                    //-                 value=records[i]._id
-                    //-             )
-                                
-                    //-         td #{i + 1}
-                    //-         td 
-                    //-             img(src=records[i].thumbnail
-                    //-                 alt="Sản phẩm 1"
-                    //-                 width="100px"
-                    //-                 style="aspect-ratio: 4/3"
-                    //-             )
-                    //-         td #{records[i].title}
-
-                    //-         td
-                    //-             input(
-                    //-                 type="number"
-                    //-                 class="form-control"
-                    //-                 name="position"
-                    //-                 value=records[i].position    
-                    //-             )
-
-                    //-         //- if else như js
-                    //-         td 
-                    //-             if (records[i].status == 'active')
-                    //-                 a( 
-                    //-                     href='javascript:;'
-                    //-                     class="badge badge-success"
-                    //-                     id = records[i]._id
-                    //-                     status= records[i].status
-                    //-                 ) Hoạt động
-                    //-             else
-                    //-                 a(
-                    //-                     href='javascript:;'
-                    //-                     class="badge badge-danger"
-                    //-                     id = records[i]._id
-                    //-                     status= records[i].status
-                    //-                 ) Dừng hoạt động
-
-                    //-         td 
-                    //-             a(
-                    //-                 type="button" 
-                    //-                 href=`${prefixAdmin}/products-category/detail/${records[i]._id}`
-                    //-                 class="btn btn-info btn-sm mr-1"
-                    //-             ) Chi tiết
-                    //-             a(
-                    //-                 type="button" 
-                    //-                 href=`${prefixAdmin}/products-category/edit/${records[i]._id}`
-                    //-                 class="btn btn-warning btn-sm mr-1"
-                    //-             ) Sửa
-                    //-             a(
-                    //-                 type="button" 
-                    //-                 class="btn btn-danger btn-sm"
-                    //-                 data-id=records[i]._id 
-                    //-                 button-delete-product
-                    //-             ) Xóa
 
 
     form(

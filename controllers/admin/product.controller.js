@@ -34,7 +34,7 @@ module.exports.index = async (req, res) => {
         totalProduct, 
         {
             currentPage: 1,
-            limitItems: 5,   // số sp trong 1 trang sản phẩm khi phân trang
+            limitItems: 10,   // số sp trong 1 trang sản phẩm khi phân trang
             totalPage: 1
         }
     )
