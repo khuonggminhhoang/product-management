@@ -1,6 +1,7 @@
 extends ../../layouts/default.pug 
 include ../../mixins/notification-error.pug
 include ../../mixins/notification-success.pug
+include ../../mixins/tree-level-category.pug
 
 block main 
     +notification-error(messages.error)
@@ -28,14 +29,16 @@ block main
 
         div(class="form-group")
             label(for="parentId") Danh mục cha
-            input(
-                type="text" 
+            select(
                 class="form-control"
                 id="parentId"
                 name="parentId"
-                placeholder="id danh mục cha..."
-                value=productCategory.parentId
             )
+                option(
+                    value=""
+                ) --Chọn danh mục cha --
+                +tree-level-category(parentsCategory, 1)    
+
 
         div(class="form-group")
             label(for="description") Mô tả

@@ -23,4 +23,6 @@ router.patch('/edit/:id', upload.single('thumbnail'), middleware.upload, validat
 
 router.delete('/delete/:id', controller.delete);
 
+router.patch('/change-multi', controller.changeMulti);
+
 module.exports = router;

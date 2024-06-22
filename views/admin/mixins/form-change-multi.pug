@@ -1,8 +1,8 @@
-mixin form-change-multi()
+mixin form-change-multi(middle_path)
     form(
         id='form-change-multi'
         method="POST"
-        action=`${prefixAdmin}/products/change-multi?_method=PATCH`
+        action=`${prefixAdmin}/${middle_path}/change-multi?_method=PATCH`
         class="btn-toolbar justify-content-between"
     )
 

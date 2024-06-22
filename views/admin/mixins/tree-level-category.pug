@@ -1,0 +1,12 @@
+mixin tree-level-category(arr, level = 1)
+    //- - const prefix = Array(level + 1).join('-- ')
+    - let prefix = '';
+    - for (let i = 0; i < level; ++i) {
+        - prefix += '-- ';
+    - }
+        
+    each item in arr 
+        option(value=item.id) #{prefix}#{item.title}
+        if (item.children)
+            +tree-level-category(item.children, level + 1)
+        
