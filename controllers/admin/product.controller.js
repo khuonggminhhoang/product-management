@@ -1,7 +1,10 @@
 const Product = require('./../../models/product.model');
+const ProductCategory = require('./../../models/product-category.model');
+
 const filterStatusHelper = require('./../../helpers/filterStatus');
 const objectSearchHelper = require('./../../helpers/search');
 const objectPaginationHelper = require('./../../helpers/pagination');
+const createTreeHelper = require('./../../helpers/createTree');
 const systemConfig = require('./../../config/system');
 
 // [GET] /admin/products
@@ -159,8 +162,21 @@ module.exports.deleteProduct = async (req, res) => {
 };
 
 // [GET] /admin/products/create
-module.exports.create = (req, res) => {
-    res.render('./admin/pages/products/create.pug', {title: "Thêm mới sản phẩm"});
+module.exports.create = async (req, res) => {
+    let category = [];
+    try {
+        const arr = await ProductCategory.find({deleted: false, status: 'active'});
+
+        category = createTreeHelper(arr, "");  // vì trong database lưu danh mục top đầu có parentId là xâu "" 
+    }
+    catch(err) {
+        req.flash('error', '[Danh mục cha] Lỗi data');
+    }
+
+    res.render('./admin/pages/products/create.pug', {
+        title: "Thêm mới sản phẩm",
+        category: category
+    });
 }
     
 // [POST] /admin/products/create
@@ -193,11 +209,15 @@ module.exports.edit = async (req, res) => {
             deleted: false,
             _id: req.params.id
         });
+
+        const arr = await ProductCategory.find({deleted: false, status: 'active'});
+        const category = createTreeHelper(arr, '');
         
         
         res.render('./admin/pages/products/edit.pug', {
             title: "Chỉnh sửa sản phẩm",
-            product: product
+            product: product,
+            category: category
         });
     }
     catch(err){

@@ -1,5 +1,6 @@
 extends ../../layouts/default.pug 
 include ../../mixins/notification-error.pug
+include ../../mixins/tree-level-category.pug
 
 block main 
     +notification-error(messages.error)
@@ -22,6 +23,16 @@ block main
                 placeholder="Tiêu đề sản phẩm..."
                 required
             )
+
+        div(class="form-group")
+            label(for="productCategoryId") Danh mục
+            select(
+                class="form-control"
+                id="productCategoryId"
+                name="productCategoryId"
+            )
+                option(value="") --Chọn danh mục --     
+                +tree-level-category(category, 1)
 
         div(class="form-group")
             label(for="description") Mô tả

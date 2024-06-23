@@ -11,6 +11,10 @@ const schemaProduct = new mongoose.Schema({
     thumbnail: String,
     status: String,
     position: Number,
+    productCategoryId: {
+        type: String,
+        default: ''
+    },
     slug: {
         type: String,
         slug: ['title','_id'],                      // san-pham-dsfh123jh3hb2
