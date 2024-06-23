@@ -1,0 +1,12 @@
+extends ../../layouts/default.pug
+
+block main 
+    h1 Chi tiết quyền
+
+    if (record.title)
+        div <b>Tiêu đề:</b> #{record.title}
+
+    if (record.description)
+        div <b>Mô tả</b> !{record.description}
+
+    a(type="button" class="btn btn-warning" href=`${prefixAdmin}/roles/edit/${record.id}`) Chỉnh sửa

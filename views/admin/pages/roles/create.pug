@@ -1,0 +1,33 @@
+extends ../../layouts/default.pug
+
+block main 
+    h1 Thêm mới quyền
+
+    form(
+        action="/admin/roles/create"
+        method="POST"
+        id="form-create-permission"
+    )
+
+        div(class="form-group")
+            label(for="title") Tiêu đề
+            input(
+                type="text" 
+                class="form-control"
+                id="title"
+                name="title"
+                placeholder="Tên quyền..."
+                required
+            )
+
+        div(class="form-group")
+            label(for="description") Mô tả ngắn
+            input(
+                id="description"
+                type="text" 
+                class="form-control"
+                name="description"
+                placeholder="Mô tả..."
+            )
+        br
+        button(type="submit" class="btn btn-primary") Tạo mới

@@ -1,0 +1,37 @@
+extends ../../layouts/default.pug
+include ./../../mixins/notification-error.pug
+
+block main 
+    h1 Chỉnh sửa quyền
+    +notification-error(messages.error)
+
+    form(
+        action=`/admin/roles/edit/${record.id}?_method=PATCH`
+        method="POST"
+        id="form-create-permission"
+    )
+
+        div(class="form-group")
+            label(for="title") Tiêu đề
+            input(
+                type="text" 
+                class="form-control"
+                id="title"
+                name="title"
+                placeholder="Tên quyền..."
+                value=record.title
+                required
+            )
+
+        div(class="form-group")
+            label(for="description") Mô tả ngắn
+            input(
+                id="description"
+                type="text" 
+                class="form-control"
+                name="description"
+                placeholder="Mô tả..."
+                value=record.description
+            ) 
+        br
+        button(type="submit" class="btn btn-primary") Cập nhật

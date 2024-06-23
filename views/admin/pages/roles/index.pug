@@ -1,0 +1,69 @@
+extends ./../../layouts/default.pug
+include ./../../mixins/form-search.pug
+include ./../../mixins/notification-success.pug
+include ./../../mixins/notification-error.pug
+
+block main 
+    h1 Nhóm quyền
+
+    //- notification
+    +notification-success(messages.success)
+    +notification-error(messages.error)
+
+    .card.bg-light.mb-3
+        .card-header Danh sách
+            .row
+                .col-10
+                .col-2
+                    a(
+                        type="button" 
+                        class=`btn btn-outline-success mr-1 alert-success`
+                        href=`${prefixAdmin}/roles/create`
+                        button-add
+                    )  + Thêm mới
+        .card-body
+            table(class="table table-sm")
+                if records.length > 0
+                    thead
+                        tr
+                            th STT 
+                            th Tiêu đề
+                            th Mô tả ngắn
+                            th Hành Động
+                    tbody
+                        each record, index in records
+                            tr
+                                td #{index + 1}
+                                
+                                td #{record.title}
+                                
+                                td #{record.description}
+                                    
+                                td 
+                                    a(
+                                        type="button" 
+                                        href=`${prefixAdmin}/roles/detail/${record._id}`
+                                        class="btn btn-info btn-sm mr-1"
+                                    ) Chi tiết
+                                    a(
+                                        type="button" 
+                                        href=`${prefixAdmin}/roles/edit/${record._id}`
+                                        class="btn btn-warning btn-sm mr-1"
+                                    ) Sửa
+                                    a(
+                                        type="button" 
+                                        class="btn btn-danger btn-sm"
+                                        data-id=record._id 
+                                        button-delete-product
+                                    ) Xóa
+                else 
+                    div(class='text-center text-danger') Chưa có quyền nào được tạo.
+
+    form(
+        id='form-delete-product'
+        method='POST'
+        action=""
+        path=`${prefixAdmin}/roles/delete`
+    )
+
+    script(type='text/javascript' src="/admin/js/product.js")
