@@ -54,7 +54,7 @@ module.exports.index = async (req, res) => {
 module.exports.create = async (req, res) => {
     let parentsCategory = [];
     try {
-        const arr = await ProductCategory.find({deleted: false});
+        const arr = await ProductCategory.find({deleted: false, status: 'active'});
 
         parentsCategory = createTreeHelper(arr, "");  // vì trong database lưu danh mục top đầu có parentId là xâu "" 
     }
@@ -123,12 +123,10 @@ module.exports.detail = async (req, res) => {
 // [GET] /admin/products-category/edit/:id
 module.exports.edit = async (req, res) => {
     try{
-        const query = {deleted: false};
-        const arr = await ProductCategory.find(query);
+        const arr = await ProductCategory.find({deleted: false, status: 'active'});
         const parentsCategory = createTreeHelper(arr, '');
 
-        query._id = req.params.id 
-        const productCategory = await ProductCategory.findOne(query);
+        const productCategory = await ProductCategory.findOne({_id: req.params.id,deleted: false});
 
         res.render('./admin/pages/product-category/edit.pug', {
             title: "Chỉnh sửa danh mục",
@@ -153,7 +151,7 @@ module.exports.editPOST = async (req, res) => {
     catch(err) {
         req.flash("error", "Cập nhật danh mục thất bại");
     }
-    res.redirect('back');
+    res.redirect(`${systemConfig.prefixAdmin}/products-category/detail/${req.params.id}`);
 }
 
 // [DELETE] /admin/products-category/delete/:id
