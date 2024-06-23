@@ -1,4 +1,4 @@
-mixin tree-level-category(arr, level = 1)
+mixin tree-level-category(arr, level = 1, currentCategory = undefined)
     //- - const prefix = Array(level + 1).join('-- ')
     - let prefix = '';
     - for (let i = 0; i < level; ++i) {
@@ -6,7 +6,16 @@ mixin tree-level-category(arr, level = 1)
     - }
         
     each item in arr 
-        option(value=item.id) #{prefix}#{item.title}
+        if (currentCategory)
+            option(
+                value=item.id 
+                selected = (item.id == currentCategory.parentId ? true : false)
+            ) #{prefix}#{item.title}
+        else 
+            option(
+                value=item.id 
+            ) #{prefix}#{item.title}
+
         if (item.children)
-            +tree-level-category(item.children, level + 1)
+            +tree-level-category(item.children, level + 1, currentCategory)
         
