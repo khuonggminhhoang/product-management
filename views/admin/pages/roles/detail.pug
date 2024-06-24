@@ -9,4 +9,10 @@ block main
     if (record.description)
         div <b>Mô tả</b> !{record.description}
 
+    if (record.permission.length > 0)
+        div <b> Cho phép: </b>
+        ol 
+            each item in record.permission 
+                li #{item}
+
     a(type="button" class="btn btn-warning" href=`${prefixAdmin}/roles/edit/${record.id}`) Chỉnh sửa

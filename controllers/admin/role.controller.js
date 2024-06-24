@@ -93,3 +93,34 @@ module.exports.detail = async (req, res) => {
         res.redirect('back');
     }
 }
+
+// [GET] /admin/roles/permissions
+module.exports.permission = async (req, res) => {
+    try {
+        const records = await Role.find({deleted: false});
+        res.render('./admin/pages/roles/permission.pug', {
+            title: 'Phân quyền',
+            records: records
+        })
+    }
+    catch(err){
+        res.status(500).json("Error");
+    }
+
+}
+
+// [POST] /admin/roles/permissions
+module.exports.permissionPOST = async (req, res) => {
+    try {
+        const arrData = JSON.parse(req.body.arrObject);
+        for(let data of arrData){
+            const {id, permission} = data
+            await Role.updateOne({_id: id}, {permission: permission});
+        }
+        req.flash('success', "Cập nhật thành công");
+    }
+    catch (err) {
+        req.flash('error', "Cập nhật thất bại");
+    }
+    res.redirect('back');
+}
