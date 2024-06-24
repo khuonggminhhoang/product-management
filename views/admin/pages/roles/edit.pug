@@ -2,7 +2,7 @@ extends ../../layouts/default.pug
 include ./../../mixins/notification-error.pug
 
 block main 
-    h1 Chỉnh sửa quyền
+    h1(class="mb-4") Chỉnh sửa quyền
     +notification-error(messages.error)
 
     form(

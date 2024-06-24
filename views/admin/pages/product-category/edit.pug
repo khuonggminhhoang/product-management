@@ -7,7 +7,7 @@ block main
     +notification-error(messages.error)
     +notification-success(messages.success)
  
-    h1 Chỉnh sửa danh mục
+    h1(class="mb-4") Chỉnh sửa danh mục
     form(
         action=`/admin/products-category/edit/${productCategory.id}?_method=PATCH`
         method="POST"

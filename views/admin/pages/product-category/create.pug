@@ -5,7 +5,7 @@ include ../../mixins/tree-level-category.pug
 block main 
     +notification-error(messages.error)
 
-    h1 Thêm mới danh mục
+    h1(class="mb-4") Thêm mới danh mục
     form(
         action="/admin/products-category/create"
         method="POST"

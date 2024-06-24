@@ -7,7 +7,7 @@ block main
     +notification-error(messages.error)
     +notification-success(messages.success)
     
-    h1 Chỉnh sửa sản phẩm
+    h1(class="mb-4") Chỉnh sửa sản phẩm
 
     form(
         action=`${prefixAdmin}/products/edit/${product.id}?_method=PATCH`
