@@ -11,10 +11,10 @@ block main
     +notification-error(messages.error)
 
     .card.bg-light.mb-3
-        .card-header Danh sách
+        .card-header 
             .row
-                .col-10
-                .col-2
+                .col-8
+                .col-4.text-center
                     a(
                         type="button" 
                         class=`btn btn-outline-success mr-1 alert-success`
@@ -22,7 +22,7 @@ block main
                         button-add
                     )  + Thêm mới
         .card-body
-            table(class="table table-sm")
+            table(class="table table-hover table-sm")
                 if records.length > 0
                     thead
                         tr
@@ -57,7 +57,7 @@ block main
                                         button-delete-product
                                     ) Xóa
                 else 
-                    div(class='text-center text-danger') Chưa có quyền nào được tạo.
+                    a(href=`${prefixAdmin}/roles/create` class='text-center text-danger') Chưa có quyền nào được tạo, vui ong thêm quyền.
 
     form(
         id='form-delete-product'

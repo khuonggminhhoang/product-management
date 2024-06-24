@@ -1,0 +1,97 @@
+extends ../../layouts/default.pug
+include ../../mixins/notification-success.pug
+include ../../mixins/notification-error.pug
+
+block main 
+    h1(class="mb-4") Tài khoản
+    +notification-success(messages.success)
+    +notification-error(messages.error)
+
+    .card.bg-light.mb-3
+        .card-header 
+            .row
+                .col-8
+                .col-4.text-center
+                    a(
+                        type="button" 
+                        class=`btn btn-outline-success mr-1 alert-success`
+                        href=`${prefixAdmin}/accounts/create`
+                        button-add
+                    )  + Thêm tài khoản
+        .card-body  
+            if (records.length == 0)
+                a(class='text-center text-danger' href=`${prefixAdmin}/accounts/create`) Chưa có tài khoản, vui lòng tạo mới
+            else 
+                table(class="table table-hover table-sm" checbox-multi)
+                    thead
+                        tr
+                            th STT
+                            th Avatar
+                            th Họ tên
+                            th Email
+                            th Vai trò
+                            th Trạng thái
+                            th Hành Động
+                    tbody 
+                        each record, index in records 
+                            tr
+                                td #{index + 1}
+                                td
+                                    img(src=record.avatar
+                                        alt="Avatar image"
+                                        width="50px"
+                                        style="aspect-ratio: 4/3; border-radius: 45px"
+                                    )
+                                td #{record.fullName}
+                                td #{record.email}
+                                td #{record.role}
+                                
+                                td 
+                                    if (record.status == 'active')
+                                        a( 
+                                            href='javascript:;'
+                                            class="badge badge-success"
+                                            id = record.id
+                                            status= record.status
+                                        ) Hoạt động
+                                    else
+                                        a(
+                                            href='javascript:;'
+                                            class="badge badge-danger"
+                                            id = record.id
+                                            status= record.status
+                                        ) Dừng hoạt động
+
+                                td 
+                                    a(
+                                        type="button" 
+                                        href=`${prefixAdmin}/accounts/detail/${record.id}`
+                                        class="btn btn-info btn-sm mr-1"
+                                    ) Chi tiết
+                                    a(
+                                        type="button" 
+                                        href=`${prefixAdmin}/accounts/edit/${record.id}`
+                                        class="btn btn-warning btn-sm mr-1"
+                                    ) Sửa
+                                    a(
+                                        type="button" 
+                                        class="btn btn-danger btn-sm"
+                                        data-id=record.id
+                                        button-delete-product
+                                    ) Xóa
+
+    form(
+        id='form-change-status-product'
+        method='POST'
+        action=""
+        path=`${prefixAdmin}/accounts/change-status`
+    )
+
+    form(
+        id='form-delete-product'
+        method='POST'
+        action=""
+        path=`${prefixAdmin}/accounts/delete`
+    )
+
+    script(type='text/javascript' src="/admin/js/product.js")

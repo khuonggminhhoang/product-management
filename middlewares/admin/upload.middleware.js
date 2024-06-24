@@ -29,7 +29,7 @@ module.exports.upload = (req, res, next) => {
 
     async function upload(req) {
         let result = await streamUpload(req);
-        req.body.thumbnail = result.secure_url;
+        req.body[req.file.fieldname] = result.secure_url;
         // console.log('Ảnh sau khi được đưa lên cloud: ', req.body.thumbnail);
         next();                                     // để hàm next ở đây là vì phải đợi gán link ảnh cloud cho 
                                                     // key thumbnail trong req.body để sang bước tiếp cập nhật vào csdl
