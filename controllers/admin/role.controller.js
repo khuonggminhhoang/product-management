@@ -41,7 +41,7 @@ module.exports.createPOST = async (req, res) => {
 // [DELETE] /admin/roles/delete/:id
 module.exports.delete = async (req, res) => {
     try {
-        await Role.deleteOne({_id: req.params.id});
+        await Role.updateOne({_id: req.params.id}, {deleted: true});
         req.flash("success", "Xóa thành công")
     }
     catch (err){
