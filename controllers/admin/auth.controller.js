@@ -1,5 +1,6 @@
 const md5 = require('md5');
 const Account = require('./../../models/account.model');
+const systemConfig = require('./../../config/system');
 
 // [GET] /admin/auth/login
 module.exports.login = (req, res) => {
@@ -26,4 +27,10 @@ module.exports.loginPOST = async (req, res) => {
     catch(err){
         res.status(500).json(err);
     }
+}
+
+// [GET] /admin/auth/logout
+module.exports.logout = (req, res) => {
+    res.clearCookie('token');
+    res.redirect(`${systemConfig.prefixAdmin}/auth/login`);
 }
