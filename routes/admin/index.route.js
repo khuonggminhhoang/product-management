@@ -5,11 +5,13 @@ const productCategoryRoutes = require('./product-category.route');
 const roleRoutes = require('./role.route');
 const accountRoutes = require('./account.route');
 const authRoutes = require('./auth.route');
+const adminRoutes = require('./admin.route');
 
 const systemConfig = require('./../../config/system');
 
 module.exports = (app) => {
     const PATH_ADMIN = systemConfig.prefixAdmin;
+    app.use(PATH_ADMIN, adminRoutes);
     app.use(PATH_ADMIN + '/dashboard', dashBoardRoutes);
     app.use(PATH_ADMIN + '/products', productRoutes); 
     app.use(PATH_ADMIN + '/trash', trashRoutes)

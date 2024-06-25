@@ -36,7 +36,7 @@ app.set("views", `${__dirname}/views`);
 app.set("view engine", "pug");
 
 //setup flash
-app.use(cookieParser('Hoangminhkhuongrandom'));
+app.use(cookieParser(process.env.SECRET_KEY));  // cái này chỉ là một chuỗi random 
 app.use(session({ cookie: { maxAge: 60000 }}));
 app.use(flash());
 
