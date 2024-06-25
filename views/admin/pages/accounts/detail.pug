@@ -1,0 +1,32 @@
+extends ../../layouts/default.pug
+
+block main 
+
+
+    div(class="card")
+        h5(class="card-header text-center") Thông tin tài khoản 
+        div(class="card-body")
+            div(class="card-title")
+                img(src=account.avatar class="rounded-circle mr-3" style="width: 50px; height:50px; object-fit: cover")
+                span <b>#{account.fullName}</b>
+            p(class="card-text") Email: #{account.email}
+            p(class="card-text") Số điện thoại: #{account.phone}
+            p(class="card-text") Quyền: #{account.role}
+            p(class="card-text") Trạng thái: 
+                if (account.status == 'active')
+                    a( 
+                        href='javascript:;'
+                        class="badge badge-success"
+                    ) Hoạt động
+                else 
+                    a(
+                        href='javascript:;'
+                        class="badge badge-danger"
+                    ) Đã khóa
+
+        div(class="card-footer text-muted") 
+            span Khởi tạo: #{account.createdAt}
+            br
+            span Sửa đổi: #{account.updatedAt}
+            
+    a(type="button" class="btn btn-warning mt-4" href=`${prefixAdmin}/accounts/edit/${account.id}`) Chỉnh sửa

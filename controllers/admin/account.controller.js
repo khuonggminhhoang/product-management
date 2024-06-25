@@ -68,3 +68,85 @@ module.exports.createPOST = async (req, res) => {
         res.redirect('back');
     }
 }
+
+// [DELETE] /admin/accounts/delete/:id
+module.exports.delete = async (req, res)=> {
+    try {
+        await Account.updateOne({_id: req.params.id}, {deleted: true, deleteAt: new Date()});
+        req.flash('success', 'Xóa tài khoản thành công');
+    }
+    catch(err){
+        req.flash('error', 'Xóa tài khoản thất bại');
+    }
+    res.redirect('back');
+}
+
+// [PATCH] /admin/accounts/change-status/:status/:id
+module.exports.changeStatus = async (req, res) => {
+    try{
+        const id = req.params.id;
+        const status = req.params.status;
+        await Account.updateOne({_id: id}, {status: status});
+        req.flash('success', 'Thay đổi trạng thái thành công');
+    }
+    catch(err){
+        req.flash('error', 'Thay đổi trạng thái thất bại')
+    }
+    res.redirect('back');
+}
+
+// [GET] /admin/accounts/edit/:id
+module.exports.edit = async (req, res) => {
+    try{    
+        const records = await Role.find({deleted: false});
+        const account = await Account.findOne({_id: req.params.id}).select('-token -password');
+
+        res.render('./admin/pages/accounts/edit.pug', {
+            title: 'Chỉnh sửa tài khoản',
+            account: account,
+            records: records
+        })
+    }
+    catch(err){
+        res.status(404).json('NOT FOUND');
+    }
+    
+}
+
+// [PATCH] /admin/accounts/edit/:id
+module.exports.editPATCH = async (req, res) => {
+    if(req.body.password){
+        req.body.password = md5(req.body.password);
+    }
+    else{
+        delete req.body.password;
+    }
+
+    try{
+        await Account.updateOne({_id: req.params.id}, req.body);
+        req.flash('success', 'Cập nhật tài khoản thành công');
+        res.redirect(`${systemConfig.prefixAdmin}/accounts`);
+    }
+    catch(err){
+        req.flash('error', 'Cập nhật thất bại');
+        res.redirect('back');
+    }
+}
+
+// [GET] /admin/accounts/detail/:id
+module.exports.detail = async (req, res) => {
+    try{
+        const id = req.params.id;
+        const account = await Account.findOne({_id: id}).select('-password -token');
+        const role = await Role.findOne({_id: account.roleId});
+        account.role = role.title
+
+        res.render('./admin/pages/accounts/detail.pug', {
+            title: 'Thông tin tài khoản',
+            account: account
+        })
+    }
+    catch(err){
+        res.status(404).json('NOT FOUND');
+    }
+}

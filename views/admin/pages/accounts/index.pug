@@ -22,7 +22,7 @@ block main
             if (records.length == 0)
                 a(class='text-center text-danger' href=`${prefixAdmin}/accounts/create`) Chưa có tài khoản, vui lòng tạo mới
             else 
-                table(class="table table-hover table-sm" checbox-multi)
+                table(class="table table-hover table-sm")
                     thead
                         tr
                             th STT
@@ -40,7 +40,8 @@ block main
                                     img(src=record.avatar
                                         alt="Avatar image"
                                         width="50px"
-                                        style="aspect-ratio: 4/3; border-radius: 45px"
+                                        class="rounded-circle"
+                                        style="width: 30px; height:30px; object-fit: cover"
                                     )
                                 td #{record.fullName}
                                 td #{record.email}
@@ -60,7 +61,7 @@ block main
                                             class="badge badge-danger"
                                             id = record.id
                                             status= record.status
-                                        ) Dừng hoạt động
+                                        ) Đã khóa
 
                                 td 
                                     a(

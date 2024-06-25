@@ -5,7 +5,7 @@ if(btnStatus.length > 0){
     for(let btn of btnStatus){
         const currentStatus = btn.getAttribute('status');           // nếu attribute tự ý đặt thì dùng getAttribute() mới lấy ra được
         const id = btn.id;                                          // ngược lại thì làm như này
-        const status = currentStatus == 'active' ? 'inactive' : 'active';
+        const status = (currentStatus == 'active') ? 'inactive' : 'active';
 
 
         btn.addEventListener('click', () => {
