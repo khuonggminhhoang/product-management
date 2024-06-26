@@ -25,29 +25,29 @@ block main
                 table(class="table table-hover table-sm")
                     thead
                         tr
-                            th STT
-                            th Avatar
-                            th Họ tên
-                            th Email
-                            th Vai trò
-                            th Trạng thái
-                            th Hành Động
+                            th(class='text-center') STT
+                            th(class='text-center') Avatar
+                            th(class='text-center') Họ tên
+                            th(class='text-center') Email
+                            th(class='text-center') Vai trò
+                            th(class='text-center') Trạng thái
+                            th(class='text-center') Hành Động
                     tbody 
                         each record, index in records 
                             tr
-                                td #{index + 1}
-                                td
+                                td(class='text-center') #{index + 1}
+                                td(class='text-center')
                                     img(src=record.avatar
                                         alt="Avatar image"
                                         width="50px"
                                         class="rounded-circle"
                                         style="width: 30px; height:30px; object-fit: cover"
                                     )
-                                td #{record.fullName}
-                                td #{record.email}
-                                td #{record.role}
+                                td(class='text-center') #{record.fullName}
+                                td(class='text-center') #{record.email}
+                                td(class='text-center') #{record.role}
                                 
-                                td 
+                                td(class='text-center') 
                                     if (record.status == 'active')
                                         a( 
                                             href='javascript:;'
@@ -63,7 +63,7 @@ block main
                                             status= record.status
                                         ) Đã khóa
 
-                                td 
+                                td(class='text-center') 
                                     a(
                                         type="button" 
                                         href=`${prefixAdmin}/accounts/detail/${record.id}`

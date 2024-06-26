@@ -75,13 +75,13 @@ block main
                                 name="checkall"   
                             )
 
-                        th STT
-                        th Hình ảnh 
-                        th Tiêu đề
-                        th Giá
-                        th Vị trí
-                        th Trạng thái
-                        th Hành Động
+                        th(class='text-center') STT
+                        th(class='text-center') Hình ảnh 
+                        th(class='text-left') Tiêu đề
+                        th(class='text-center') Giá
+                        th(class='text-center') Vị trí
+                        th(class='text-center') Trạng thái
+                        th(class='text-center') Hành Động
                 tbody
                     //- for như js
                     -for(let i = 0; i < products.length; ++i)
@@ -93,17 +93,17 @@ block main
                                     value=products[i]._id
                                 )
                                 
-                            td #{pagination.limitItems * (pagination.currentPage - 1) + i + 1}
-                            td 
+                            td(class='text-center') #{pagination.limitItems * (pagination.currentPage - 1) + i + 1}
+                            td(class='text-center') 
                                 img(src=products[i].thumbnail
                                     alt="Ảnh sản phẩm"
                                     width="100px"
                                     style="aspect-ratio: 4/3"
                                 )
                             td #{products[i].title}
-                            td #{products[i].price}$
+                            td(class='text-center') #{products[i].price}$
 
-                            td
+                            td(class='text-center')
                                 input(
                                     type="number"
                                     class="form-control"
@@ -112,7 +112,7 @@ block main
                                 )
 
                             //- if else như js
-                            td 
+                            td(class='text-center') 
                                 if(products[i].status == 'active')
                                     a( 
                                         href='javascript:;'
@@ -128,7 +128,7 @@ block main
                                         status= products[i].status
                                     ) Dừng hoạt động
 
-                            td 
+                            td(class='text-center') 
                                 a(
                                     type="button" 
                                     href=`${prefixAdmin}/products/detail/${products[i]._id}`

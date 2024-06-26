@@ -4,6 +4,7 @@ const systemConfig = require('./../../config/system');
 
 // [GET] /admin/auth/login
 module.exports.login = (req, res) => {
+    res.clearCookie('token');
     res.render('./admin/pages/auth/login.pug', {
         title: 'Đăng nhập'
     })

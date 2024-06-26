@@ -10,16 +10,16 @@ mixin record-level-table(arr, level = 1)
                     value=item._id
                 )
                 
-            td #{cnt++}
-            td 
+            td(class='text-center') #{cnt++}
+            td(class='text-center') 
                 img(src=item.thumbnail
                     alt="Ảnh danh mục"
                     width="100px"
                     style="aspect-ratio: 4/3"
                 )
-            td #{prefix}#{item.title}
+            td(class='text-left') #{prefix}#{item.title}
 
-            td
+            td(class='text-center')
                 input(
                     type="number"
                     class="form-control"
@@ -28,7 +28,7 @@ mixin record-level-table(arr, level = 1)
                 )
 
             //- if else như js
-            td 
+            td(class='text-center') 
                 if(item.status == 'active')
                     a( 
                         href='javascript:;'
@@ -44,7 +44,7 @@ mixin record-level-table(arr, level = 1)
                         status= item.status
                     ) Dừng hoạt động
 
-            td 
+            td(class='text-center') 
                 a(
                     type="button" 
                     href=`${prefixAdmin}/products-category/detail/${item._id}`
