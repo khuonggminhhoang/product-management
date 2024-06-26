@@ -3,100 +3,132 @@ include ../../mixins/notification-error.pug
 include ../../mixins/notification-success.pug
 
 block main 
-    h1(class="mb-4") Phân quyền
-    +notification-success(messages.success)
-    +notification-error(messages.error)
+    if (roles.permission.includes('role_permission'))
+        h1(class="mb-4") Phân quyền
+        +notification-success(messages.success)
+        +notification-error(messages.error)
 
-    if records.length > 0
-        div(class="text-right mr-5")
-            button(type="submit" class="btn btn-primary mb-3" update-button) Cập nhật
+        if records.length > 0
+            div(class="text-right mr-5")
+                button(type="submit" class="btn btn-primary mb-3" update-button) Cập nhật
 
-        table(class="table table-hover table-sm" table-permission)
-            thead 
-                tr
-                    th Tính năng
-                    each record in records
-                        th(class='text-center' id=record.id permission) #{record.title}
-            tbody 
-                //- Danh mục sản phẩm
-                tr 
-                    td(colspan='4')
-                        b Danh mục sản phẩm
-                tr(data-name="product-category_view")
-                    td Xem 
-                    each record in records
-                        td(class="text-center")
-                            input(type="checkbox" checked = (record.permission.includes("product-category_view") ? true : false))
-                tr(data-name="product-category_create")
-                    td Thêm mới 
-                    each record in records
-                        td(class="text-center")
-                            input(type="checkbox" checked = (record.permission.includes("product-category_create") ? true : false))
-                tr(data-name="product-category_edit")
-                    td Chỉnh sửa 
-                    each record in records
-                        td(class="text-center")
-                            input(type="checkbox" checked = (record.permission.includes("product-category_edit") ? true : false))
-                tr(data-name="product-category_delete")
-                    td Xóa 
-                    each record in records
-                        td(class="text-center")
-                            input(type="checkbox" checked = (record.permission.includes("product-category_delete") ? true : false))
+            table(class="table table-hover table-sm" table-permission)
+                thead 
+                    tr
+                        th Tính năng
+                        each record in records
+                            th(class='text-center' id=record.id permission) #{record.title}
+                tbody 
+                    //- Danh mục sản phẩm
+                    tr 
+                        td(colspan='4')
+                            b Danh mục sản phẩm
+                    tr(data-name="product-category_view")
+                        td Xem 
+                        each record in records
+                            td(class="text-center")
+                                input(type="checkbox" checked = (record.permission.includes("product-category_view") ? true : false))
+                    tr(data-name="product-category_create")
+                        td Thêm mới 
+                        each record in records
+                            td(class="text-center")
+                                input(type="checkbox" checked = (record.permission.includes("product-category_create") ? true : false))
+                    tr(data-name="product-category_edit")
+                        td Chỉnh sửa 
+                        each record in records
+                            td(class="text-center")
+                                input(type="checkbox" checked = (record.permission.includes("product-category_edit") ? true : false))
+                    tr(data-name="product-category_delete")
+                        td Xóa 
+                        each record in records
+                            td(class="text-center")
+                                input(type="checkbox" checked = (record.permission.includes("product-category_delete") ? true : false))
 
-                //- Sản phẩm
-                tr 
-                    td(colspan='4')
-                        b Sản phẩm
-                tr(data-name="product_view")
-                    td Xem 
-                    each record in records
-                        td(class="text-center")
-                            input(type="checkbox" checked = (record.permission.includes("product_view") ? true : false))
-                tr(data-name="product_create")
-                    td Thêm mới 
-                    each record in records
-                        td(class="text-center")
-                            input(type="checkbox" checked = (record.permission.includes("product_create") ? true : false))
-                tr(data-name="product_edit")
-                    td Chỉnh sửa 
-                    each record in records
-                        td(class="text-center")
-                            input(type="checkbox" checked = (record.permission.includes("product_edit") ? true : false))
-                tr(data-name="product_delete")
-                    td Xóa 
-                    each record in records
-                        td(class="text-center")
-                            input(type="checkbox" checked = (record.permission.includes("product_delete") ? true : false))
+                    //- Sản phẩm
+                    tr 
+                        td(colspan='4')
+                            b Sản phẩm
+                    tr(data-name="product_view")
+                        td Xem 
+                        each record in records
+                            td(class="text-center")
+                                input(type="checkbox" checked = (record.permission.includes("product_view") ? true : false))
+                    tr(data-name="product_create")
+                        td Thêm mới 
+                        each record in records
+                            td(class="text-center")
+                                input(type="checkbox" checked = (record.permission.includes("product_create") ? true : false))
+                    tr(data-name="product_edit")
+                        td Chỉnh sửa 
+                        each record in records
+                            td(class="text-center")
+                                input(type="checkbox" checked = (record.permission.includes("product_edit") ? true : false))
+                    tr(data-name="product_delete")
+                        td Xóa 
+                        each record in records
+                            td(class="text-center")
+                                input(type="checkbox" checked = (record.permission.includes("product_delete") ? true : false))
+                    tr(data-name="product_restore")
+                        td Khôi phục
+                        each record in records
+                            td(class="text-center")
+                                input(type="checkbox" checked = (record.permission.includes("product_restore") ? true : false))
 
-                //- Nhóm quyền
-                tr 
-                    td(colspan='4')
-                        b Nhóm quyền
-                tr(data-name="role_view")
-                    td Xem 
-                    each record in records
-                        td(class="text-center")
-                            input(type="checkbox" checked = (record.permission.includes("role_view") ? true : false))
-                tr(data-name="role_create")
-                    td Thêm mới 
-                    each record in records
-                        td(class="text-center")
-                            input(type="checkbox" checked = (record.permission.includes("role_create") ? true : false))
-                tr(data-name="role_edit")
-                    td Chỉnh sửa 
-                    each record in records
-                        td(class="text-center")
-                            input(type="checkbox" checked = (record.permission.includes("role_edit") ? true : false))
-                tr(data-name="role_delete")
-                    td Xóa 
-                    each record in records
-                        td(class="text-center")
-                            input(type="checkbox" checked = (record.permission.includes("role_delete") ? true : false))
-                tr(data-name="role_permission")
-                    td Phân quyền 
-                    each record in records
-                        td(class="text-center")
-                            input(type="checkbox" checked = (record.permission.includes("role_permission") ? true : false))
-                    
+                    //- Nhóm quyền
+                    tr 
+                        td(colspan='4')
+                            b Nhóm quyền
+                    tr(data-name="role_view")
+                        td Xem 
+                        each record in records
+                            td(class="text-center")
+                                input(type="checkbox" checked = (record.permission.includes("role_view") ? true : false))
+                    tr(data-name="role_create")
+                        td Thêm mới 
+                        each record in records
+                            td(class="text-center")
+                                input(type="checkbox" checked = (record.permission.includes("role_create") ? true : false))
+                    tr(data-name="role_edit")
+                        td Chỉnh sửa 
+                        each record in records
+                            td(class="text-center")
+                                input(type="checkbox" checked = (record.permission.includes("role_edit") ? true : false))
+                    tr(data-name="role_delete")
+                        td Xóa 
+                        each record in records
+                            td(class="text-center")
+                                input(type="checkbox" checked = (record.permission.includes("role_delete") ? true : false))
+                    tr(data-name="role_permission")
+                        td Phân quyền 
+                        each record in records
+                            td(class="text-center")
+                                input(type="checkbox" checked = (record.permission.includes("role_permission") ? true : false))
+
+                    //- Tài khoản
+                    tr 
+                        td(colspan='4')
+                            b Tài khoản
+                    tr(data-name="account_view")
+                        td Xem 
+                        each record in records
+                            td(class="text-center")
+                                input(type="checkbox" checked = (record.permission.includes("account_view") ? true : false))
+                    tr(data-name="account_create")
+                        td Thêm mới 
+                        each record in records
+                            td(class="text-center")
+                                input(type="checkbox" checked = (record.permission.includes("account_create") ? true : false))
+                    tr(data-name="account_edit")
+                        td Chỉnh sửa 
+                        each record in records
+                            td(class="text-center")
+                                input(type="checkbox" checked = (record.permission.includes("account_edit") ? true : false))
+                    tr(data-name="account_delete")
+                        td Xóa 
+                        each record in records
+                            td(class="text-center")
+                                input(type="checkbox" checked = (record.permission.includes("account_delete") ? true : false))
+    else 
+        div Không được cấp quyền truy cập trang này, liên hệ <a href='https://www.facebook.com/khuongminhminh.hoang'>Hoàng Minh Khương</a> để được cấp quyền
                 
     script(src="/admin/js/role.js")                

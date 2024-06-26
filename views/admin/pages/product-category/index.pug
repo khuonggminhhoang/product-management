@@ -7,83 +7,86 @@ include ./../../mixins/notification-error.pug
 include ./../../mixins/record-level-table.pug
 
 block main 
-    h1(class="mb-4") Danh mục sản phẩm 
+    if (roles.permission.includes('product-category_view'))
+        h1(class="mb-4") Danh mục sản phẩm 
 
-    //- notification
-    +notification-success(messages.success)
-    +notification-error(messages.error)
+        //- notification
+        +notification-success(messages.success)
+        +notification-error(messages.error)
 
-    //- Filter
-    .card.bg-light.mb-3
-        .card-header Bộ lọc và tìm kiếm
-        .card-body
-            .row 
-                //- các button để lọc sản phẩm
-                .col-6
-                    +filter-button(filterStatus)
+        //- Filter
+        .card.bg-light.mb-3
+            .card-header Bộ lọc và tìm kiếm
+            .card-body
+                .row 
+                    //- các button để lọc sản phẩm
+                    .col-6
+                        +filter-button(filterStatus)
 
-                //- form tìm kiếm
-                .col-6
-                    +form-search(productName)
+                    //- form tìm kiếm
+                    .col-6
+                        +form-search(productName)
 
-    //- List products
-    .card.bg-light.mb-3
-        .card-header Danh sách
-            .row 
-                .col-7
-                    +form-change-multi('products-category')
-                
-                .col-2
-                    select(class="form-control dropdown-toggle" name="type" sort)
-                        option(disabled selected ) ---Chọn tiêu chí sắp xếp---                          
-                        option(value="position-asc") Vị trí tăng dần                           
-                        option(value="position-desc") Vị trí giảm dần  
-                        option(value="title-asc")  Tên: A - Z
-                        option(value="title-desc") Tên: Z - A  
+        //- List products
+        .card.bg-light.mb-3
+            .card-header Danh sách
+                .row 
+                    .col-7
+                        +form-change-multi('products-category')
                     
-                .col-3
-                    a(
-                        type="button" 
-                        class=`btn btn-outline-success mr-1 alert-success`
-                        href=`${prefixAdmin}/products-category/create`
-                        button-add
-                    )  + Thêm mới
-                
-        .card-body
-            table(class="table table-hover table-sm" checbox-multi)
-                thead
-                    tr
-                        th(class="form-check") 
-                            input(
-                                type="checkbox" 
-                                class="form-check-input position-static ml-1"
-                                name="checkall"   
-                            )
+                    .col-2
+                        select(class="form-control dropdown-toggle" name="type" sort)
+                            option(disabled selected ) ---Chọn tiêu chí sắp xếp---                          
+                            option(value="position-asc") Vị trí tăng dần                           
+                            option(value="position-desc") Vị trí giảm dần  
+                            option(value="title-asc")  Tên: A - Z
+                            option(value="title-desc") Tên: Z - A  
+                    if (roles.permission.includes('product-category_create'))
+                        .col-3
+                            a(
+                                type="button" 
+                                class=`btn btn-outline-success mr-1 alert-success`
+                                href=`${prefixAdmin}/products-category/create`
+                                button-add
+                            )  + Thêm mới
+                    
+            .card-body
+                table(class="table table-hover table-sm" checbox-multi)
+                    thead
+                        tr
+                            th(class="form-check") 
+                                input(
+                                    type="checkbox" 
+                                    class="form-check-input position-static ml-1"
+                                    name="checkall"   
+                                )
 
-                        th(class='text-center') STT
-                        th(class='text-center') Hình ảnh 
-                        th(class='text-left') Tiêu đề
-                        th(class='text-center') Vị trí
-                        th(class='text-center') Trạng thái
-                        th(class='text-center') Hành Động
-                tbody
-                    //-  biến cnt là để nhúng vào hàm mixin bên dưới
-                    - let cnt = 1
-                    +record-level-table(records)
+                            th(class='text-center') STT
+                            th(class='text-center') Hình ảnh 
+                            th(class='text-left') Tiêu đề
+                            th(class='text-center') Vị trí
+                            th(class='text-center') Trạng thái
+                            th(class='text-center') Hành Động
+                    tbody
+                        //-  biến cnt là để nhúng vào hàm mixin bên dưới
+                        //- - let cnt = 1
+                        +record-level-table(records, 1)
 
 
-    form(
-        id='form-change-status-product'
-        method='POST'
-        action=""
-        path=`${prefixAdmin}/products-category/change-status`
-    )
+        form(
+            id='form-change-status-product'
+            method='POST'
+            action=""
+            path=`${prefixAdmin}/products-category/change-status`
+        )
 
-    form(
-        id='form-delete-product'
-        method='POST'
-        action=""
-        path=`${prefixAdmin}/products-category/delete`
-    )
+        form(
+            id='form-delete-product'
+            method='POST'
+            action=""
+            path=`${prefixAdmin}/products-category/delete`
+        )
 
-    script(type='text/javascript' src="/admin/js/product.js")
+        script(type='text/javascript' src="/admin/js/product.js")
+    else 
+        div Không được cấp quyền truy cập trang này, liên hệ <a href='https://www.facebook.com/khuongminhminh.hoang'/>Hoàng Minh Khương</a> để được cấp quyền

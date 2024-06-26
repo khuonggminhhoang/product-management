@@ -28,21 +28,34 @@ mixin record-level-table(arr, level = 1)
                 )
 
             //- if else như js
-            td(class='text-center') 
-                if(item.status == 'active')
-                    a( 
-                        href='javascript:;'
-                        class="badge badge-success"
-                        id = item._id
-                        status= item.status
-                    ) Hoạt động
-                else
-                    a(
-                        href='javascript:;'
-                        class="badge badge-danger"
-                        id = item._id
-                        status= item.status
-                    ) Dừng hoạt động
+            if (roles.permission.includes('product-category_edit'))
+                td(class='text-center') 
+                    if(item.status == 'active')
+                        a( 
+                            href='javascript:;'
+                            class="badge badge-success"
+                            id = item._id
+                            status= item.status
+                        ) Hoạt động
+                    else
+                        a(
+                            href='javascript:;'
+                            class="badge badge-danger"
+                            id = item._id
+                            status= item.status
+                        ) Dừng hoạt động
+            else 
+                td(class='text-center') 
+                    if(item.status == 'active')
+                        a( 
+                            href='javascript:;'
+                            class="badge badge-success"
+                        ) Hoạt động
+                    else
+                        a(
+                            href='javascript:;'
+                            class="badge badge-danger"
+                        ) Dừng hoạt động
 
             td(class='text-center') 
                 a(
@@ -50,16 +63,18 @@ mixin record-level-table(arr, level = 1)
                     href=`${prefixAdmin}/products-category/detail/${item._id}`
                     class="btn btn-info btn-sm mr-1"
                 ) Chi tiết
-                a(
-                    type="button" 
-                    href=`${prefixAdmin}/products-category/edit/${item._id}`
-                    class="btn btn-warning btn-sm mr-1"
-                ) Sửa
-                a(
-                    type="button" 
-                    class="btn btn-danger btn-sm"
-                    data-id=item._id 
-                    button-delete-product
-                ) Xóa
+                if (roles.permission.includes('product-category_edit'))
+                    a(
+                        type="button" 
+                        href=`${prefixAdmin}/products-category/edit/${item._id}`
+                        class="btn btn-warning btn-sm mr-1"
+                    ) Sửa
+                if (roles.permission.includes('product-category_delete'))    
+                    a(
+                        type="button" 
+                        class="btn btn-danger btn-sm"
+                        data-id=item._id 
+                        button-delete-product
+                    ) Xóa
         if (item.children)
             +record-level-table(item.children, level + 1)

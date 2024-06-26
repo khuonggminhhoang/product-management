@@ -3,96 +3,114 @@ include ../../mixins/notification-success.pug
 include ../../mixins/notification-error.pug
 
 block main 
-    h1(class="mb-4") Tài khoản
-    +notification-success(messages.success)
-    +notification-error(messages.error)
+    if (roles.permission.includes('account_view'))
+        h1(class="mb-4") Tài khoản
+        +notification-success(messages.success)
+        +notification-error(messages.error)
 
-    .card.bg-light.mb-3
-        .card-header 
-            .row
-                .col-8
-                .col-4.text-center
-                    a(
-                        type="button" 
-                        class=`btn btn-outline-success mr-1 alert-success`
-                        href=`${prefixAdmin}/accounts/create`
-                        button-add
-                    )  + Thêm tài khoản
-        .card-body  
-            if (records.length == 0)
-                a(class='text-center text-danger' href=`${prefixAdmin}/accounts/create`) Chưa có tài khoản, vui lòng tạo mới
-            else 
-                table(class="table table-hover table-sm")
-                    thead
-                        tr
-                            th(class='text-center') STT
-                            th(class='text-center') Avatar
-                            th(class='text-center') Họ tên
-                            th(class='text-center') Email
-                            th(class='text-center') Vai trò
-                            th(class='text-center') Trạng thái
-                            th(class='text-center') Hành Động
-                    tbody 
-                        each record, index in records 
+        .card.bg-light.mb-3
+            .card-header 
+                .row
+                    .col-8
+                    .col-4.text-center
+                        a(
+                            type="button" 
+                            class=`btn btn-outline-success mr-1 alert-success`
+                            href=`${prefixAdmin}/accounts/create`
+                            button-add
+                        )  + Thêm tài khoản
+            .card-body  
+                if (records.length == 0)
+                    a(class='text-center text-danger' href=`${prefixAdmin}/accounts/create`) Chưa có tài khoản, vui lòng tạo mới
+                else 
+                    table(class="table table-hover table-sm")
+                        thead
                             tr
-                                td(class='text-center') #{index + 1}
-                                td(class='text-center')
-                                    img(src=record.avatar
-                                        alt="Avatar image"
-                                        width="50px"
-                                        class="rounded-circle"
-                                        style="width: 30px; height:30px; object-fit: cover"
-                                    )
-                                td(class='text-center') #{record.fullName}
-                                td(class='text-center') #{record.email}
-                                td(class='text-center') #{record.role}
-                                
-                                td(class='text-center') 
-                                    if (record.status == 'active')
-                                        a( 
-                                            href='javascript:;'
-                                            class="badge badge-success"
-                                            id = record.id
-                                            status= record.status
-                                        ) Hoạt động
-                                    else
-                                        a(
-                                            href='javascript:;'
-                                            class="badge badge-danger"
-                                            id = record.id
-                                            status= record.status
-                                        ) Đã khóa
+                                th(class='text-center') STT
+                                th(class='text-center') Avatar
+                                th(class='text-center') Họ tên
+                                th(class='text-center') Email
+                                th(class='text-center') Vai trò
+                                th(class='text-center') Trạng thái
+                                th(class='text-center') Hành Động
+                        tbody 
+                            each record, index in records 
+                                tr
+                                    td(class='text-center') #{index + 1}
+                                    td(class='text-center')
+                                        img(src=record.avatar
+                                            alt="Avatar image"
+                                            width="50px"
+                                            class="rounded-circle"
+                                            style="width: 30px; height:30px; object-fit: cover"
+                                        )
+                                    td(class='text-center') #{record.fullName}
+                                    td(class='text-center') #{record.email}
+                                    td(class='text-center') #{record.role}
+                                    
+                                    td(class='text-center') 
+                                        if (roles.permission.includes('account_edit'))
+                                            if (record.status == 'active')
+                                                a( 
+                                                    href='javascript:;'
+                                                    class="badge badge-success"
+                                                    id = record.id
+                                                    status= record.status
+                                                ) Hoạt động
+                                            else
+                                                a(
+                                                    href='javascript:;'
+                                                    class="badge badge-danger"
+                                                    id = record.id
+                                                    status= record.status
+                                                ) Đã khóa
+                                        else 
+                                            if (record.status == 'active')
+                                                a( 
+                                                    href='javascript:;'
+                                                    class="badge badge-success"
+                                                ) Hoạt động
+                                            else
+                                                a(
+                                                    href='javascript:;'
+                                                    class="badge badge-danger"
+                                                ) Đã khóa
 
-                                td(class='text-center') 
-                                    a(
-                                        type="button" 
-                                        href=`${prefixAdmin}/accounts/detail/${record.id}`
-                                        class="btn btn-info btn-sm mr-1"
-                                    ) Chi tiết
-                                    a(
-                                        type="button" 
-                                        href=`${prefixAdmin}/accounts/edit/${record.id}`
-                                        class="btn btn-warning btn-sm mr-1"
-                                    ) Sửa
-                                    a(
-                                        type="button" 
-                                        class="btn btn-danger btn-sm"
-                                        data-id=record.id
-                                        button-delete-product
-                                    ) Xóa
+                                    td(class='text-center') 
+                                        if (roles.permission.includes('account_view'))
+                                            a(
+                                                type="button" 
+                                                href=`${prefixAdmin}/accounts/detail/${record.id}`
+                                                class="btn btn-info btn-sm mr-1"
+                                            ) Chi tiết
+                                        if (roles.permission.includes('account_edit'))
+                                            a(
+                                                type="button" 
+                                                href=`${prefixAdmin}/accounts/edit/${record.id}`
+                                                class="btn btn-warning btn-sm mr-1"
+                                            ) Sửa
+                                        if (roles.permission.includes('account_delete'))
+                                            a(
+                                                type="button" 
+                                                class="btn btn-danger btn-sm"
+                                                data-id=record.id
+                                                button-delete-product
+                                            ) Xóa
 
-    form(
-        id='form-change-status-product'
-        method='POST'
-        action=""
-        path=`${prefixAdmin}/accounts/change-status`
-    )
+        form(
+            id='form-change-status-product'
+            method='POST'
+            action=""
+            path=`${prefixAdmin}/accounts/change-status`
+        )
 
-    form(
-        id='form-delete-product'
-        method='POST'
-        action=""
-        path=`${prefixAdmin}/accounts/delete`
-    )
+        form(
+            id='form-delete-product'
+            method='POST'
+            action=""
+            path=`${prefixAdmin}/accounts/delete`
+        )
+    else 
+        div Không được cấp quyền truy cập trang này, liên hệ <a href='https://www.facebook.com/khuongminhminh.hoang'>Hoàng Minh Khương</a> để được cấp quyền
 
     script(type='text/javascript' src="/admin/js/product.js")

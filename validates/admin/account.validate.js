@@ -14,7 +14,7 @@ module.exports.accountValid = async (req, res, next) => {
     }
     else{
         const acc = await Account.findOne({deleted: false, email: req.body.email});
-        if(acc.length > 0){
+        if(acc){
             req.flash('error', `Email ${req.body.email} đã tồn tại`);
             res.redirect('back');
             return;

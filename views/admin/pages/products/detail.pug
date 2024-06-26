@@ -3,51 +3,55 @@ include ../../mixins/notification-error.pug
 include ../../mixins/notification-success.pug
 
 block main 
-    +notification-error(messages.error)
-    +notification-success(messages.success)
+    if (roles.permission.includes('product_view'))
+        +notification-error(messages.error)
+        +notification-success(messages.success)
 
-    h1(class="mb-4") Chi tiết sản phẩm
+        h1(class="mb-4") Chi tiết sản phẩm
 
-    if (product.title)
-        div Tên sản phẩm:  <b>#{product.title}</b>
+        if (product.title)
+            div Tên sản phẩm:  <b>#{product.title}</b>
 
-    if (product.thumbnail)
-        img(
-            id="preview-image"
-            class="img-thumbnail m-2"
-            src=product.thumbnail
-            width="150px"
-        )
-    
-    if (product.price)
-        div Giá: <b>#{product.price}</b>
-
-    if (product.discountPercentage)
-        div Giảm giá: <b>#{product.discountPercentage}%</b>
-
-    if (product.stock)
-        div Còn lại: <b>#{product.stock}</b>
-
-    if (product.status == 'active')
-        span Trạng thái: 
-        a(
-            href='javascript:;'
-            class="badge badge-success"
-        ) Hoạt động
-    else 
-        a(
-            href='javascript:;'
-            class="badge badge-danger"
-        ) Dừng hoạt động
-    
-    
-    if (product.description)
-        div <i>!{product.description}</i>
+        if (product.thumbnail)
+            img(
+                id="preview-image"
+                class="img-thumbnail m-2"
+                src=product.thumbnail
+                width="150px"
+            )
         
-    br
-    a(
-        type="button" 
-        href=`${prefixAdmin}/products/edit/${product._id}`
-        class="btn btn-warning btn-sm mr-1"
-    ) Chỉnh sửa
+        if (product.price)
+            div Giá: <b>#{product.price}</b>
+
+        if (product.discountPercentage)
+            div Giảm giá: <b>#{product.discountPercentage}%</b>
+
+        if (product.stock)
+            div Còn lại: <b>#{product.stock}</b>
+
+        if (product.status == 'active')
+            span Trạng thái: 
+            a(
+                href='javascript:;'
+                class="badge badge-success"
+            ) Hoạt động
+        else 
+            a(
+                href='javascript:;'
+                class="badge badge-danger"
+            ) Dừng hoạt động
+        
+        
+        if (product.description)
+            div <i>!{product.description}</i>
+            
+        br
+        if (roles.permission.includes('product_edit'))
+            a(
+                type="button" 
+                href=`${prefixAdmin}/products/edit/${product._id}`
+                class="btn btn-warning btn-sm mr-1"
+            ) Chỉnh sửa
+    else 
+        div Không được cấp quyền truy cập trang này, liên hệ <a href='https://www.facebook.com/khuongminhminh.hoang'>Hoàng Minh Khương</a> để được cấp quyền
     

@@ -3,122 +3,124 @@ include ../../mixins/notification-success.pug
 include ../../mixins/notification-error.pug
 
 block main 
-    h1(class="mb-4") Chỉnh sửa tài khoản
-    +notification-success(messages.success)
-    +notification-error(messages.error)
+    if (roles.permission.includes('account_edit'))
+        h1(class="mb-4") Chỉnh sửa tài khoản
+        +notification-success(messages.success)
+        +notification-error(messages.error)
 
 
-    if (records.length > 0)
-        form(
-            action=`/admin/accounts/edit/${account.id}?_method=PATCH`
-            method="POST"
-            enctype="multipart/form-data" 
-        )
-            div(class='form-group')
-                label(for='full-name') Họ tên *
-                input(
-                    id='full-name'
-                    class='form-control' 
-                    type='text'
-                    name='fullName'
-                    placeholder='Họ và tên...'  
-                    required  
-                    value=account.fullName
-                )
-
-            div(class='form-group')
-                label(for='email') Email *
-                input(
-                    id='email'
-                    class='form-control' 
-                    type='email'
-                    name='email'
-                    placeholder='mail@gmail.com...'    
-                    required
-                    value=account.email
-                )
-
-            div(class='form-group')
-                label(for='phone') Điện thoại *
-                input(
-                    id='phone'
-                    class='form-control' 
-                    type='text'
-                    name='phone'
-                    placeholder='(+84) 023 ...'  
-                    required  
-                    value=account.phone
-                )
-                
-            div(class='form-group')
-                label(for='password') Mật khẩu *
-                input(
-                    id='password'
-                    class='form-control' 
-                    type='password'
-                    name='password'
-                    placeholder='**********'    
-                )
-
-            div(class="form-group")
-                label(for="thumbnail") Avatar
-                input(
-                    type="file"
-                    class="form-control-file"
-                    id="thumbnail"
-                    name="avatar"
-                    placeholder="image.jpg"
-                    accept="image/*"
-                )
-                div(class="preview")
-                    img(
-                        id="preview-image"
-                        class="img-thumbnail"
-                        src=account.avatar
-                        width="150px"
+        if (records.length > 0)
+            form(
+                action=`/admin/accounts/edit/${account.id}?_method=PATCH`
+                method="POST"
+                enctype="multipart/form-data" 
+            )
+                div(class='form-group')
+                    label(for='full-name') Họ tên *
+                    input(
+                        id='full-name'
+                        class='form-control' 
+                        type='text'
+                        name='fullName'
+                        placeholder='Họ và tên...'  
+                        required  
+                        value=account.fullName
                     )
-                    a(class="btn btn-danger btn-sm" deleted) x
 
-            div(class="form-group")
-                label(for="role-id") Nhóm quyền 
-                select(
-                    id="role-id"
-                    class="form-control"
-                    name="roleId"
-                    required
-                )
-                    option(disabled) -- Chọn --     
-                    each record in records 
-                        option(value=record.id selected = (record.id == account.roleId ? true : false)) #{record.title}
+                div(class='form-group')
+                    label(for='email') Email *
+                    input(
+                        id='email'
+                        class='form-control' 
+                        type='email'
+                        name='email'
+                        placeholder='mail@gmail.com...'    
+                        required
+                        value=account.email
+                    )
+
+                div(class='form-group')
+                    label(for='phone') Điện thoại *
+                    input(
+                        id='phone'
+                        class='form-control' 
+                        type='text'
+                        name='phone'
+                        placeholder='(+84) 023 ...'  
+                        required  
+                        value=account.phone
+                    )
                     
+                div(class='form-group')
+                    label(for='password') Mật khẩu *
+                    input(
+                        id='password'
+                        class='form-control' 
+                        type='password'
+                        name='password'
+                        placeholder='**********'    
+                    )
 
-            div(class="form-check form-check-inline")
+                div(class="form-group")
+                    label(for="thumbnail") Avatar
                     input(
-                        class="form-check-input" 
-                        type="radio" 
-                        name="status" 
-                        id="active" 
-                        value="active"
-                        checked = (account.status == 'active' ? true : false)
-                    ) 
-                    label(for="active" 
-                    class="form-check-label"
-                    ) Hoạt động
-            div(class="form-check form-check-inline")
-                    input(
-                        class="form-check-input" 
-                        type="radio" 
-                        name="status" 
-                        id="inactive" 
-                        value="inactive"
-                        checked = (account.status == 'inactive' ? true : false)
-                    ) 
-                    label(for="inactive" 
-                    class="form-check-label"
-                    ) Dừng hoạt động
-            br
-            button(type="submit" class="btn btn-primary") Cập nhật
+                        type="file"
+                        class="form-control-file"
+                        id="thumbnail"
+                        name="avatar"
+                        placeholder="image.jpg"
+                        accept="image/*"
+                    )
+                    div(class="preview")
+                        img(
+                            id="preview-image"
+                            class="img-thumbnail"
+                            src=account.avatar
+                            width="150px"
+                        )
+                        a(class="btn btn-danger btn-sm" deleted) x
+
+                div(class="form-group")
+                    label(for="role-id") Nhóm quyền 
+                    select(
+                        id="role-id"
+                        class="form-control"
+                        name="roleId"
+                        required
+                    )
+                        option(disabled) -- Chọn --     
+                        each record in records 
+                            option(value=record.id selected = (record.id == account.roleId ? true : false)) #{record.title}
+                        
+
+                div(class="form-check form-check-inline")
+                        input(
+                            class="form-check-input" 
+                            type="radio" 
+                            name="status" 
+                            id="active" 
+                            value="active"
+                            checked = (account.status == 'active' ? true : false)
+                        ) 
+                        label(for="active" 
+                        class="form-check-label"
+                        ) Hoạt động
+                div(class="form-check form-check-inline")
+                        input(
+                            class="form-check-input" 
+                            type="radio" 
+                            name="status" 
+                            id="inactive" 
+                            value="inactive"
+                            checked = (account.status == 'inactive' ? true : false)
+                        ) 
+                        label(for="inactive" 
+                        class="form-check-label"
+                        ) Dừng hoạt động
+                br
+                button(type="submit" class="btn btn-primary") Cập nhật
+        else 
+            a(class='text-center' href=`${prefixAdmin}/roles/create`) Tạo quyền trước khi sửa tài khoản
     else 
-        a(class='text-center' href=`${prefixAdmin}/roles/create`) Tạo quyền trước khi sửa tài khoản
-
+        div Không được cấp quyền truy cập trang này, liên hệ <a href='https://www.facebook.com/khuongminhminh.hoang'>Hoàng Minh Khương</a> để được cấp quyền
         

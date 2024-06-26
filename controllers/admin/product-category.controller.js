@@ -47,6 +47,7 @@ module.exports.index = async (req, res) => {
         records: records,
         filterStatus: filterStatus, 
         productName: objectSearch.target,
+        cnt: 1 // biến đếm để tăng số thứ tự
     });
 }
 

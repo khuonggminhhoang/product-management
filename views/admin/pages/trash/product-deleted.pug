@@ -5,90 +5,93 @@ include ./../../mixins/notification-success.pug
 include ./../../mixins/notification-error.pug
 
 block main 
-    h1(class="mb-4") Danh sách sản phẩm đã xóa 
-    
-    //- notification
-    +notification-success(messages.success)
-    +notification-error(messages.error)
+    if (roles.permission.includes('product_restore'))
+        h1(class="mb-4") Danh sách sản phẩm đã xóa 
+        
+        //- notification
+        +notification-success(messages.success)
+        +notification-error(messages.error)
 
-    //- Filter
-    .card.bg-light.mb-3
-        .card-header Tìm kiếm
-        .card-body
-            .row 
-                //- form tìm kiếm
-                .col-6
-                    +form-search(productName)
+        //- Filter
+        .card.bg-light.mb-3
+            .card-header Tìm kiếm
+            .card-body
+                .row 
+                    //- form tìm kiếm
+                    .col-6
+                        +form-search(productName)
 
-    //- List products
-    .card.bg-light.mb-3
-        .card-header Danh sách
-        .card-body
-            table(class="table table-sm")
-                thead
-                    tr
-                        th STT
-                        th Hình ảnh 
-                        th Tiêu đề
-                        th Giá
-                        th Trạng thái
-                        th Hành Động
-                tbody
-                    //- for như js
-                    -for(let i = 0; i < products.length; ++i)
-                        tr      
-                            td #{i + 1}
-                            td 
-                                img(src=products[i].thumbnail
-                                    alt="Ảnh sản phẩm đã xóa"
-                                    width="100px"
-                                    style="aspect-ratio: 4/3"
-                                )
-                            td #{products[i].title}
-                            td #{products[i].price}$
-                            //- if else như js
-                            td 
-                                if(products[i].status == 'active')
-                                    a( 
-                                        href='javascript:;'
-                                        class="badge badge-success"
-                                    ) Hoạt động
-                                else
-                                    a(
-                                        href='javascript:;'
-                                        class="badge badge-danger"
-                                    ) Dừng hoạt động
+        //- List products
+        .card.bg-light.mb-3
+            .card-header Danh sách
+            .card-body
+                table(class="table table-sm")
+                    thead
+                        tr
+                            th STT
+                            th Hình ảnh 
+                            th Tiêu đề
+                            th Giá
+                            th Trạng thái
+                            th Hành Động
+                    tbody
+                        //- for như js
+                        -for(let i = 0; i < products.length; ++i)
+                            tr      
+                                td #{i + 1}
+                                td 
+                                    img(src=products[i].thumbnail
+                                        alt="Ảnh sản phẩm đã xóa"
+                                        width="100px"
+                                        style="aspect-ratio: 4/3"
+                                    )
+                                td #{products[i].title}
+                                td #{products[i].price}$
+                                //- if else như js
+                                td 
+                                    if(products[i].status == 'active')
+                                        a( 
+                                            href='javascript:;'
+                                            class="badge badge-success"
+                                        ) Hoạt động
+                                    else
+                                        a(
+                                            href='javascript:;'
+                                            class="badge badge-danger"
+                                        ) Dừng hoạt động
 
-                            td 
-                                button(
-                                    type="button" 
-                                    class="btn btn-info btn-sm mr-1"
-                                    data-id=products[i]._id
-                                    restored-button
-                                ) Khôi phục
+                                td 
+                                    button(
+                                        type="button" 
+                                        class="btn btn-info btn-sm mr-1"
+                                        data-id=products[i]._id
+                                        restored-button
+                                    ) Khôi phục
 
-                                button(
-                                    type="button" 
-                                    class="btn btn-danger btn-sm"
-                                    data-id=products[i]._id 
-                                    deleted-permanent-button
-                                ) Xóa vĩnh viễn
+                                    button(
+                                        type="button" 
+                                        class="btn btn-danger btn-sm"
+                                        data-id=products[i]._id 
+                                        deleted-permanent-button
+                                    ) Xóa vĩnh viễn
 
-    //- Pagination
-    +pagination(pagination)
+        //- Pagination
+        +pagination(pagination)
 
-    form(
-        id="form-restored"
-        method="POST"
-        action=""
-        path=`${prefixAdmin}/trash/products`
-    )
+        form(
+            id="form-restored"
+            method="POST"
+            action=""
+            path=`${prefixAdmin}/trash/products`
+        )
 
-    form(
-        id="form-deleted-permanent"
-        method="POST"
-        action=""
-        path=`${prefixAdmin}/trash/products`
-    )
+        form(
+            id="form-deleted-permanent"
+            method="POST"
+            action=""
+            path=`${prefixAdmin}/trash/products`
+        )
 
-    script(src="/admin/js/trash.js")
+        script(src="/admin/js/trash.js")
+    else 
+        div Không được cấp quyền truy cập trang này, liên hệ <a href='https://www.facebook.com/khuongminhminh.hoang'/>Hoàng Minh Khương</a> để được cấp quyền

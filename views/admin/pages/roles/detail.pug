@@ -1,18 +1,21 @@
 extends ../../layouts/default.pug
 
 block main 
-    h1(class="mb-4") Chi tiết quyền
+    if (roles.permission.includes('role_view'))
+        h1(class="mb-4") Chi tiết quyền
 
-    if (record.title)
-        div <b>Tiêu đề:</b> #{record.title}
+        if (record.title)
+            div <b>Tiêu đề:</b> #{record.title}
 
-    if (record.description)
-        div <b>Mô tả</b> !{record.description}
+        if (record.description)
+            div <b>Mô tả</b> !{record.description}
 
-    if (record.permission.length > 0)
-        div <b> Cho phép: </b>
-        ol 
-            each item in record.permission 
-                li #{item}
-
-    a(type="button" class="btn btn-warning" href=`${prefixAdmin}/roles/edit/${record.id}`) Chỉnh sửa
+        if (record.permission.length > 0)
+            div <b> Cho phép: </b>
+            ol 
+                each item in record.permission 
+                    li #{item}
+        if (roles.permission.includes('role_edit'))
+            a(type="button" class="btn btn-warning" href=`${prefixAdmin}/roles/edit/${record.id}`) Chỉnh sửa
+    else 
+        div Không được cấp quyền truy cập trang này, liên hệ <a href='https://www.facebook.com/khuongminhminh.hoang'>Hoàng Minh Khương</a> để được cấp quyền

@@ -4,66 +4,73 @@ include ./../../mixins/notification-success.pug
 include ./../../mixins/notification-error.pug
 
 block main 
-    h1(class="mb-4") Nhóm quyền
+    if (roles.permission.includes('role_view'))
+        h1(class="mb-4") Nhóm quyền
 
-    //- notification
-    +notification-success(messages.success)
-    +notification-error(messages.error)
+        //- notification
+        +notification-success(messages.success)
+        +notification-error(messages.error)
 
-    .card.bg-light.mb-3
-        .card-header 
-            .row
-                .col-8
-                .col-4.text-center
-                    a(
-                        type="button" 
-                        class=`btn btn-outline-success mr-1 alert-success`
-                        href=`${prefixAdmin}/roles/create`
-                        button-add
-                    )  + Thêm mới
-        .card-body
-            table(class="table table-hover table-sm")
-                if records.length > 0
-                    thead
-                        tr
-                            th STT 
-                            th Tiêu đề
-                            th Mô tả ngắn
-                            th Hành Động
-                    tbody
-                        each record, index in records
+        .card.bg-light.mb-3
+            .card-header 
+                .row
+                    .col-8
+                    .col-4.text-center
+                        if (roles.permission.includes('role_create'))
+                            a(
+                                type="button" 
+                                class=`btn btn-outline-success mr-1 alert-success`
+                                href=`${prefixAdmin}/roles/create`
+                                button-add
+                            )  + Thêm mới
+            .card-body
+                table(class="table table-hover table-sm")
+                    if records.length > 0
+                        thead
                             tr
-                                td #{index + 1}
-                                
-                                td #{record.title}
-                                
-                                td #{record.description}
+                                th STT 
+                                th Tiêu đề
+                                th Mô tả ngắn
+                                th Hành Động
+                        tbody
+                            each record, index in records
+                                tr
+                                    td #{index + 1}
                                     
-                                td 
-                                    a(
-                                        type="button" 
-                                        href=`${prefixAdmin}/roles/detail/${record._id}`
-                                        class="btn btn-info btn-sm mr-1"
-                                    ) Chi tiết
-                                    a(
-                                        type="button" 
-                                        href=`${prefixAdmin}/roles/edit/${record._id}`
-                                        class="btn btn-warning btn-sm mr-1"
-                                    ) Sửa
-                                    a(
-                                        type="button" 
-                                        class="btn btn-danger btn-sm"
-                                        data-id=record._id 
-                                        button-delete-product
-                                    ) Xóa
-                else 
-                    a(href=`${prefixAdmin}/roles/create` class='text-center text-danger') Chưa có quyền nào được tạo, vui ong thêm quyền.
+                                    td #{record.title}
+                                    
+                                    td #{record.description}
+                                        
+                                    td 
+                                        if (roles.permission.includes('role_view'))
+                                            a(
+                                                type="button" 
+                                                href=`${prefixAdmin}/roles/detail/${record._id}`
+                                                class="btn btn-info btn-sm mr-1"
+                                            ) Chi tiết
+                                        if (roles.permission.includes('role_edit'))
+                                            a(
+                                                type="button" 
+                                                href=`${prefixAdmin}/roles/edit/${record._id}`
+                                                class="btn btn-warning btn-sm mr-1"
+                                            ) Sửa
+                                        if (roles.permission.includes('role_delete'))
+                                            a(
+                                                type="button" 
+                                                class="btn btn-danger btn-sm"
+                                                data-id=record._id 
+                                                button-delete-product
+                                            ) Xóa
+                    else 
+                        a(href=`${prefixAdmin}/roles/create` class='text-center text-danger') Chưa có quyền nào được tạo, vui lòng thêm quyền.
 
-    form(
-        id='form-delete-product'
-        method='POST'
-        action=""
-        path=`${prefixAdmin}/roles/delete`
-    )
+        form(
+            id='form-delete-product'
+            method='POST'
+            action=""
+            path=`${prefixAdmin}/roles/delete`
+        )
 
-    script(type='text/javascript' src="/admin/js/product.js")
+        script(type='text/javascript' src="/admin/js/product.js")
+    else 
+        div Không được cấp quyền truy cập trang này, liên hệ <a href='https://www.facebook.com/khuongminhminh.hoang'>Hoàng Minh Khương</a> để được cấp quyền
