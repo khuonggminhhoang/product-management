@@ -24,7 +24,18 @@ const schemaProduct = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    deleteAt: Date
+    createdBy: {
+        accountId: String,
+        createAt: {
+            type: String,
+            default: Date.now
+        }
+    },
+    deletedBy: {
+        accountId: String,
+        deleteAt: String            // lưu ý là string chứ không lưu Date
+    }
+    // deleteAt: Date
 }, {
     timestamps: true
 });

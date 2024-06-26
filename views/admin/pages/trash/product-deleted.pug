@@ -32,7 +32,8 @@ block main
                             th Hình ảnh 
                             th Tiêu đề
                             th Giá
-                            th Trạng thái
+                            th Trạng 
+                            th Người xóa
                             th Hành Động
                     tbody
                         //- for như js
@@ -59,6 +60,13 @@ block main
                                             href='javascript:;'
                                             class="badge badge-danger"
                                         ) Dừng hoạt động
+
+                                if (products[i].accountFullName)
+                                    td 
+                                        p #{products[i].accountFullName}
+                                        p #{products[i].deleteAt}
+                                else 
+                                    td Trống
 
                                 td 
                                     button(

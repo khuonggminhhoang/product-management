@@ -1,6 +1,9 @@
 const Product = require('./../../models/product.model');
+const Account = require('./../../models/account.model');
+
 const objectPaginationHelper = require('./../../helpers/pagination');
 const objectSearchHelper = require('./../../helpers/search');
+const dateTimeFormatterHelper = require('./../../helpers/dateTimeFormatter');
 
 
 // [GET] /admin/trash/products
@@ -37,6 +40,14 @@ module.exports.trashProducts = async (req, res) => {
                         .sort({position: 'desc'})
                         .skip(skipProduct)     // truy vấn ra các sản phẩm trong db
                         .limit(objectPagination.limitItems);
+
+    for(let item of products){
+        const account = await Account.findOne({_id: item.deletedBy.accountId});
+        if(account){
+            item.accountFullName = account.fullName;
+            item.deleteAt = dateTimeFormatterHelper.formatDateTime(parseInt(item.deletedBy.deleteAt));
+        }
+    }
 
     res.render('./admin/pages/trash/product-deleted.pug', {
         title:'Sản phẩm đã xóa',

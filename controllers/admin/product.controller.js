@@ -1,11 +1,15 @@
 const Product = require('./../../models/product.model');
 const ProductCategory = require('./../../models/product-category.model');
+const Account = require('./../../models/account.model');
 
 const filterStatusHelper = require('./../../helpers/filterStatus');
 const objectSearchHelper = require('./../../helpers/search');
 const objectPaginationHelper = require('./../../helpers/pagination');
 const createTreeHelper = require('./../../helpers/createTree');
+const dateTimeFormatterHelper = require('./../../helpers/dateTimeFormatter');
+
 const systemConfig = require('./../../config/system');
+
 
 // [GET] /admin/products
 module.exports.index = async (req, res) => {
@@ -61,6 +65,14 @@ module.exports.index = async (req, res) => {
                         .skip(skipProduct)     // truy vấn ra các sản phẩm trong db
                         .limit(objectPagination.limitItems);
 
+    for(let item of products){
+        const account = await Account.findOne({_id: item.createdBy.accountId});
+        if(account){
+            item.accountFullName = account.fullName;
+            item.createAt = dateTimeFormatterHelper.formatDateTime(parseInt(item.createdBy.createAt));
+        }
+    }
+
     res.render('./admin/pages/products/index.pug', {
         title: 'Danh sách sản phẩm', 
         products: products,
@@ -69,7 +81,7 @@ module.exports.index = async (req, res) => {
         pagination: objectPagination
     });
  
-};
+};  
 
 
 // [PATCH] /admin/products/change-status/:status/:id
@@ -116,7 +128,14 @@ module.exports.changeMulti = async (req, res) => {
 
         case 'delete-all':
             try{
-                await Product.updateMany({_id: {$in: arrId}}, {deleted: true, deleteAt: new Date()});
+                await Product.updateMany({_id: {$in: arrId}}, {
+                    deleted: true,  
+                    deletedBy: {
+                        accountId: res.locals.account.id,
+                        deleteAt: Date.now().toString()
+                    }
+                });
+                
                 req.flash("success", "Xóa sản phẩm thành công")
             }
             catch(e) {
@@ -151,7 +170,10 @@ module.exports.deleteProduct = async (req, res) => {
         const id = req.params.id;
         await Product.updateOne({_id: id}, {
             deleted: true,
-            deleteAt: new Date()
+            deletedBy: {
+                accountId: res.locals.account.id,
+                deleteAt: Date.now().toString()
+            }
         });
         req.flash("success", "Xóa sản phẩm thành công")
     }
@@ -192,6 +214,11 @@ module.exports.createPOST = async (req, res) => {
     // console.log(req.file);          // req.file của thư viện multer
     //=====================
     try{
+        const currAccount = res.locals.account;
+        dataProduct.createdBy = {
+            accountId: currAccount.id
+        };
+
         const product = new Product(dataProduct);
         await product.save();
         req.flash("success", "Tạo mới sản phẩm thành công");

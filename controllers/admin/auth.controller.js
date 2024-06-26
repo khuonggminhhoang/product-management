@@ -15,9 +15,14 @@ module.exports.loginPOST = async (req, res) => {
     try{
         let {email, password} = req.body;
         password = md5(password);
-        const acc = await Account.findOne({email: email, password: password, status: 'active', deleted: false});
+        const acc = await Account.findOne({email: email, password: password, deleted: false});
         if(!acc){
             req.flash('error', 'Email hoặc Password sai');
+            res.redirect('back');
+            return;
+        }
+        if(acc.status == 'inactive'){
+            req.flash('error', 'Tài khoản đã bị khóa');
             res.redirect('back');
             return;
         }

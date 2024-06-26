@@ -32,7 +32,8 @@ block main
             .card-header Danh sách
                 .row 
                     .col-7
-                        +form-change-multi('products-category')
+                        if (roles.permission.includes('product-category_edit'))
+                            +form-change-multi('products-category')
                     
                     .col-2
                         select(class="form-control dropdown-toggle" name="type" sort)
@@ -68,8 +69,6 @@ block main
                             th(class='text-center') Trạng thái
                             th(class='text-center') Hành Động
                     tbody
-                        //-  biến cnt là để nhúng vào hàm mixin bên dưới
-                        //- - let cnt = 1
                         +record-level-table(records, 1)
 
 

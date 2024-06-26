@@ -21,12 +21,6 @@ module.exports.requireAuth = async (req, res, next) => {
         res.locals.account = account;
         res.locals.roles = roles;
 
-        console.log('==================');
-        console.log('Tài khoản:', account.email);
-        console.log('Quyền : ');
-        roles.permission.forEach(item => console.log(item));
-        console.log('==================');
-
         next();
     }
 }

@@ -19,13 +19,23 @@ mixin record-level-table(arr, level = 1)
                 )
             td(class='text-left') #{prefix}#{item.title}
 
-            td(class='text-center')
-                input(
-                    type="number"
-                    class="form-control"
-                    name="position"
-                    value=item.position    
-                )
+            if (roles.permission.includes('product-category_edit'))
+                td(class='text-center')
+                    input(
+                        type="number"
+                        class="form-control"
+                        name="position"
+                        value=item.position    
+                    )
+            else 
+                td(class='text-center')
+                    input(
+                        type="number"
+                        class="form-control"
+                        name="position"
+                        value=item.position  
+                        readonly  
+                    )
 
             //- if else như js
             if (roles.permission.includes('product-category_edit'))
