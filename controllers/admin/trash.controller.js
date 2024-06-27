@@ -45,7 +45,7 @@ module.exports.trashProducts = async (req, res) => {
         const account = await Account.findOne({_id: item.deletedBy.accountId});
         if(account){
             item.accountFullName = account.fullName;
-            item.deleteAt = dateTimeFormatterHelper.formatDateTime(parseInt(item.deletedBy.deleteAt));
+            item.deleteAt = dateTimeFormatterHelper.formatDateTime(item.deletedBy.deleteAt);
         }
     }
 

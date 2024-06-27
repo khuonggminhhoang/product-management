@@ -28,9 +28,9 @@ block main
                             tr
                                 th(class='text-center') STT
                                 th(class='text-center') Avatar
-                                th(class='text-center') Họ tên
-                                th(class='text-center') Email
-                                th(class='text-center') Vai trò
+                                th(class='text-left') Họ tên
+                                th(class='text-left') Email
+                                th(class='text-left') Vai trò
                                 th(class='text-center') Trạng thái
                                 th(class='text-center') Hành Động
                         tbody 
@@ -44,9 +44,9 @@ block main
                                             class="rounded-circle"
                                             style="width: 30px; height:30px; object-fit: cover"
                                         )
-                                    td(class='text-center') #{record.fullName}
-                                    td(class='text-center') #{record.email}
-                                    td(class='text-center') #{record.role}
+                                    td(class='text-left') #{record.fullName}
+                                    td(class='text-left') #{record.email}
+                                    td(class='text-left') #{record.role}
                                     
                                     td(class='text-center') 
                                         if (roles.permission.includes('account_edit'))

@@ -32,7 +32,7 @@ block main
             .card-header Danh sách
                 .row 
                     .col-7
-                        if (roles.permission.includes('product-category_edit'))
+                        if (roles.permission.includes('product-category_edit') || roles.permission.includes('product-category_delete'))
                             +form-change-multi('products-category')
                     
                     .col-2
@@ -55,13 +55,14 @@ block main
                 table(class="table table-hover table-sm" checbox-multi)
                     thead
                         tr
-                            th(class="form-check") 
-                                input(
-                                    type="checkbox" 
-                                    class="form-check-input position-static ml-1"
-                                    name="checkall"   
-                                )
-
+                            if (roles.permission.includes('product-category_edit') || roles.permission.includes('product-category_delete'))
+                                th(class="form-check") 
+                                    input(
+                                        type="checkbox" 
+                                        class="form-check-input position-static ml-1"
+                                        name="checkall"   
+                                    )
+                            
                             th(class='text-center') STT
                             th(class='text-center') Hình ảnh 
                             th(class='text-left') Tiêu đề

@@ -2,13 +2,14 @@ mixin record-level-table(arr, level = 1)
     each item, index in arr
         - const prefix = Array(level + 1).join('-- ')
         tr 
-            td(class="form-check")
-                input(
-                    type="checkbox" 
-                    class="form-check-input position-static ml-1"
-                    name="id"
-                    value=item._id
-                )
+            if (roles.permission.includes('product-category_edit') || roles.permission.includes('product-category_delete'))
+                td(class="form-check")
+                    input(
+                        type="checkbox" 
+                        class="form-check-input position-static ml-1"
+                        name="id"
+                        value=item._id
+                    )
                 
             td(class='text-center') #{cnt++}
             td(class='text-center') 

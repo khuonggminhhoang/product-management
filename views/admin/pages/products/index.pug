@@ -32,7 +32,7 @@ block main
             .card-header Danh sách
                 .row 
                     .col-7
-                        if (roles.permission.includes('product_edit'))
+                        if (roles.permission.includes('product_edit') || roles.permission.includes('product_delete'))
                             +form-change-multi('products')
                     
                     .col-2
@@ -72,11 +72,12 @@ block main
                 table(class="table table-hover table-sm" checbox-multi)
                     thead
                         tr
-                            th(class="form-check text-center") 
-                                input(
-                                    type="checkbox" 
-                                    name="checkall"   
-                                )
+                            if (roles.permission.includes('product_edit') || roles.permission.includes('product_delete'))
+                                th(class="form-check text-center") 
+                                    input(
+                                        type="checkbox" 
+                                        name="checkall"   
+                                    )
 
                             th(class='text-center') STT
                             th(class='text-center') Hình ảnh 
@@ -84,18 +85,20 @@ block main
                             th(class='text-center') Giá
                             th(class='text-center') Vị trí
                             th(class='text-center') Trạng thái
-                            th(class='text-center') Người tạo
+                            th(class='text-left') Người tạo
+                            th(class='text-left') Người cập nhật
                             th(class='text-center') Hành Động
                     tbody
                         //- for như js
                         -for(let i = 0; i < products.length; ++i)
                             tr
-                                td(class="form-check text-center")
-                                    input(
-                                        type="checkbox" 
-                                        name="id"
-                                        value=products[i]._id
-                                    )
+                                if (roles.permission.includes('product_edit') || roles.permission.includes('product_delete'))
+                                    td(class="form-check text-center")
+                                        input(
+                                            type="checkbox" 
+                                            name="id"
+                                            value=products[i]._id
+                                        )
                                     
                                 td(class='text-center') #{pagination.limitItems * (pagination.currentPage - 1) + i + 1}
                                 td(class='text-center') 
@@ -104,7 +107,7 @@ block main
                                         width="100px"
                                         style="aspect-ratio: 4/3"
                                     )
-                                td #{products[i].title}
+                                td(class='col-3') #{products[i].title}
                                 td(class='text-center') #{products[i].price}$
 
                                 if (roles.permission.includes('product_edit'))
@@ -156,12 +159,19 @@ block main
                                             ) Dừng hoạt động
 
 
-                                if (products[i].accountFullName)
+                                if (products[i].accountFullNameCreate)
                                     td 
-                                        p #{products[i].accountFullName}
+                                        p #{products[i].accountFullNameCreate}
                                         p #{products[i].createAt}
                                 else 
-                                    td Trống
+                                    td [Trống]
+
+                                if (products[i].accountFullNameUpdate)
+                                    td 
+                                        p #{products[i].accountFullNameUpdate}
+                                        p #{products[i].updateAt}
+                                else 
+                                    td [Trống]
 
                                 td(class='text-center') 
                                     if (roles.permission.includes('product_view'))

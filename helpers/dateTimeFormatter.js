@@ -1,5 +1,4 @@
-module.exports.formatTime = (milliseconds) => {
-    let date = new Date(milliseconds);
+module.exports.formatTime = (date) => {
     let HH = date.getHours() + '';
     let mm = date.getMinutes() + '';
     let ss = date.getSeconds() + '';
@@ -16,10 +15,9 @@ module.exports.formatTime = (milliseconds) => {
     return `${HH}:${mm}:${ss}`;
 }
 
-module.exports.formatDate = (milliseconds) => {
-    let date = new Date(milliseconds);
+module.exports.formatDate = (date) => {
     let YYYY = date.getFullYear() + '';
-    let MM = date.getMonth() + '';
+    let MM = date.getMonth() + 1 + '';
     let DD = date.getDate() + '';
     if(DD.length < 2){
         DD = '0' + DD;
@@ -30,8 +28,8 @@ module.exports.formatDate = (milliseconds) => {
     return `${DD}/${MM}/${YYYY}`;
 }
 
-module.exports.formatDateTime = (milliseconds) => {
-    const dateStd = this.formatDate(milliseconds);
-    const timeStd = this.formatTime(milliseconds);
+module.exports.formatDateTime = (date) => {
+    const dateStd = this.formatDate(date);
+    const timeStd = this.formatTime(date);
     return `${dateStd} ${timeStd}`;
 }

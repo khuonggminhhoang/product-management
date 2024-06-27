@@ -66,10 +66,16 @@ module.exports.index = async (req, res) => {
                         .limit(objectPagination.limitItems);
 
     for(let item of products){
-        const account = await Account.findOne({_id: item.createdBy.accountId});
-        if(account){
-            item.accountFullName = account.fullName;
-            item.createAt = dateTimeFormatterHelper.formatDateTime(parseInt(item.createdBy.createAt));
+        const accountCreate = await Account.findOne({_id: item.createdBy.accountId});
+        if(accountCreate){
+            item.accountFullNameCreate = accountCreate.fullName;
+            item.createAt = dateTimeFormatterHelper.formatDateTime(item.createdBy.createAt);
+        }
+
+        const accountUpdate = await Account.findOne({_id: item.updatedBy.accountId});
+        if(accountUpdate){
+            item.accountFullNameUpdate = accountUpdate.fullName;
+            item.updateAt = dateTimeFormatterHelper.formatDateTime(item.updatedBy.updateAt);
         }
     }
 
@@ -83,13 +89,18 @@ module.exports.index = async (req, res) => {
  
 };  
 
-
 // [PATCH] /admin/products/change-status/:status/:id
 module.exports.changeStatus = async (req, res) => {
     const id = req.params.id;
     const status = req.params.status;
     try{
-        await Product.updateOne({_id: id}, {status: status});
+        await Product.updateOne({_id: id}, {
+            status: status,
+            updatedBy: {
+                accountId: res.locals.account.id,
+                updateAt: new Date()
+            }
+        });
         req.flash("success", "Cập nhật trạng thái thành công");
     }
     catch(e) {
@@ -104,11 +115,15 @@ module.exports.changeMulti = async (req, res) => {
     const type = req.body.type;
     const ids = req.body.ids;
     const arrId = ids.split("; ");
+    const updatedBy = {
+        accountId: res.locals.account.id,
+        updateAt: new Date()
+    }
 
     switch(type){
         case 'active': 
             try{
-                await Product.updateMany({_id: {$in: arrId}}, {status: 'active'});
+                await Product.updateMany({_id: {$in: arrId}}, {status: 'active', updatedBy: updatedBy});
                 req.flash("success", "Cập nhật trạng thái thành công")
             }
             catch(e) {
@@ -118,7 +133,7 @@ module.exports.changeMulti = async (req, res) => {
 
         case 'inactive':
             try{
-                await Product.updateMany({_id: {$in: arrId}}, {status: 'inactive'});
+                await Product.updateMany({_id: {$in: arrId}}, {status: 'inactive', updatedBy: updatedBy});
                 req.flash("success", "Cập nhật trạng thái thành công")
             }
             catch(e) {
@@ -132,8 +147,9 @@ module.exports.changeMulti = async (req, res) => {
                     deleted: true,  
                     deletedBy: {
                         accountId: res.locals.account.id,
-                        deleteAt: Date.now().toString()
-                    }
+                        deleteAt: new Date()
+                    },
+                    updatedBy: updatedBy
                 });
                 
                 req.flash("success", "Xóa sản phẩm thành công")
@@ -148,7 +164,7 @@ module.exports.changeMulti = async (req, res) => {
                 for(let item of arrId) {
                     let [id, position] = item.split('-');
                     position = parseInt(position);
-                    await Product.updateOne({_id: id}, {position: position});
+                    await Product.updateOne({_id: id}, {position: position, updatedBy: updatedBy});
                 }
                 req.flash("success", "Thay đổi vị trí thành công")
             }
@@ -172,7 +188,7 @@ module.exports.deleteProduct = async (req, res) => {
             deleted: true,
             deletedBy: {
                 accountId: res.locals.account.id,
-                deleteAt: Date.now().toString()
+                deleteAt: new Date()
             }
         });
         req.flash("success", "Xóa sản phẩm thành công")
@@ -263,6 +279,12 @@ module.exports.editProduct = async (req, res) => {
     dataProduct.stock = dataProduct.stock == '' ? 0 : parseFloat(dataProduct.stock);
     dataProduct.position = dataProduct.position == '' ? qtyProduct : parseInt(dataProduct.position);
     
+    const currAccount = res.locals.account;
+    dataProduct.updatedBy = {
+        accountId: currAccount.id,
+        updateAt: new Date()
+    }
+
     try{
         await Product.updateOne({_id: id}, dataProduct);
         req.flash("success", "Cập nhật sản phẩm thành công");

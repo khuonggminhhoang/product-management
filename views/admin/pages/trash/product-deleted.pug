@@ -28,28 +28,28 @@ block main
                 table(class="table table-sm")
                     thead
                         tr
-                            th STT
-                            th Hình ảnh 
-                            th Tiêu đề
-                            th Giá
-                            th Trạng 
-                            th Người xóa
-                            th Hành Động
+                            th(class='text-center') STT
+                            th(class='text-center') Hình ảnh 
+                            th(class='text-left') Tiêu đề
+                            th(class='text-center') Giá
+                            th(class='text-center') Trạng thái
+                            th(class='text-left') Người xóa
+                            th(class='text-center') Hành Động
                     tbody
                         //- for như js
                         -for(let i = 0; i < products.length; ++i)
                             tr      
-                                td #{i + 1}
-                                td 
+                                td(class='text-center') #{i + 1}
+                                td(class='text-center') 
                                     img(src=products[i].thumbnail
                                         alt="Ảnh sản phẩm đã xóa"
                                         width="100px"
                                         style="aspect-ratio: 4/3"
                                     )
-                                td #{products[i].title}
-                                td #{products[i].price}$
+                                td(class='text-left') #{products[i].title}
+                                td(class='text-center') #{products[i].price}$
                                 //- if else như js
-                                td 
+                                td(class='text-center') 
                                     if(products[i].status == 'active')
                                         a( 
                                             href='javascript:;'
@@ -68,7 +68,7 @@ block main
                                 else 
                                     td Trống
 
-                                td 
+                                td(class='text-center') 
                                     button(
                                         type="button" 
                                         class="btn btn-info btn-sm mr-1"

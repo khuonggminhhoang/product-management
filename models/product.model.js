@@ -27,17 +27,18 @@ const schemaProduct = new mongoose.Schema({
     createdBy: {
         accountId: String,
         createAt: {
-            type: String,
+            type: Date,
             default: Date.now
         }
     },
     deletedBy: {
         accountId: String,
-        deleteAt: String            // lưu ý là string chứ không lưu Date
+        deleteAt: Date            
+    },
+    updatedBy: {
+        accountId: String,
+        updateAt: Date
     }
-    // deleteAt: Date
-}, {
-    timestamps: true
 });
 
 module.exports = mongoose.model('Product', schemaProduct, 'products');
