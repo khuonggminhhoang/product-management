@@ -67,6 +67,17 @@ mixin record-level-table(arr, level = 1)
                             href='javascript:;'
                             class="badge badge-danger"
                         ) Dừng hoạt động
+            if (item.accountFullNameCreate)
+                td(class='text-left') 
+                    p #{item.accountFullNameCreate} #{item.createAt}
+            else 
+                td [Trống]
+
+            if (item.accountFullNameUpdate)
+                td(class='text-left') 
+                    p #{item.accountFullNameUpdate} #{item.updateAt}
+            else 
+                td [Trống]
 
             td(class='text-center') 
                 a(

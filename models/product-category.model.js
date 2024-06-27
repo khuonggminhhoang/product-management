@@ -21,9 +21,21 @@ const schemaProductCategory = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    deleteAt: Date
-}, {
-    timestamps: true
+    createdBy: {
+        accountId: String,
+        createAt: {
+            type: Date,
+            default: Date.now
+        }
+    },
+    deletedBy: {
+        accountId: String,
+        deleteAt: Date            
+    },
+    updatedBy: {
+        accountId: String,
+        updateAt: Date
+    }
 });
 
 
