@@ -1,4 +1,7 @@
 const Role = require('./../../models/role.model');
+const Account = require('./../../models/account.model');
+const dateTimeFormatterHelper = require('./../../helpers/dateTimeFormatter');
+
 const systemConfig = require('./../../config/system');
 
 // [GET] /admin/roles
@@ -7,6 +10,21 @@ module.exports.index = async (req, res) => {
         const records = await Role.find({
             deleted: false 
         })
+
+        for(let item of records){
+            const accountCreate = await Account.findOne({_id: item.createdBy.accountId});
+            if(accountCreate){
+                item.accountFullNameCreate = accountCreate.fullName;
+                item.createAt = dateTimeFormatterHelper.formatDateTime(item.createdBy.createAt);
+            }
+
+            const accountUpdate = await Account.findOne({_id: item.updatedBy.accountId});
+            if(accountUpdate){
+                item.accountFullNameUpdate = accountUpdate.fullName;
+                item.updateAt = dateTimeFormatterHelper.formatDateTime(item.updatedBy.updateAt);
+            }
+
+        }
 
         res.render('./admin/pages/roles/index.pug', {
             title: 'Nhóm quyền',
@@ -28,6 +46,12 @@ module.exports.create = (req, res) => {
 // [POST] /admin/roles/create
 module.exports.createPOST = async (req, res) => {
     try{
+        const currAccount = res.locals.account;
+        req.body.createdBy = {
+            accountId: currAccount.id,
+            createAt: new Date()
+        }
+
         const role = new Role(req.body);
         await role.save();
         req.flash("success", "Thêm quyền thành công");
@@ -41,7 +65,13 @@ module.exports.createPOST = async (req, res) => {
 // [DELETE] /admin/roles/delete/:id
 module.exports.delete = async (req, res) => {
     try {
-        await Role.updateOne({_id: req.params.id}, {deleted: true, deleteAt: new Date()});
+        await Role.updateOne({_id: req.params.id}, {
+            deleted: true, 
+            deletedBy: {
+                accountId: res.locals.account.id,
+                deleteAt: new Date()
+            }
+        });
         req.flash("success", "Xóa thành công")
     }
     catch (err){
@@ -69,6 +99,11 @@ module.exports.edit = async (req, res) => {
 // [PATCH] /admin/roles/edit/:id
 module.exports.editPATCH = async (req, res) => {
     try {
+        req.body.updatedBy = {
+            accountId: res.locals.account.id,
+            updateAt: new Date()
+        }
+
         await Role.updateOne({_id: req.params.id}, req.body);
         req.flash('success', 'Cập nhật quyền thành công');
         res.redirect(`${systemConfig.prefixAdmin}/roles`);

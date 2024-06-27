@@ -65,32 +65,36 @@ const checkboxMulti = document.querySelector('[checbox-multi]');
 if(checkboxMulti){
     const inputCheckAll = checkboxMulti.querySelector('input[name="checkall"]');
     const inputCheckIds = checkboxMulti.querySelectorAll('input[name="id"]');
-
-    inputCheckAll.addEventListener('click', () => {
-        if(inputCheckAll.checked){
-            inputCheckIds.forEach((item) => {
-                item.checked = true;
-            });
-        }
-        else{
-            inputCheckIds.forEach((item) => {
-                item.checked = false;
-            });
-        }
-    });
-
-    inputCheckIds.forEach((item) => {
-        item.addEventListener('click', () => {
-            const countCheckbox = checkboxMulti.querySelectorAll('input[name="id"]:checked').length;
-            if(countCheckbox == inputCheckIds.length){
-                inputCheckAll.checked = true;
+    
+    if(inputCheckAll){
+        inputCheckAll.addEventListener('click', () => {
+            if(inputCheckAll.checked){
+                inputCheckIds.forEach((item) => {
+                    item.checked = true;
+                });
             }
             else{
-                inputCheckAll.checked = false;
+                inputCheckIds.forEach((item) => {
+                    item.checked = false;
+                });
             }
-            
-        });
-    })
+        });   
+    }
+
+    if(inputCheckIds.length > 0){
+        inputCheckIds.forEach((item) => {
+            item.addEventListener('click', () => {
+                const countCheckbox = checkboxMulti.querySelectorAll('input[name="id"]:checked').length;
+                if(countCheckbox == inputCheckIds.length){
+                    inputCheckAll.checked = true;
+                }
+                else{
+                    inputCheckAll.checked = false;
+                }
+                
+            });
+        })
+    }
 }   
 /* END */
 

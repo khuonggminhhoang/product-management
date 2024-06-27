@@ -11,7 +11,9 @@ module.exports.index = async (req, res) => {
         const records = await Account.find({deleted: false});
         for(const record of records){
             const role = await Role.findOne({_id: record.roleId, deleted: false});
-            record.role = role.title;
+            if(role){
+                record.role = role.title;   
+            }
         }
 
         res.render('./admin/pages/accounts/index.pug', {
@@ -20,7 +22,8 @@ module.exports.index = async (req, res) => {
         });
     }
     catch(err){
-        res.status(404).json('Not Found');
+        res.status(404).json('NOT FOUND');
+        console.log(err);
     }
 
 }

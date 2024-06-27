@@ -11,9 +11,21 @@ const roleSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    deleteAt: Date,
-}, {
-    timestamps: true
+    createdBy: {
+        accountId: String,
+        createAt: {
+            type: Date,
+            default: Date.now
+        }
+    },
+    updatedBy: {
+        accountId: String,
+        updateAt: Date
+    },
+    deletedBy: {
+        accountId: String,
+        deleteAt: Date
+    }
 });
 
 module.exports = mongoose.model('Role', roleSchema, 'roles');

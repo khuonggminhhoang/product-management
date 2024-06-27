@@ -31,6 +31,8 @@ block main
                                 th STT 
                                 th Tiêu đề
                                 th Mô tả ngắn
+                                th Người tạo
+                                th Người cập nhật
                                 th Hành Động
                         tbody
                             each record, index in records
@@ -40,6 +42,16 @@ block main
                                     td #{record.title}
                                     
                                     td #{record.description}
+
+                                    if (record.accountFullNameCreate)
+                                        td #{record.accountFullNameCreate} - #{record.createAt}
+                                    else 
+                                        td Hệ thống
+
+                                    if (record.accountFullNameUpdate)
+                                        td #{record.accountFullNameUpdate} - #{record.updateAt}
+                                    else 
+                                        td Hệ thống                                   
                                         
                                     td 
                                         if (roles.permission.includes('role_view'))
