@@ -41,17 +41,17 @@ mixin record-level-table(arr, level = 1)
             //- if else như js
             if (roles.permission.includes('product-category_edit'))
                 td(class='text-center') 
-                    if(item.status == 'active')
+                    if (item.status == 'active')
                         a( 
                             href='javascript:;'
-                            class="badge badge-success"
+                            class="badge badge-success col-10"
                             id = item._id
                             status= item.status
                         ) Hoạt động
                     else
                         a(
                             href='javascript:;'
-                            class="badge badge-danger"
+                            class="badge badge-danger col-10"
                             id = item._id
                             status= item.status
                         ) Dừng hoạt động
@@ -60,12 +60,12 @@ mixin record-level-table(arr, level = 1)
                     if(item.status == 'active')
                         a( 
                             href='javascript:;'
-                            class="badge badge-success"
+                            class="badge badge-success col-10"
                         ) Hoạt động
                     else
                         a(
                             href='javascript:;'
-                            class="badge badge-danger"
+                            class="badge badge-danger col-10"
                         ) Dừng hoạt động
             if (item.accountFullNameCreate)
                 td(class='text-left') 

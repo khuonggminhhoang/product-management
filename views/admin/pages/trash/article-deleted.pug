@@ -5,8 +5,8 @@ include ./../../mixins/notification-success.pug
 include ./../../mixins/notification-error.pug
 
 block main 
-    if (roles.permission.includes('product_restore'))
-        h1(class="mb-4") Danh sách sản phẩm đã xóa 
+    if (roles.permission.includes('article_restore'))
+        h1(class="mb-4") Danh sách bài viết đã xóa 
         
         //- notification
         +notification-success(messages.success)
@@ -19,7 +19,7 @@ block main
                 .row 
                     //- form tìm kiếm
                     .col-6
-                        +form-search(productName)
+                        +form-search(keyword)
 
         //- List products
         .card.bg-light.mb-3
@@ -31,27 +31,25 @@ block main
                             th(class='text-center') STT
                             th(class='text-center') Hình ảnh 
                             th(class='text-left') Tiêu đề
-                            th(class='text-center') Giá
                             th(class='text-center') Trạng thái
                             th(class='text-left') Người xóa
-                            if (roles.permission.includes('product_edit') || roles.permission.includes('product_delete'))
+                            if (roles.permission.includes('article_edit') || roles.permission.includes('article_delete'))
                                 th(class='text-center') Hành Động
                     tbody
                         //- for như js
-                        -for(let i = 0; i < products.length; ++i)
+                        each item, index in articles
                             tr      
-                                td(class='text-center') #{i + 1}
+                                td(class='text-center') #{index + 1}
                                 td(class='text-center') 
-                                    img(src=products[i].thumbnail
+                                    img(src=item.thumbnail
                                         alt="Ảnh sản phẩm đã xóa"
                                         width="100px"
                                         style="aspect-ratio: 4/3"
                                     )
-                                td(class='text-left') #{products[i].title}
-                                td(class='text-center') #{products[i].price}$
+                                td(class='text-left') #{item.title}
                                 //- if else như js
                                 td(class='text-center') 
-                                    if(products[i].status == 'active')
+                                    if (item.status == 'active')
                                         a( 
                                             href='javascript:;'
                                             class="badge badge-success col-10"
@@ -62,25 +60,25 @@ block main
                                             class="badge badge-danger col-10"
                                         ) Dừng hoạt động
 
-                                if (products[i].accountFullName)
+                                if (item.accountFullName)
                                     td 
-                                        p #{products[i].accountFullName} - #{products[i].deleteAt}
+                                        p #{item.accountFullName} - #{item.deleteAt}
                                 else 
                                     td Hệ thống
 
                                 td(class='text-center') 
-                                    if (roles.permission.includes('product_edit'))
+                                    if (roles.permission.includes('article_edit'))
                                         button(
                                             type="button" 
                                             class="btn btn-info btn-sm mr-1"
-                                            data-id=products[i]._id
+                                            data-id=item._id
                                             restored-button
                                         ) Khôi phục
-                                    if (roles.permission.includes('product_delete'))
+                                    if (roles.permission.includes('article_delete'))
                                         button(
                                             type="button" 
                                             class="btn btn-danger btn-sm"
-                                            data-id=products[i]._id 
+                                            data-id=item._id 
                                             deleted-permanent-button
                                         ) Xóa vĩnh viễn
 
@@ -91,14 +89,14 @@ block main
             id="form-restored"
             method="POST"
             action=""
-            path=`${prefixAdmin}/trash/products`
+            path=`${prefixAdmin}/trash/articles`
         )
 
         form(
             id="form-deleted-permanent"
             method="POST"
             action=""
-            path=`${prefixAdmin}/trash/products`
+            path=`${prefixAdmin}/trash/articles`
         )
 
         script(src="/admin/js/trash.js")

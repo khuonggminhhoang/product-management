@@ -18,7 +18,7 @@ const btnDeletedPermanents = document.querySelectorAll('[deleted-permanent-butto
 if(btnDeletedPermanents.length > 0){
     btnDeletedPermanents.forEach((btn) => {
         btn.addEventListener('click', () => {
-            const cf = confirm("Xác nhận xóa sản phẩm?");
+            const cf = confirm("Xác nhận xóa vĩnh viễn?");
 
             if(cf){
                 const id = btn.getAttribute('data-id');
