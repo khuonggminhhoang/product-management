@@ -33,7 +33,7 @@ block main
                 .row 
                     .col-7
                         if (roles.permission.includes('product-category_edit') || roles.permission.includes('product-category_delete'))
-                            +form-change-multi('products-category')
+                            +form-change-multi('products-category', filterStatus)
                     
                     .col-2
                         select(class="form-control dropdown-toggle" name="type" sort)

@@ -1,0 +1,102 @@
+extends ../../layouts/default.pug 
+include ../../mixins/notification-error.pug
+include ../../mixins/tree-level-category.pug
+
+block main 
+    if (roles.permission.includes('article_create'))
+        h1(class='mb-4') Thêm mới bài viết
+
+        +notification-error(messages.error)
+
+        form(
+            action=`${prefixAdmin}/articles/edit/${article.id}?_method=PATCH`
+            method="POST"
+            id="form-create-product"
+            enctype="multipart/form-data"                    
+        )   
+            div(class="form-group")
+                label(for="title") Tiêu đề
+                input(
+                    type="text" 
+                    class="form-control"
+                    id="title"
+                    name="title"
+                    placeholder="Tiêu đề bài viết..."
+                    value=article.title
+                    required
+                )
+            
+            div(class="form-group")
+                label(for="articleCategoryId") Danh mục
+                select(
+                    class="form-control"
+                    id="articleCategoryId"
+                    name="articleCategoryId"
+                )
+                    option(value="") --Chọn danh mục bài viết --     
+                    +tree-level-category(category, 1)
+
+            div(class="form-group")
+                label(for="description") Mô tả ngắn
+                textarea(
+                    class="form-control text-mce"
+                    id="description"
+                    name="description"
+                    placeholder="Mô tả..."
+                ) !{article.description}
+
+            div(class="form-group")
+                label(for="content") Nội dung
+                textarea(
+                    class="form-control text-mce"
+                    id="content"
+                    name="content"
+                    placeholder="Mô tả..."
+                ) !{article.content}
+            
+            div(class="form-group")
+                label(for="thumbnail") Ảnh đại diện
+                input(
+                    type="file"
+                    class="form-control-file"
+                    id="thumbnail"
+                    name="thumbnail"
+                    placeholder="image.jpg"
+                    accept="image/*"
+                )
+                div(class="preview")
+                    img(
+                        id="preview-image"
+                        class="img-thumbnail"
+                        src= (article.thumbnail ? article.thumbnail : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxKjw7UKMErGf4sBC7uz44m65E6QemoO7Tbw&s")
+                        width="150px"
+                    )
+                    a(class="btn btn-danger btn-sm" deleted) x
+
+            div(class="form-group")
+                label(for="position") Vị trí
+                input(
+                    type="number"
+                    class="form-control"
+                    id="position"
+                    name="position"
+                    min="0"
+                    placeholder="Tự động tăng"
+                    value=article.position
+                )
+
+
+            div(class='form-group')
+                label(for="status") Trạng thái bài viết
+                br
+                select(name='status' id='status' class='form-control')
+                    option(value='published' selected = (article.status=='published' ? true : false)) Đã xuất bản
+                    option(value='draft' selected = (article.status=='draft' ? true : false)) Bản nháp 
+                    option(value='pending review' selected = (article.status=='pending review' ? true : false)) Chờ duyệt 
+                    option(value='archived' selected = (article.status=='archived' ? true : false)) Lưu trữ 
+                    option(value='rejected' selected = (article.status=='rejected' ? true : false)) Từ chối 
+                    
+            br
+            button(type="submit" class="btn btn-primary mt-3") Cập nhật
+    else 
+         div Không được cấp quyền truy cập trang này, liên hệ <a href='https://www.facebook.com/khuongminhminh.hoang'>Hoàng Minh Khương</a> để được cấp quyền.

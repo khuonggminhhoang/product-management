@@ -293,7 +293,7 @@ module.exports.editProduct = async (req, res) => {
         req.flash("error", "Cập nhật sản phẩm thất bại");
     }
 
-    res.redirect(`${systemConfig.prefixAdmin}/products/detail/${req.params.id}`);
+    res.redirect(`${systemConfig.prefixAdmin}/products`);
 }
 
 // [GET] /admin/products/detail/:id

@@ -3,17 +3,17 @@ include ../../mixins/notification-error.pug
 include ../../mixins/tree-level-category.pug
 
 block main 
-    if (roles.permission.includes('product-category_create'))
+    if (roles.permission.includes('article_create'))
+        h1(class='mb-4') Thêm mới bài viết
+
         +notification-error(messages.error)
 
-        h1(class="mb-4") Thêm mới danh mục
         form(
-            action="/admin/products-category/create"
+            action=`${prefixAdmin}/articles/create`
             method="POST"
-            id="form-create-product-category"
-            enctype="multipart/form-data" 
-        )
-
+            id="form-create-product"
+            enctype="multipart/form-data"                    
+        )   
             div(class="form-group")
                 label(for="title") Tiêu đề
                 input(
@@ -21,33 +21,40 @@ block main
                     class="form-control"
                     id="title"
                     name="title"
-                    placeholder="Tên danh mục..."
+                    placeholder="Tiêu đề bài viết..."
                     required
                 )
-
+            
             div(class="form-group")
-                label(for="parentId") Danh mục cha
+                label(for="articleCategoryId") Danh mục
                 select(
                     class="form-control"
-                    id="parentId"
-                    name="parentId"
+                    id="articleCategoryId"
+                    name="articleCategoryId"
                 )
-                    option(value="") --Chọn danh mục cha --     
-                    +tree-level-category(parentsCategory, 1)
-
+                    option(value="") --Chọn danh mục bài viết --     
+                    +tree-level-category(category, 1)
 
             div(class="form-group")
-                label(for="description") Mô tả
+                label(for="content") Mô tả ngắn
                 textarea(
                     class="form-control text-mce"
                     id="description"
                     name="description"
                     placeholder="Mô tả..."
-                    rows="5"
                 )
 
             div(class="form-group")
-                label(for="thumbnail") Ảnh
+                label(for="content") Nội dung
+                textarea(
+                    class="form-control text-mce"
+                    id="content"
+                    name="content"
+                    placeholder="Mô tả..."
+                )
+            
+            div(class="form-group")
+                label(for="thumbnail") Ảnh đại diện
                 input(
                     type="file"
                     class="form-control-file"
@@ -76,30 +83,19 @@ block main
                     placeholder="Tự động tăng"
                 )
 
-            div(class="form-check form-check-inline")
-                    input(
-                        class="form-check-input" 
-                        type="radio" 
-                        name="status" 
-                        id="active" 
-                        value="active"
-                        checked
-                    ) 
-                    label(for="active" 
-                    class="form-check-label"
-                    ) Hoạt động
-            div(class="form-check form-check-inline")
-                    input(
-                        class="form-check-input" 
-                        type="radio" 
-                        name="status" 
-                        id="inactive" 
-                        value="inactive"
-                    ) 
-                    label(for="inactive" 
-                    class="form-check-label"
-                    ) Dừng hoạt động
+
+            div(class='form-group')
+                label(for="status") Trạng thái bài viết
+                br
+                select(name='status' id='status' class='form-control')
+                    option(value='published') Đã xuất bản
+                    option(value='draft' selected) Bản nháp 
+                    option(value='pending review') Chờ duyệt 
+                    option(value='archived') Lưu trữ 
+                    option(value='rejected') Từ chối 
+                    
+
             br
-            button(type="submit" class="btn btn-primary") Tạo mới
+            button(type="submit" class="btn btn-primary mt-3") Tạo mới
     else 
-        div Không được cấp quyền truy cập trang này, liên hệ <a href='https://www.facebook.com/khuongminhminh.hoang'/>Hoàng Minh Khương</a> để được cấp quyền
+         div Không được cấp quyền truy cập trang này, liên hệ <a href='https://www.facebook.com/khuongminhminh.hoang'>Hoàng Minh Khương</a> để được cấp quyền.

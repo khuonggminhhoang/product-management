@@ -1,4 +1,4 @@
-mixin form-change-multi(middle_path)
+mixin form-change-multi(middle_path, array_status)
     form(
         id='form-change-multi'
         method="POST"
@@ -9,17 +9,24 @@ mixin form-change-multi(middle_path)
         .input-group
             .input-group-prepend
                 select(class="custom-select" name="type")
+                
                     option(disabled selected ) --- Chọn trạng thái ---
                     - let temp = middle_path.split('-').map(item => item.slice(-1) == 's' ? item.slice(0, -1) : item).join('-');
+
                     if (roles.permission.includes(`${temp}_edit`))
-                        option(value="active") Hoạt động                            
-                        option(value="inactive") Dừng hoạt động   
-                        option(value="change-position") Thay đổi vị trí                            
+                    
+                        optgroup(label='Trạng thái')
+                            each status in array_status.slice(1)
+                                option(value=status.status) #{status.name}                            
+                                
+                        optgroup(label='Vị trí')
+                            option(value="change-position") Thay đổi vị trí                            
 
                     if (roles.permission.includes(`${temp}_delete`))                         
-                        option(value="delete-all") Xóa tất cả    
+                        optgroup(label='Xóa')
+                            option(value="delete-all") Xóa tất cả    
 
-                input(type="text" class="form-control d-none" name="ids" placeholder="id sản phẩm")
+                input(type="text" class="form-control d-none" name="ids")
 
             .input-group-append
                 button(

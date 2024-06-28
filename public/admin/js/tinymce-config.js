@@ -1,7 +1,7 @@
 // tham khảo https://www.tiny.cloud/docs/tinymce/latest/image/
 
 tinymce.init({
-    selector: 'textarea#description',
+    selector: 'textarea.text-mce',
     license_key: 'gpl',
     browser_spellcheck: true,
     plugins: [

@@ -25,7 +25,6 @@ module.exports.index = async (req, res) => {
         res.status(404).json('NOT FOUND');
         console.log(err);
     }
-
 }
 
 // [GET] /admin/accounts/create

@@ -1,0 +1,48 @@
+extends ../../layouts/default.pug
+
+block main 
+
+    if (roles.permission.includes('article_view'))
+        div(class="card")
+            h5(class="card-header text-center") Chi tiết bài viết
+            div(class="card-body")
+                div(class="card-title")
+                    img(src=article.thumbnail style="width: 50px; height:50px; object-fit: cover")
+                    h1 <b>#{article.title}</b>
+                p(class="card-text") Mô tả: !{article.description}
+                p(class="card-text") Nội dung: !{article.content}
+                p(class="card-text") Trạng thái: 
+                    if (article.status == 'published')
+                        a( 
+                            href='javascript:;'
+                            class="badge badge-success"
+                        ) Xuất bản
+                    else if (article.status == 'draft')
+                        a(
+                            href='javascript:;'
+                            class="badge badge-secondary"
+                        ) Bản nháp
+                    else if (article.status == 'archived')
+                        a(
+                            href='javascript:;'
+                            class="badge badge-info"
+                        ) Lưu trữ
+                    else if (article.status == 'pending review')
+                        a(
+                            href='javascript:;'
+                            class="badge badge-warning"
+                        ) Chờ duyệt 
+                    else 
+                        a(
+                            href='javascript:;'
+                            class="badge badge-danger"
+                        ) Từ chối
+
+            div(class="card-footer text-muted") 
+                span Khởi tạo: #{article.accountFullNameCreate} - #{article.createAt}
+                br
+                span Cập nhật: #{article.accountFullNameUpdate} - #{article.updateAt}
+        if (roles.permission.includes('article_edit'))
+            a(type="button" class="btn btn-warning mt-4" href=`${prefixAdmin}/articles/edit/${article.id}`) Chỉnh sửa
+    else 
+        div Không được cấp quyền truy cập trang này, liên hệ <a href='https://www.facebook.com/khuongminhminh.hoang'>Hoàng Minh Khương</a> để được cấp quyền

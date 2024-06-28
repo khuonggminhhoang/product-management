@@ -1,4 +1,4 @@
-extends ./../../layouts/default.pug
+extends ../../layouts/default.pug
 include ./../../mixins/filter-button.pug
 include ./../../mixins/form-search.pug
 include ./../../mixins/pagination.pug
@@ -7,14 +7,14 @@ include ./../../mixins/notification-success.pug
 include ./../../mixins/notification-error.pug
 
 block main 
-    if (roles.permission.includes('product_view'))
-        h1(class="mb-4") Danh sách sản phẩm 
+    if (roles.permission.includes('article_view'))
+        h1(class='mb-4') Bài viết
 
         //- notification
         +notification-success(messages.success)
         +notification-error(messages.error)
 
-        //- Filter
+        //- //- Filter
         .card.bg-light.mb-3
             .card-header Bộ lọc và tìm kiếm
             .card-body
@@ -25,40 +25,38 @@ block main
 
                     //- form tìm kiếm
                     .col-6
-                        +form-search(productName)
+                        +form-search(keyword)
 
         //- List products
         .card.bg-light.mb-3
             .card-header Danh sách
                 .row 
                     .col-7
-                        if (roles.permission.includes('product_edit') || roles.permission.includes('product_delete'))
-                            +form-change-multi('products', filterStatus)
+                        if (roles.permission.includes('article_edit') || roles.permission.includes('article_delete'))
+                            +form-change-multi('articles', filterStatus)
                     
                     .col-2
                         select(class="form-control dropdown-toggle" name="type" sort)
                             option(disabled selected ) ---Chọn tiêu chí sắp xếp---
-                            option(value="price-asc") Giá: Thấp đến cao                            
-                            option(value="price-desc") Giá: Cao đến thấp                           
                             option(value="position-asc") Vị trí tăng dần                           
                             option(value="position-desc") Vị trí giảm dần  
                             option(value="title-asc")  Tên: A - Z
                             option(value="title-desc") Tên: Z - A  
                         
                     .col-3
-                        if (roles.permission.includes('product_create'))
+                        if (roles.permission.includes('article_create'))
                             a(
                                 type="button" 
                                 class=`btn btn-outline-success mr-1 alert-success`
-                                href=`${prefixAdmin}/products/create`
+                                href=`${prefixAdmin}/articles/create`
                                 button-add
                             )  + Thêm mới
                         
-                        if (roles.permission.includes('product_restore'))
+                        if (roles.permission.includes('article_restore'))
                             a(
                                 type="button" 
                                 class=`btn btn-outline-danger mr-1 alert-danger`
-                                href=`${prefixAdmin}/trash/products`
+                                href=`${prefixAdmin}/trash/articles`
                                 button-deleted
                             )  
                                 span
@@ -66,13 +64,11 @@ block main
                                         path(d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z")
                                         path(d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z")
                                 span(class="mr-auto")  Đã xóa
-                    
-                    
-            .card-body
+            .card-body 
                 table(class="table table-hover table-sm" checbox-multi)
                     thead
                         tr
-                            if (roles.permission.includes('product_edit') || roles.permission.includes('product_delete'))
+                            if (roles.permission.includes('article_edit') || roles.permission.includes('article_delete'))
                                 th(class="form-check text-center") 
                                     input(
                                         type="checkbox" 
@@ -82,7 +78,6 @@ block main
                             th(class='text-center') STT
                             th(class='text-center') Hình ảnh 
                             th(class='text-left') Tiêu đề
-                            th(class='text-center') Giá
                             th(class='text-center') Vị trí
                             th(class='text-center') Trạng thái
                             th(class='text-left') Người tạo
@@ -90,33 +85,32 @@ block main
                             th(class='text-center') Hành Động
                     tbody
                         //- for như js
-                        -for(let i = 0; i < products.length; ++i)
+                        each record, index in records
                             tr
-                                if (roles.permission.includes('product_edit') || roles.permission.includes('product_delete'))
+                                if (roles.permission.includes('article_edit') || roles.permission.includes('article_delete'))
                                     td(class="form-check text-center")
                                         input(
                                             type="checkbox" 
                                             name="id"
-                                            value=products[i]._id
+                                            value=record._id
                                         )
                                     
-                                td(class='text-center') #{pagination.limitItems * (pagination.currentPage - 1) + i + 1}
+                                td(class='text-center') #{pagination.limitItems * (pagination.currentPage - 1) + index + 1}
                                 td(class='text-center') 
-                                    img(src=products[i].thumbnail
-                                        alt="Ảnh sản phẩm"
+                                    img(src=record.thumbnail
+                                        alt="image article"
                                         width="100px"
                                         style="aspect-ratio: 4/3"
                                     )
-                                td(class='col-3') #{products[i].title}
-                                td(class='text-center') #{products[i].price}$
+                                td(class='col-3') #{record.title}
 
-                                if (roles.permission.includes('product_edit'))
+                                if (roles.permission.includes('article_edit'))
                                     td(class='text-center')
                                         input(
                                             type="number"
                                             class="form-control"
                                             name="position"
-                                            value=products[i].position    
+                                            value=record.position    
                                         )
                                 else 
                                     td(class='text-center')
@@ -124,93 +118,128 @@ block main
                                             type="number"
                                             class="form-control"
                                             name="position"
-                                            value=products[i].position    
+                                            value=record.position    
                                             readonly
                                         )
 
                                 //- if else như js
-                                if (roles.permission.includes('product_edit'))
+                                if (roles.permission.includes('article_edit'))
                                     td(class='text-center') 
-                                        if(products[i].status == 'active')
+                                        if (record.status == 'published')
                                             a( 
                                                 href='javascript:;'
-                                                class="badge badge-success"
-                                                id = products[i]._id
-                                                status= products[i].status
-                                            ) Hoạt động
-                                        else
+                                                class="badge badge-success col-8"
+                                                id = record._id
+                                                status= record.status
+                                            ) Xuất bản
+                                        else if (record.status == 'draft')
                                             a(
                                                 href='javascript:;'
-                                                class="badge badge-danger"
-                                                id = products[i]._id
-                                                status= products[i].status
-                                            ) Dừng hoạt động
+                                                class="badge badge-secondary col-8"
+                                                id = record._id
+                                                status= record.status
+                                            ) Bản nháp
+                                        else if (record.status == 'archived')
+                                            a(
+                                                href='javascript:;'
+                                                class="badge badge-info col-8"
+                                                id = record._id
+                                                status= record.status
+                                            ) Lưu trữ
+                                        else if (record.status == 'pending review')
+                                            a(
+                                                href='javascript:;'
+                                                class="badge badge-warning col-8"
+                                                id = record._id
+                                                status= record.status
+                                            ) Chờ duyệt 
+                                        else 
+                                            a(
+                                                href='javascript:;'
+                                                class="badge badge-danger col-8"
+                                                id = record._id
+                                                status= record.status
+                                            ) Từ chối
+
                                 else 
                                     td(class='text-center') 
-                                        if(products[i].status == 'active')
+                                        if (record.status == 'published')
                                             a( 
                                                 href='javascript:;'
-                                                class="badge badge-success"
-                                            ) Hoạt động
-                                        else
+                                                class="badge badge-success col-8"
+                                            ) Xuất bản
+                                        else if (record.status == 'draft')
                                             a(
                                                 href='javascript:;'
-                                                class="badge badge-danger"
-                                            ) Dừng hoạt động
+                                                class="badge badge-secondary col-8"
+                                            ) Bản nháp
+                                        else if (record.status == 'archived')
+                                            a(
+                                                href='javascript:;'
+                                                class="badge badge-info col-8"
+                                            ) Lưu trữ
+                                        else if (record.status == 'pending review')
+                                            a(
+                                                href='javascript:;'
+                                                class="badge badge-warning col-8"
+                                            ) Chờ duyệt 
+                                        else 
+                                            a(
+                                                href='javascript:;'
+                                                class="badge badge-danger col-8"
+                                            ) Từ chối
 
 
-                                if (products[i].accountFullNameCreate)
+                                if (record.accountFullNameCreate)
                                     td 
-                                        p #{products[i].accountFullNameCreate}
-                                        p #{products[i].createAt}
+                                        p #{record.accountFullNameCreate}
+                                        p #{record.createAt}
                                 else 
                                     td Hệ thống
 
-                                if (products[i].accountFullNameUpdate)
+                                if (record.accountFullNameUpdate)
                                     td 
-                                        p #{products[i].accountFullNameUpdate}
-                                        p #{products[i].updateAt}
+                                        p #{record.accountFullNameUpdate}
+                                        p #{record.updateAt}
                                 else 
                                     td Hệ thống
 
                                 td(class='text-center') 
-                                    if (roles.permission.includes('product_view'))
+                                    if (roles.permission.includes('article_view'))
                                         a(
                                             type="button" 
-                                            href=`${prefixAdmin}/products/detail/${products[i]._id}`
+                                            href=`${prefixAdmin}/articles/detail/${record._id}`
                                             class="btn btn-info btn-sm mr-1"
                                         ) Chi tiết
-                                    if (roles.permission.includes('product_edit'))
+                                    if (roles.permission.includes('article_edit'))
                                         a(
                                             type="button" 
-                                            href=`${prefixAdmin}/products/edit/${products[i]._id}`
+                                            href=`${prefixAdmin}/articles/edit/${record._id}`
                                             class="btn btn-warning btn-sm mr-1"
                                         ) Sửa
-                                    if (roles.permission.includes('product_delete'))
+                                    if (roles.permission.includes('article_delete'))
                                         a(
                                             type="button" 
                                             class="btn btn-danger btn-sm"
-                                            data-id=products[i]._id 
+                                            data-id=record._id 
                                             button-delete-product
-                                        ) Xóa
-
+                                        ) Xóa    
         //- Pagination
         +pagination(pagination)
 
         form(
-            id='form-change-status-product'
+            id='form-change-status'
             method='POST'
             action=""
-            path=`${prefixAdmin}/products/change-status`
+            path=`${prefixAdmin}/articles/change-status`
         )
 
         form(
-            id='form-delete-product'
+            id='form-delete'
             method='POST'
             action=""
-            path=`${prefixAdmin}/products/delete`
+            path=`${prefixAdmin}/articles/delete`
         )
-
-        script(type='text/javascript' src="/admin/js/product.js")
+        script(type='text/javascript' src="/admin/js/article.js")
     else 
         div Không được cấp quyền truy cập trang này, liên hệ <a href='https://www.facebook.com/khuongminhminh.hoang'>Hoàng Minh Khương</a> để được cấp quyền
