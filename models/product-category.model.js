@@ -5,7 +5,10 @@ mongoose.plugin(slug);
 const schemaProductCategory = new mongoose.Schema({
     title: String,
     description: String,
-    thumbnail: String,
+    thumbnail: {
+        type: String,
+        default:''
+    },
     status: String,
     position: Number,
     parentId: {

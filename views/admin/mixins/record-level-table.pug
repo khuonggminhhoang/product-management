@@ -1,4 +1,4 @@
-mixin record-level-table(arr, level = 1)
+mixin record-level-table(arr, level = 1, middle_path)
     each item, index in arr
         - const prefix = Array(level + 1).join('-- ')
         tr 
@@ -12,12 +12,13 @@ mixin record-level-table(arr, level = 1)
                     )
                 
             td(class='text-center') #{cnt++}
-            td(class='text-center') 
-                img(src=item.thumbnail
-                    alt="Ảnh danh mục"
-                    width="100px"
-                    style="aspect-ratio: 4/3"
-                )
+            if (item.thumbnail != undefined)
+                td(class='text-center') 
+                    img(src=item.thumbnail
+                        alt="Ảnh danh mục"
+                        width="100px"
+                        style="aspect-ratio: 4/3"
+                    )
             td(class='text-left') #{prefix}#{item.title}
 
             if (roles.permission.includes('product-category_edit'))
@@ -82,13 +83,13 @@ mixin record-level-table(arr, level = 1)
             td(class='text-center') 
                 a(
                     type="button" 
-                    href=`${prefixAdmin}/products-category/detail/${item._id}`
+                    href=`${prefixAdmin}/${middle_path}/detail/${item._id}`
                     class="btn btn-info btn-sm mr-1"
                 ) Chi tiết
                 if (roles.permission.includes('product-category_edit'))
                     a(
                         type="button" 
-                        href=`${prefixAdmin}/products-category/edit/${item._id}`
+                        href=`${prefixAdmin}/${middle_path}/edit/${item._id}`
                         class="btn btn-warning btn-sm mr-1"
                     ) Sửa
                 if (roles.permission.includes('product-category_delete'))    
@@ -99,4 +100,4 @@ mixin record-level-table(arr, level = 1)
                         button-delete-product
                     ) Xóa
         if (item.children)
-            +record-level-table(item.children, level + 1)
+            +record-level-table(item.children, level + 1, middle_path)

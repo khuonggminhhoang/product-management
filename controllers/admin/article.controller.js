@@ -125,7 +125,7 @@ module.exports.index = async (req, res) => {
 
 // [GET] admin/articles/create
 module.exports.create = async (req, res) => {
-    const category = [];
+    let category = [];
     try {
         const arr = await ArticleCategory.find({deleted: false, status: 'active'});
         category = createTreeHelper(arr, '');

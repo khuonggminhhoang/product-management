@@ -4,7 +4,7 @@ include ../../mixins/tree-level-category.pug
 
 block main 
     if (roles.permission.includes('article_create'))
-        h1(class='mb-4') Thêm mới bài viết
+        h1(class='mb-4') Chỉnh sửa bài viết
 
         +notification-error(messages.error)
 
@@ -34,7 +34,7 @@ block main
                     name="articleCategoryId"
                 )
                     option(value="") --Chọn danh mục bài viết --     
-                    +tree-level-category(category, 1)
+                    +tree-level-category(category, 1, article.articleCategoryId)
 
             div(class="form-group")
                 label(for="description") Mô tả ngắn

@@ -1,0 +1,40 @@
+extends ../../layouts/default.pug 
+include ../../mixins/notification-error.pug
+include ../../mixins/notification-success.pug
+
+block main 
+    if (roles.permission.includes('article-category_view'))
+        +notification-error(messages.error)
+        +notification-success(messages.success)
+
+        h1(class="mb-4") Chi tiết danh mục bài viết
+
+        if (articleCategory.title)
+            div Tên danh mục:  <b>#{articleCategory.title}</b>
+       
+        if (articleCategory.status == 'active')
+            span Trạng thái: 
+            a(
+                href='javascript:;'
+                class="badge badge-success"
+            ) Hoạt động
+        else 
+            a(
+                href='javascript:;'
+                class="badge badge-danger"
+            ) Dừng hoạt động
+        
+        
+        if (articleCategory.description)
+            div <i>!{articleCategory.description}</i>
+            
+        br
+        if (roles.permission.includes('article-category_edit'))
+            a(
+                type="button" 
+                href=`${prefixAdmin}/articles-category/edit/${articleCategory._id}`
+                class="btn btn-warning btn-sm mr-1"
+            ) Chỉnh sửa
+    else 
+        div Không được cấp quyền truy cập trang này, liên hệ <a href='https://www.facebook.com/khuongminhminh.hoang'/>Hoàng Minh Khương</a> để được cấp quyền
+    

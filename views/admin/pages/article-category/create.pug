@@ -3,15 +3,14 @@ include ../../mixins/notification-error.pug
 include ../../mixins/tree-level-category.pug
 
 block main 
-    if (roles.permission.includes('product-category_create'))
+    if (roles.permission.includes('article-category_create'))
         +notification-error(messages.error)
 
-        h1(class="mb-4") Thêm mới danh mục sản phẩm
+        h1(class="mb-4") Thêm mới danh mục bài viết
         form(
-            action="/admin/products-category/create"
+            action="/admin/articles-category/create"
             method="POST"
             id="form-create-product-category"
-            enctype="multipart/form-data" 
         )
 
             div(class="form-group")
@@ -46,24 +45,6 @@ block main
                     rows="5"
                 )
 
-            div(class="form-group")
-                label(for="thumbnail") Ảnh
-                input(
-                    type="file"
-                    class="form-control-file"
-                    id="thumbnail"
-                    name="thumbnail"
-                    placeholder="image.jpg"
-                    accept="image/*"
-                )
-                div(class="preview")
-                    img(
-                        id="preview-image"
-                        class="img-thumbnail"
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxKjw7UKMErGf4sBC7uz44m65E6QemoO7Tbw&s"
-                        width="150px"
-                    )
-                    a(class="btn btn-danger btn-sm" deleted) x
 
             div(class="form-group")
                 label(for="position") Vị trí
@@ -100,6 +81,6 @@ block main
                     class="form-check-label"
                     ) Dừng hoạt động
             br
-            button(type="submit" class="btn btn-primary") Tạo mới
+            button(type="submit" class="btn btn-primary mt-3") Tạo mới
     else 
         div Không được cấp quyền truy cập trang này, liên hệ <a href='https://www.facebook.com/khuongminhminh.hoang'/>Hoàng Minh Khương</a> để được cấp quyền
