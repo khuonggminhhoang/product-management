@@ -1,0 +1,77 @@
+extends ../../layouts/default.pug
+
+block main 
+    h1(class="mb-4") Chỉnh sửa thông tin cá nhân
+
+    form(
+        action=`/admin/my-account/edit?_method=PATCH`
+        method="POST"
+        enctype="multipart/form-data" 
+    )
+        div(class='form-group')
+            label(for='full-name') Họ tên *
+            input(
+                id='full-name'
+                class='form-control' 
+                type='text'
+                name='fullName'
+                placeholder='Họ và tên...'  
+                required  
+                value=account.fullName
+            )
+
+        div(class='form-group')
+            label(for='email') Email *
+            input(
+                id='email'
+                class='form-control' 
+                type='email'
+                name='email'
+                placeholder='mail@gmail.com...'    
+                required
+                value=account.email
+            )
+
+        div(class='form-group')
+            label(for='phone') Điện thoại *
+            input(
+                id='phone'
+                class='form-control' 
+                type='text'
+                name='phone'
+                placeholder='(+84) 023 ...'  
+                required  
+                value=account.phone
+            )
+            
+        div(class='form-group')
+            label(for='password') Mật khẩu *
+            input(
+                id='password'
+                class='form-control' 
+                type='password'
+                name='password'
+                placeholder='**********'    
+            )
+
+        div(class="form-group")
+            label(for="thumbnail") Avatar
+            input(
+                type="file"
+                class="form-control-file"
+                id="thumbnail"
+                name="avatar"
+                placeholder="image.jpg"
+                accept="image/*"
+            )
+            div(class="preview")
+                img(
+                    id="preview-image"
+                    class="img-thumbnail"
+                    src=account.avatar
+                    width="150px"
+                )
+                a(class="btn btn-danger btn-sm" deleted) x
+
+        button(type="submit" class="btn btn-primary") Cập nhật
+        

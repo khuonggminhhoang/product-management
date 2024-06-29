@@ -1,0 +1,30 @@
+extends ../../layouts/default.pug
+include ../../mixins/notification-success.pug
+include ../../mixins/notification-error.pug
+
+block main
+    +notification-success(messages.success)
+    +notification-error(messages.error)
+    div(class="card")
+        h5(class="card-header text-center") Thông tin cá nhân 
+        div(class="card-body")
+            div(class="card-title")
+                img(src=account.avatar class="rounded-circle mr-3" style="width: 50px; height:50px; object-fit: cover")
+                span <b>#{account.fullName}</b>
+            p(class="card-text") Email: #{account.email}
+            p(class="card-text") Số điện thoại: #{account.phone}
+            p(class="card-text") Trạng thái: 
+                if (account.status == 'active')
+                    a( 
+                        href='javascript:;'
+                        class="badge badge-success"
+                    ) Hoạt động
+                else 
+                    a(
+                        href='javascript:;'
+                        class="badge badge-danger"
+                    ) Đã khóa
+            p(class="card-text") Phân quyền: #{roles.title}
+
+        div(class="card-footer text-muted") 
+            a(type="button" class="btn btn-primary" href=`${prefixAdmin}/my-account/edit`) Chỉnh sửa thông tin cá nhân
