@@ -1,8 +1,9 @@
 mixin record-level-table(arr, level = 1, middle_path)
     each item, index in arr
         - const prefix = Array(level + 1).join('-- ')
+        - let temp = middle_path.split('-').map(item => item.slice(-1) == 's' ? item.slice(0,-1) : item).join('-');
         tr 
-            if (roles.permission.includes('product-category_edit') || roles.permission.includes('product-category_delete'))
+            if (roles.permission.includes(`${temp}_edit`) || roles.permission.includes(`${temp}_delete`))
                 td(class="form-check")
                     input(
                         type="checkbox" 
@@ -21,7 +22,7 @@ mixin record-level-table(arr, level = 1, middle_path)
                     )
             td(class='text-left') #{prefix}#{item.title}
 
-            if (roles.permission.includes('product-category_edit'))
+            if (roles.permission.includes(`${temp}_edit`))
                 td(class='text-center')
                     input(
                         type="number"
@@ -40,7 +41,7 @@ mixin record-level-table(arr, level = 1, middle_path)
                     )
 
             //- if else như js
-            if (roles.permission.includes('product-category_edit'))
+            if (roles.permission.includes(`${temp}_edit`))
                 td(class='text-center') 
                     if (item.status == 'active')
                         a( 
@@ -86,13 +87,13 @@ mixin record-level-table(arr, level = 1, middle_path)
                     href=`${prefixAdmin}/${middle_path}/detail/${item._id}`
                     class="btn btn-info btn-sm mr-1"
                 ) Chi tiết
-                if (roles.permission.includes('product-category_edit'))
+                if (roles.permission.includes(`${temp}_edit`))
                     a(
                         type="button" 
                         href=`${prefixAdmin}/${middle_path}/edit/${item._id}`
                         class="btn btn-warning btn-sm mr-1"
                     ) Sửa
-                if (roles.permission.includes('product-category_delete'))    
+                if (roles.permission.includes(`${temp}_delete`))    
                     a(
                         type="button" 
                         class="btn btn-danger btn-sm"
