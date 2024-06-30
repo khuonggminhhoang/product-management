@@ -42,6 +42,34 @@ block main
                     ) --Chọn danh mục --
                     +tree-level-category(category, 1, product.productCategoryId)
 
+                    
+            div Sản phẩm nổi bật:
+            div(class="form-check form-check-inline mb-3 mr-5")
+                input(
+                    class="form-check-input" 
+                    type="radio" 
+                    name="featured" 
+                    id="featured-true" 
+                    value="true"
+                    checked=(product.featured == true ? true : false)
+                ) 
+                label(for="featured-true" 
+                class="form-check-label"
+                ) Có
+
+            div(class="form-check form-check-inline mb-3")
+                input(
+                    class="form-check-input" 
+                    type="radio" 
+                    name="featured" 
+                    id="featured-false" 
+                    value="false"
+                    checked=(product.featured == false ? true : false)
+                ) 
+                label(for="featured-false" 
+                class="form-check-label"
+                ) Không
+
             div(class="form-group")
                 label(for="description") Mô tả
                 textarea(

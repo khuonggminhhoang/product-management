@@ -225,7 +225,7 @@ module.exports.createPOST = async (req, res) => {
     dataProduct.discountPercentage = dataProduct.discountPercentage == '' ? 0 : parseFloat(dataProduct.discountPercentage);
     dataProduct.stock = dataProduct.stock == '' ? 0 : parseFloat(dataProduct.stock);
     dataProduct.position = dataProduct.position == '' ? qtyProduct + 1 : parseInt(dataProduct.position);
-    
+    dataProduct.featured = dataProduct.featured == 'true' ? true : false;
     //=====================
     // console.log(req.file);          // req.file của thư viện multer
     //=====================
