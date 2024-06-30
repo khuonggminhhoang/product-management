@@ -1,5 +1,6 @@
 extends ./../../layouts/default.pug
 include ./../../mixins/box-head.pug
+include ./../../mixins/layout-grid.pug
 
 block main 
     .container.my-3 
@@ -7,21 +8,7 @@ block main
             .col-12 
                 +box-head("Danh sách sản phẩm")
 
-        .row    
-            each product, index in products 
-                .col-2.mb-3
-                    a(href=`/products/${product.slug}` card-product)
-                        .product-item
-                            .inner-image 
-                                img(
-                                    src = product.thumbnail 
-                                    alt = product.title 
-                                )
-                            .inner-content  
-                                .inner-title #{product.title}
-                                .inner-price-new #{(product.price * (100 - product.discountPercentage)/100).toFixed(0)}$
-                                .inner-price-old #{product.price}$
-                                .inner-discount -#{product.discountPercentage}%
+        +layout-grid(products)
 
             
             

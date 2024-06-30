@@ -1,7 +1,7 @@
 const homeRoutes = require('./home.route.js');
 const productRoutes = require('./product.route.js');
 
-const middleware = require('./../../middlewares/client/layout.middleware.js')
+const middleware = require('./../../middlewares/client/sub-menu.middleware.js')
 
 module.exports = (app) => {
     app.use(middleware.productCategory);

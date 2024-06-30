@@ -13,7 +13,7 @@ module.exports.index = async (req, res)=> {
     });
 }
 
-
+// [GET] /products/:slug
 module.exports.detail = async (req, res) => {
     const slug = req.params.slug;
     try {

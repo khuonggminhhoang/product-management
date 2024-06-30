@@ -1,0 +1,6 @@
+include ./product-item.pug
+
+mixin layout-grid(products)
+    .row    
+        each product, index in products 
+            +product-item(product)

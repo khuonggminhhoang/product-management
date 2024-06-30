@@ -38,6 +38,22 @@
 /* End Footer */
 
 /* Card product */
+.product-item .inner-image{
+    position: relative;
+}
+
+.product-item .inner-featured {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: green;
+    padding: 2px 6px;
+    color: #fff;
+    border-radius: 8px;
+    font-size: 14;
+    font-weight: 600;
+}
+
 .container.my-3 {
     margin-top: 1rem;
     margin-bottom: 1rem;
