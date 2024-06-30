@@ -3,10 +3,10 @@ include ./../../mixins/box-head.pug
 include ./../../mixins/layout-grid.pug
 
 block main 
-    .container.my-3 
+    .container.my-5 
         .row 
             .col-12 
-                +box-head("Danh sách sản phẩm")
+                +box-head(title)
 
         +layout-grid(products)
 

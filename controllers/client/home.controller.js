@@ -3,12 +3,14 @@ const Product = require('./../../models/product.model');
 // [GET] /
 const index = async (req, res) => {
     try{
+        // lấy ra mảng các sp các sp nổi bật
         const featuredProducts = await Product.find({
             featured: true,
             status: 'active',
             deleted: false
         }).limit(6); 
 
+        // lấy ra mảng các sp mới
         const newProducts = await Product.find({
             status: 'active',
             deleted: false
