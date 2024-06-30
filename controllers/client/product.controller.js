@@ -6,7 +6,11 @@ module.exports.index = async (req, res)=> {
         status: 'active',
         deleted: false
     }).sort({position: 'desc'});
-    res.render('./client/pages/products/index.pug', {title: 'Danh sách sản phẩm', products});
+    
+    res.render('./client/pages/products/index.pug', {
+        title: 'Danh sách sản phẩm', 
+        products: products
+    });
 }
 
 
