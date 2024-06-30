@@ -13,7 +13,14 @@ header.header
                     ul 
                         li 
                             a(href='/') Trang chủ
+
                         li(class='sub-menu')
                             - const pathProduct = '/products'
                             a(href=pathProduct) Sản phẩm 
                                 +sub-menu(layoutProductCategory, pathProduct)
+
+                        li(class='sub-menu')
+                            - const pathArticle = '/articles'
+                            a(href=pathArticle) Blog 
+                                +sub-menu(layoutArticleCategory, pathArticle)
+                        
