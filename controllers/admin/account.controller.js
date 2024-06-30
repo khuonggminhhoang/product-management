@@ -45,56 +45,71 @@ module.exports.create = async (req, res) => {
 
 // [POST] /admin/accounts/create
 module.exports.createPOST = async (req, res) => {
-    req.body.password = md5(req.body.password);
-
-    const payload = {
-        fullName: req.body.fullName,
-        email: req.body.email,
-        phone: req.body.phone
+    if(res.locals.roles.permission.includes('account_create')){
+        req.body.password = md5(req.body.password);
+    
+        const payload = {
+            fullName: req.body.fullName,
+            email: req.body.email,
+            phone: req.body.phone
+        }
+    
+        const token = jwt.sign(payload, process.env.SECRET_KEY);
+        req.body.token = token;
+    
+        // const decoded = jwt.verify(token, process.env.SECRET_KEY);
+        // console.log(decoded);
+        // 2 dòng trên để xác minh với payload ban đầu [tham khảo] https://www.npmjs.com/package/jsonwebtoken
+    
+        try{
+            const account = new Account(req.body);
+            await account.save();
+            req.flash('success', 'Tạo tài khoản thành công');
+            res.redirect(`${systemConfig.prefixAdmin}/accounts`);
+        }
+        catch(err){
+            res.redirect('back');
+        }
     }
-
-    const token = jwt.sign(payload, process.env.SECRET_KEY);
-    req.body.token = token;
-
-    // const decoded = jwt.verify(token, process.env.SECRET_KEY);
-    // console.log(decoded);
-    // 2 dòng trên để xác minh với payload ban đầu [tham khảo] https://www.npmjs.com/package/jsonwebtoken
-
-    try{
-        const account = new Account(req.body);
-        await account.save();
-        req.flash('success', 'Tạo tài khoản thành công');
-        res.redirect(`${systemConfig.prefixAdmin}/accounts`);
-    }
-    catch(err){
-        res.redirect('back');
+    else{
+        return;
     }
 }
 
 // [DELETE] /admin/accounts/delete/:id
 module.exports.delete = async (req, res)=> {
-    try {
-        await Account.updateOne({_id: req.params.id}, {deleted: true, deleteAt: new Date()});
-        req.flash('success', 'Xóa tài khoản thành công');
+    if(res.locals.roles.permission.includes('account_delete')){
+        try {
+            await Account.updateOne({_id: req.params.id}, {deleted: true, deleteAt: new Date()});
+            req.flash('success', 'Xóa tài khoản thành công');
+        }
+        catch(err){
+            req.flash('error', 'Xóa tài khoản thất bại');
+        }
+        res.redirect('back');
     }
-    catch(err){
-        req.flash('error', 'Xóa tài khoản thất bại');
+    else{
+        return;
     }
-    res.redirect('back');
 }
 
 // [PATCH] /admin/accounts/change-status/:status/:id
 module.exports.changeStatus = async (req, res) => {
-    try{
-        const id = req.params.id;
-        const status = req.params.status;
-        await Account.updateOne({_id: id}, {status: status});
-        req.flash('success', 'Thay đổi trạng thái thành công');
+    if(res.locals.roles.permission.includes('account_edit')){
+        try{
+            const id = req.params.id;
+            const status = req.params.status;
+            await Account.updateOne({_id: id}, {status: status});
+            req.flash('success', 'Thay đổi trạng thái thành công');
+        }
+        catch(err){
+            req.flash('error', 'Thay đổi trạng thái thất bại')
+        }
+        res.redirect('back');
     }
-    catch(err){
-        req.flash('error', 'Thay đổi trạng thái thất bại')
+    else{
+        return;
     }
-    res.redirect('back');
 }
 
 // [GET] /admin/accounts/edit/:id
@@ -117,21 +132,26 @@ module.exports.edit = async (req, res) => {
 
 // [PATCH] /admin/accounts/edit/:id
 module.exports.editPATCH = async (req, res) => {
-    if(req.body.password){
-        req.body.password = md5(req.body.password);
+    if(res.locals.roles.permission.includes('account_edit')){
+        if(req.body.password){
+            req.body.password = md5(req.body.password);
+        }
+        else{
+            delete req.body.password;
+        }
+    
+        try{
+            await Account.updateOne({_id: req.params.id}, req.body);
+            req.flash('success', 'Cập nhật tài khoản thành công');
+            res.redirect(`${systemConfig.prefixAdmin}/accounts`);
+        }
+        catch(err){
+            req.flash('error', 'Cập nhật thất bại');
+            res.redirect('back');
+        }
     }
     else{
-        delete req.body.password;
-    }
-
-    try{
-        await Account.updateOne({_id: req.params.id}, req.body);
-        req.flash('success', 'Cập nhật tài khoản thành công');
-        res.redirect(`${systemConfig.prefixAdmin}/accounts`);
-    }
-    catch(err){
-        req.flash('error', 'Cập nhật thất bại');
-        res.redirect('back');
+        return;
     }
 }
 

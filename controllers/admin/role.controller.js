@@ -45,39 +45,49 @@ module.exports.create = (req, res) => {
 
 // [POST] /admin/roles/create
 module.exports.createPOST = async (req, res) => {
-    try{
-        const currAccount = res.locals.account;
-        req.body.createdBy = {
-            accountId: currAccount.id,
-            createAt: new Date()
+    if(res.locals.roles.permission.includes('role_create')){
+        try{
+            const currAccount = res.locals.account;
+            req.body.createdBy = {
+                accountId: currAccount.id,
+                createAt: new Date()
+            }
+    
+            const role = new Role(req.body);
+            await role.save();
+            req.flash("success", "Thêm quyền thành công");
         }
-
-        const role = new Role(req.body);
-        await role.save();
-        req.flash("success", "Thêm quyền thành công");
+        catch(err) {
+            req.flash("error", "Thêm quyền thất bại");
+        }
+        res.redirect(`${systemConfig.prefixAdmin}/roles`);
     }
-    catch(err) {
-        req.flash("error", "Thêm quyền thất bại");
+    else{
+        return;
     }
-    res.redirect(`${systemConfig.prefixAdmin}/roles`);
 }
 
 // [DELETE] /admin/roles/delete/:id
 module.exports.delete = async (req, res) => {
-    try {
-        await Role.updateOne({_id: req.params.id}, {
-            deleted: true, 
-            deletedBy: {
-                accountId: res.locals.account.id,
-                deleteAt: new Date()
-            }
-        });
-        req.flash("success", "Xóa thành công")
+    if(res.locals.roles.permission.includes('role_delete')){
+        try {
+            await Role.updateOne({_id: req.params.id}, {
+                deleted: true, 
+                deletedBy: {
+                    accountId: res.locals.account.id,
+                    deleteAt: new Date()
+                }
+            });
+            req.flash("success", "Xóa thành công")
+        }
+        catch (err){
+            req.flash("error", "Xóa thất bại");
+        }
+        res.redirect('back');
     }
-    catch (err){
-        req.flash("error", "Xóa thất bại");
+    else{
+        return;
     }
-    res.redirect('back');
 }
 
 
@@ -98,19 +108,24 @@ module.exports.edit = async (req, res) => {
 
 // [PATCH] /admin/roles/edit/:id
 module.exports.editPATCH = async (req, res) => {
-    try {
-        req.body.updatedBy = {
-            accountId: res.locals.account.id,
-            updateAt: new Date()
+    if(res.locals.roles.permission.includes('role_edit')){
+        try {
+            req.body.updatedBy = {
+                accountId: res.locals.account.id,
+                updateAt: new Date()
+            }
+    
+            await Role.updateOne({_id: req.params.id}, req.body);
+            req.flash('success', 'Cập nhật quyền thành công');
+            res.redirect(`${systemConfig.prefixAdmin}/roles`);
         }
-
-        await Role.updateOne({_id: req.params.id}, req.body);
-        req.flash('success', 'Cập nhật quyền thành công');
-        res.redirect(`${systemConfig.prefixAdmin}/roles`);
+        catch (err) {
+            req.flash('error', 'Cập nhật thất bại');
+            res.redirect('back');
+        }
     }
-    catch (err) {
-        req.flash('error', 'Cập nhật thất bại');
-        res.redirect('back');
+    else{
+        return;
     }
 }
 
@@ -146,16 +161,22 @@ module.exports.permission = async (req, res) => {
 
 // [POST] /admin/roles/permissions
 module.exports.permissionPOST = async (req, res) => {
-    try {
-        const arrData = JSON.parse(req.body.arrObject);
-        for(let data of arrData){
-            const {id, permission} = data
-            await Role.updateOne({_id: id}, {permission: permission});
+    if(res.locals.roles.permission.includes('role_permission')){
+
+        try {
+            const arrData = JSON.parse(req.body.arrObject);
+            for(let data of arrData){
+                const {id, permission} = data
+                await Role.updateOne({_id: id}, {permission: permission});
+            }
+            req.flash('success', "Cập nhật thành công");
         }
-        req.flash('success', "Cập nhật thành công");
+        catch (err) {
+            req.flash('error', "Cập nhật thất bại");
+        }
+        res.redirect('back');
     }
-    catch (err) {
-        req.flash('error', "Cập nhật thất bại");
+    else{
+        return;
     }
-    res.redirect('back');
 }

@@ -142,162 +142,185 @@ module.exports.create = async (req, res) => {
 
 // [POST] admin/articles/create
 module.exports.createPOST = async (req, res) => {
-    try {
-        const qty = await Article.countDocuments();
-        req.body.position = req.body.position == '' ? qty + 1 : parseInt(req.body.position); 
-        req.body.createdBy = {
-            accountId: res.locals.account.id, 
-            createAt: new Date()
+    if(res.locals.roles.permission.includes('article_create')){
+
+        try {
+            const qty = await Article.countDocuments();
+            req.body.position = req.body.position == '' ? qty + 1 : parseInt(req.body.position); 
+            req.body.createdBy = {
+                accountId: res.locals.account.id, 
+                createAt: new Date()
+            }
+            const article = new Article(req.body);
+            await article.save();
+            req.flash('success', 'Tạo bài viết thành công');
         }
-        const article = new Article(req.body);
-        await article.save();
-        req.flash('success', 'Tạo bài viết thành công');
+        catch(err) {    
+            req.flash('error', 'Tạo bài viết thất bại');
+        }
+        
+        res.redirect(`${systemConfig.prefixAdmin}/articles`);
     }
-    catch(err) {    
-        req.flash('error', 'Tạo bài viết thất bại');
+    else{
+        return;
     }
-    
-    res.redirect(`${systemConfig.prefixAdmin}/articles`);
 }
 
 // [PATCH] /admin/articles/change-status/:status/:id
 module.exports.changeStatus = async (req, res) => {
-    const id = req.params.id;
-    const status = req.params.status;
-    try{
-        await Article.updateOne({_id: id}, {
-            status: status,
-            updatedBy: {
-                accountId: res.locals.account.id,
-                updateAt: new Date()
-            }
-        });
-        req.flash("success", "Cập nhật trạng thái thành công");
-    }
-    catch(e) {
-        req.flash("error", "Cập nhật trạng thái thất bại");
-    }
+    if(res.locals.roles.permission.includes('article_edit')){
 
-    res.redirect('back');                               // chuyển hướng trang lại url trang hiện tại
+        const id = req.params.id;
+        const status = req.params.status;
+        try{
+            await Article.updateOne({_id: id}, {
+                status: status,
+                updatedBy: {
+                    accountId: res.locals.account.id,
+                    updateAt: new Date()
+                }
+            });
+            req.flash("success", "Cập nhật trạng thái thành công");
+        }
+        catch(e) {
+            req.flash("error", "Cập nhật trạng thái thất bại");
+        }
+    
+        res.redirect('back');                               // chuyển hướng trang lại url trang hiện tại
+    }
+    else{
+        return;
+    }
 };
 
 // [PATCH] /admin/articles/change-multi
 module.exports.changeMulti = async (req, res) => {
-    const type = req.body.type;
-    const ids = req.body.ids;
-    const arrId = ids.split("; ");
-    const updatedBy = {
-        accountId: res.locals.account.id,
-        updateAt: new Date()
-    }
-    switch(type){
-        case 'rejected':
-            try{
-                await Article.updateMany({_id: {$in: arrId}}, {status: 'rejected', updatedBy: updatedBy});
-                req.flash("success", "Cập nhật trạng thái thành công")
-            }
-            catch(e) {
-                req.flash("error", "Cập nhật trạng thái thất bại");
-            }
-            break;
+    if(res.locals.roles.permission.includes('article_edit')){
 
-        case 'pending review':
-            try{
-                await Article.updateMany({_id: {$in: arrId}}, {status: 'pending review', updatedBy: updatedBy});
-                req.flash("success", "Cập nhật trạng thái thành công")
-            }
-            catch(e) {
-                req.flash("error", "Cập nhật trạng thái thất bại");
-            }
-            break;
-
-        case 'archived':
-            try{
-                await Article.updateMany({_id: {$in: arrId}}, {status: 'archived', updatedBy: updatedBy});
-                req.flash("success", "Cập nhật trạng thái thành công")
-            }
-            catch(e) {
-                req.flash("error", "Cập nhật trạng thái thất bại");
-            }
-            break;
-
-        case 'published':
-            try{
-                await Article.updateMany({_id: {$in: arrId}}, {status: 'published', updatedBy: updatedBy});
-                req.flash("success", "Cập nhật trạng thái thành công")
-            }
-            catch(e) {
-                req.flash("error", "Cập nhật trạng thái thất bại");
-            }
-            break;
-
-        case 'draft':
-            try{
-                await Article.updateMany({_id: {$in: arrId}}, {status: 'draft', updatedBy: updatedBy});
-                req.flash("success", "Cập nhật trạng thái thành công")
-            }
-            catch(e) {
-                req.flash("error", "Cập nhật trạng thái thất bại");
-            }
-            break;
-
-        case 'delete-all':
-            try{
-                await Article.updateMany({_id: {$in: arrId}}, {
-                    deleted: true,  
-                    deletedBy: {
-                        accountId: res.locals.account.id,
-                        deleteAt: new Date()
-                    },
-                    updatedBy: updatedBy
-                });
-                
-                req.flash("success", "Xóa bài viết thành công")
-            }
-            catch(e) {
-                req.flash("error", "Xóa bài viết thất bại");
-            }
-            break;
-
-        case 'change-position':
-            try{
-                for(let item of arrId) {
-                    let [id, position] = item.split('-');
-                    position = parseInt(position);
-                    await Article.updateOne({_id: id}, {position: position, updatedBy: updatedBy});
+        const type = req.body.type;
+        const ids = req.body.ids;
+        const arrId = ids.split("; ");
+        const updatedBy = {
+            accountId: res.locals.account.id,
+            updateAt: new Date()
+        }
+        switch(type){
+            case 'rejected':
+                try{
+                    await Article.updateMany({_id: {$in: arrId}}, {status: 'rejected', updatedBy: updatedBy});
+                    req.flash("success", "Cập nhật trạng thái thành công")
                 }
-                req.flash("success", "Thay đổi vị trí thành công")
-            }
-            catch(e) {
-                req.flash("error", "Thay đổi vị trí thất bại");
-            }
-            break;
-
-        default:
-            break;
+                catch(e) {
+                    req.flash("error", "Cập nhật trạng thái thất bại");
+                }
+                break;
+    
+            case 'pending review':
+                try{
+                    await Article.updateMany({_id: {$in: arrId}}, {status: 'pending review', updatedBy: updatedBy});
+                    req.flash("success", "Cập nhật trạng thái thành công")
+                }
+                catch(e) {
+                    req.flash("error", "Cập nhật trạng thái thất bại");
+                }
+                break;
+    
+            case 'archived':
+                try{
+                    await Article.updateMany({_id: {$in: arrId}}, {status: 'archived', updatedBy: updatedBy});
+                    req.flash("success", "Cập nhật trạng thái thành công")
+                }
+                catch(e) {
+                    req.flash("error", "Cập nhật trạng thái thất bại");
+                }
+                break;
+    
+            case 'published':
+                try{
+                    await Article.updateMany({_id: {$in: arrId}}, {status: 'published', updatedBy: updatedBy});
+                    req.flash("success", "Cập nhật trạng thái thành công")
+                }
+                catch(e) {
+                    req.flash("error", "Cập nhật trạng thái thất bại");
+                }
+                break;
+    
+            case 'draft':
+                try{
+                    await Article.updateMany({_id: {$in: arrId}}, {status: 'draft', updatedBy: updatedBy});
+                    req.flash("success", "Cập nhật trạng thái thành công")
+                }
+                catch(e) {
+                    req.flash("error", "Cập nhật trạng thái thất bại");
+                }
+                break;
+    
+            case 'delete-all':
+                try{
+                    await Article.updateMany({_id: {$in: arrId}}, {
+                        deleted: true,  
+                        deletedBy: {
+                            accountId: res.locals.account.id,
+                            deleteAt: new Date()
+                        },
+                        updatedBy: updatedBy
+                    });
+                    
+                    req.flash("success", "Xóa bài viết thành công")
+                }
+                catch(e) {
+                    req.flash("error", "Xóa bài viết thất bại");
+                }
+                break;
+    
+            case 'change-position':
+                try{
+                    for(let item of arrId) {
+                        let [id, position] = item.split('-');
+                        position = parseInt(position);
+                        await Article.updateOne({_id: id}, {position: position, updatedBy: updatedBy});
+                    }
+                    req.flash("success", "Thay đổi vị trí thành công")
+                }
+                catch(e) {
+                    req.flash("error", "Thay đổi vị trí thất bại");
+                }
+                break;
+    
+            default:
+                break;
+        }
+    
+        res.redirect('back');
     }
-
-    res.redirect('back');
+    else{
+        return;
+    }
 };
 
 // [DELETE]/admin/articles/delete/:id
 module.exports.delete = async (req, res) => {
-    try {
-        const id = req.params.id;
-        await Article.updateOne({_id: id}, {
-            deleted: true,
-            deletedBy: {
-                accountId: res.locals.account.id,
-                deleteAt: new Date()
-            }
-        })
-
-        req.flash('success', 'Xóa bài viết thành công');
+    if(res.locals.roles.permission.includes('article_delete')){
+        try {
+            const id = req.params.id;
+            await Article.updateOne({_id: id}, {
+                deleted: true,
+                deletedBy: {
+                    accountId: res.locals.account.id,
+                    deleteAt: new Date()
+                }
+            })
+    
+            req.flash('success', 'Xóa bài viết thành công');
+        }
+        catch(err){
+            req.flash('error', 'Xóa bài viết thất bại');
+        }
+        res.redirect('back');
     }
-    catch(err){
-        req.flash('error', 'Xóa bài viết thất bại');
+    else{
+        return;
     }
-    res.redirect('back');
 }
 
 // [GET] /admin/articles/edit/:id
@@ -324,22 +347,27 @@ module.exports.edit = async (req, res) => {
 
 // [PATCH] /admin/article/edit/:id
 module.exports.editPATCH = async (req, res) => {
-    try{
-        const qty = await Article.countDocuments();
-        req.body.position = req.body.position == '' ? qty : parseInt(req.body.position); 
-
-        req.body.updatedBy = {
-            accountId: res.locals.account.id,
-            updateAt: new Date()
+    if(res.locals.roles.permission.includes('article_edit')){
+        try{
+            const qty = await Article.countDocuments();
+            req.body.position = req.body.position == '' ? qty : parseInt(req.body.position); 
+    
+            req.body.updatedBy = {
+                accountId: res.locals.account.id,
+                updateAt: new Date()
+            }
+    
+            await Article.updateOne({_id: req.params.id}, req.body)
+            req.flash('success', 'Cập nhật bài viết thành công');
         }
-
-        await Article.updateOne({_id: req.params.id}, req.body)
-        req.flash('success', 'Cập nhật bài viết thành công');
+        catch(err) {
+            req.flash('error', 'Cập nhật bài viết thất bại');
+        }
+        res.redirect(`${systemConfig.prefixAdmin}/articles`);
     }
-    catch(err) {
-        req.flash('error', 'Cập nhật bài viết thất bại');
+    else{
+        return;
     }
-    res.redirect(`${systemConfig.prefixAdmin}/articles`);
 }
 
 // [GET] /admin/detail/:id

@@ -91,112 +91,127 @@ module.exports.index = async (req, res) => {
 
 // [PATCH] /admin/products/change-status/:status/:id
 module.exports.changeStatus = async (req, res) => {
-    const id = req.params.id;
-    const status = req.params.status;
-    try{
-        await Product.updateOne({_id: id}, {
-            status: status,
-            updatedBy: {
-                accountId: res.locals.account.id,
-                updateAt: new Date()
-            }
-        });
-        req.flash("success", "Cập nhật trạng thái thành công");
+    if(res.locals.roles.permission.includes('product_edit')){
+        const id = req.params.id;
+        const status = req.params.status;
+        try{
+            await Product.updateOne({_id: id}, {
+                status: status,
+                updatedBy: {
+                    accountId: res.locals.account.id,
+                    updateAt: new Date()
+                }
+            });
+            req.flash("success", "Cập nhật trạng thái thành công");
+        }
+        catch(e) {
+            req.flash("error", "Cập nhật trạng thái thất bại");
+        }
+    
+        res.redirect('back');                               // chuyển hướng trang lại url trang hiện tại
     }
-    catch(e) {
-        req.flash("error", "Cập nhật trạng thái thất bại");
+    else{
+        return;
     }
-
-    res.redirect('back');                               // chuyển hướng trang lại url trang hiện tại
 };
 
 // [PATCH] /admin/products/change-multi
 module.exports.changeMulti = async (req, res) => {
-    const type = req.body.type;
-    const ids = req.body.ids;
-    const arrId = ids.split("; ");
-    const updatedBy = {
-        accountId: res.locals.account.id,
-        updateAt: new Date()
-    }
-
-    switch(type){
-        case 'active': 
-            try{
-                await Product.updateMany({_id: {$in: arrId}}, {status: 'active', updatedBy: updatedBy});
-                req.flash("success", "Cập nhật trạng thái thành công")
-            }
-            catch(e) {
-                req.flash("error", "Cập nhật trạng thái thất bại");
-            }
-            break;
-
-        case 'inactive':
-            try{
-                await Product.updateMany({_id: {$in: arrId}}, {status: 'inactive', updatedBy: updatedBy});
-                req.flash("success", "Cập nhật trạng thái thành công")
-            }
-            catch(e) {
-                req.flash("error", "Cập nhật trạng thái thất bại");
-            }
-            break;
-
-        case 'delete-all':
-            try{
-                await Product.updateMany({_id: {$in: arrId}}, {
-                    deleted: true,  
-                    deletedBy: {
-                        accountId: res.locals.account.id,
-                        deleteAt: new Date()
-                    },
-                    updatedBy: updatedBy
-                });
-                
-                req.flash("success", "Xóa sản phẩm thành công")
-            }
-            catch(e) {
-                req.flash("error", "Xóa sản phẩm thất bại");
-            }
-            break;
-
-        case 'change-position':
-            try{
-                for(let item of arrId) {
-                    let [id, position] = item.split('-');
-                    position = parseInt(position);
-                    await Product.updateOne({_id: id}, {position: position, updatedBy: updatedBy});
+    if(res.locals.roles.permission.includes('product_edit')){
+        const type = req.body.type;
+        const ids = req.body.ids;
+        const arrId = ids.split("; ");
+        const updatedBy = {
+            accountId: res.locals.account.id,
+            updateAt: new Date()
+        }
+    
+        switch(type){
+            case 'active': 
+                try{
+                    await Product.updateMany({_id: {$in: arrId}}, {status: 'active', updatedBy: updatedBy});
+                    req.flash("success", "Cập nhật trạng thái thành công")
                 }
-                req.flash("success", "Thay đổi vị trí thành công")
-            }
-            catch(e) {
-                req.flash("error", "Thay đổi vị trí thất bại");
-            }
-            break;
-
-        default:
-            break;
+                catch(e) {
+                    req.flash("error", "Cập nhật trạng thái thất bại");
+                }
+                break;
+    
+            case 'inactive':
+                try{
+                    await Product.updateMany({_id: {$in: arrId}}, {status: 'inactive', updatedBy: updatedBy});
+                    req.flash("success", "Cập nhật trạng thái thành công")
+                }
+                catch(e) {
+                    req.flash("error", "Cập nhật trạng thái thất bại");
+                }
+                break;
+    
+            case 'delete-all':
+                try{
+                    await Product.updateMany({_id: {$in: arrId}}, {
+                        deleted: true,  
+                        deletedBy: {
+                            accountId: res.locals.account.id,
+                            deleteAt: new Date()
+                        },
+                        updatedBy: updatedBy
+                    });
+                    
+                    req.flash("success", "Xóa sản phẩm thành công")
+                }
+                catch(e) {
+                    req.flash("error", "Xóa sản phẩm thất bại");
+                }
+                break;
+    
+            case 'change-position':
+                try{
+                    for(let item of arrId) {
+                        let [id, position] = item.split('-');
+                        position = parseInt(position);
+                        await Product.updateOne({_id: id}, {position: position, updatedBy: updatedBy});
+                    }
+                    req.flash("success", "Thay đổi vị trí thành công")
+                }
+                catch(e) {
+                    req.flash("error", "Thay đổi vị trí thất bại");
+                }
+                break;
+    
+            default:
+                break;
+        }
+    
+        res.redirect('back');
     }
-
-    res.redirect('back');
+    else{
+        return;
+    }
 };
 
 // [DELETE] /admin/products/delete/:id
 module.exports.deleteProduct = async (req, res) => {
-    try{
-        const id = req.params.id;
-        await Product.updateOne({_id: id}, {
-            deleted: true,
-            deletedBy: {
-                accountId: res.locals.account.id,
-                deleteAt: new Date()
-            }
-        });
-        req.flash("success", "Xóa sản phẩm thành công")
+    if(res.locals.roles.permission.includes('product_delete')){
+        try{
+            const id = req.params.id;
+            await Product.updateOne({_id: id}, {
+                deleted: true,
+                deletedBy: {
+                    accountId: res.locals.account.id,
+                    deleteAt: new Date()
+                }
+            });
+            req.flash("success", "Xóa sản phẩm thành công")
+        }
+        catch(e) {
+            req.flash("error", "Xóa sản phẩm thất bại");
+        }
+        res.redirect('back');
     }
-    catch(e) {
-        req.flash("error", "Xóa sản phẩm thất bại");
+    else{
+        return;
     }
-    res.redirect('back');
 };
 
 // [GET] /admin/products/create
@@ -219,30 +234,35 @@ module.exports.create = async (req, res) => {
     
 // [POST] /admin/products/create
 module.exports.createPOST = async (req, res) => {
-    const qtyProduct = await Product.countDocuments();
-    const dataProduct = req.body;
-    dataProduct.price = dataProduct.price == '' ? 0 : parseInt(dataProduct.price);
-    dataProduct.discountPercentage = dataProduct.discountPercentage == '' ? 0 : parseFloat(dataProduct.discountPercentage);
-    dataProduct.stock = dataProduct.stock == '' ? 0 : parseFloat(dataProduct.stock);
-    dataProduct.position = dataProduct.position == '' ? qtyProduct + 1 : parseInt(dataProduct.position);
-    dataProduct.featured = dataProduct.featured == 'true' ? true : false;
-    //=====================
-    // console.log(req.file);          // req.file của thư viện multer
-    //=====================
-    try{
-        const currAccount = res.locals.account;
-        dataProduct.createdBy = {
-            accountId: currAccount.id
-        };
-
-        const product = new Product(dataProduct);
-        await product.save();
-        req.flash("success", "Tạo mới sản phẩm thành công");
+    if(res.locals.roles.permission.includes('product_create')){
+        const qtyProduct = await Product.countDocuments();
+        const dataProduct = req.body;
+        dataProduct.price = dataProduct.price == '' ? 0 : parseInt(dataProduct.price);
+        dataProduct.discountPercentage = dataProduct.discountPercentage == '' ? 0 : parseFloat(dataProduct.discountPercentage);
+        dataProduct.stock = dataProduct.stock == '' ? 0 : parseFloat(dataProduct.stock);
+        dataProduct.position = dataProduct.position == '' ? qtyProduct + 1 : parseInt(dataProduct.position);
+        dataProduct.featured = dataProduct.featured == 'true' ? true : false;
+        //=====================
+        // console.log(req.file);          // req.file của thư viện multer
+        //=====================
+        try{
+            const currAccount = res.locals.account;
+            dataProduct.createdBy = {
+                accountId: currAccount.id
+            };
+    
+            const product = new Product(dataProduct);
+            await product.save();
+            req.flash("success", "Tạo mới sản phẩm thành công");
+        }
+        catch(e) {
+            req.flash("error", "Tạo mới sản phẩm thất bại");
+        }
+        res.redirect(`${systemConfig.prefixAdmin}/products`);
     }
-    catch(e) {
-        req.flash("error", "Tạo mới sản phẩm thất bại");
+    else{
+        return;
     }
-    res.redirect(`${systemConfig.prefixAdmin}/products`);
 }
 
 // [GET] /admin/products/edit/:id
@@ -270,30 +290,35 @@ module.exports.edit = async (req, res) => {
 
 // [PATCH] /admin/products/edit/:id
 module.exports.editProduct = async (req, res) => {
-    const id = req.params.id;
-    const dataProduct = req.body;
-    const qtyProduct = await Product.countDocuments();
-
-    dataProduct.price = dataProduct.price == '' ? 0 : parseInt(dataProduct.price);
-    dataProduct.discountPercentage = dataProduct.discountPercentage == '' ? 0 : parseFloat(dataProduct.discountPercentage);
-    dataProduct.stock = dataProduct.stock == '' ? 0 : parseFloat(dataProduct.stock);
-    dataProduct.position = dataProduct.position == '' ? qtyProduct : parseInt(dataProduct.position);
+    if(res.locals.roles.permission.includes('product_edit')){
+        const id = req.params.id;
+        const dataProduct = req.body;
+        const qtyProduct = await Product.countDocuments();
     
-    const currAccount = res.locals.account;
-    dataProduct.updatedBy = {
-        accountId: currAccount.id,
-        updateAt: new Date()
+        dataProduct.price = dataProduct.price == '' ? 0 : parseInt(dataProduct.price);
+        dataProduct.discountPercentage = dataProduct.discountPercentage == '' ? 0 : parseFloat(dataProduct.discountPercentage);
+        dataProduct.stock = dataProduct.stock == '' ? 0 : parseFloat(dataProduct.stock);
+        dataProduct.position = dataProduct.position == '' ? qtyProduct : parseInt(dataProduct.position);
+        
+        const currAccount = res.locals.account;
+        dataProduct.updatedBy = {
+            accountId: currAccount.id,
+            updateAt: new Date()
+        }
+    
+        try{
+            await Product.updateOne({_id: id}, dataProduct);
+            req.flash("success", "Cập nhật sản phẩm thành công");
+        }
+        catch(err) {
+            req.flash("error", "Cập nhật sản phẩm thất bại");
+        }
+    
+        res.redirect(`${systemConfig.prefixAdmin}/products`);
     }
-
-    try{
-        await Product.updateOne({_id: id}, dataProduct);
-        req.flash("success", "Cập nhật sản phẩm thành công");
+    else{
+        return;
     }
-    catch(err) {
-        req.flash("error", "Cập nhật sản phẩm thất bại");
-    }
-
-    res.redirect(`${systemConfig.prefixAdmin}/products`);
 }
 
 // [GET] /admin/products/detail/:id
