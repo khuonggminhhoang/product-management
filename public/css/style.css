@@ -82,8 +82,8 @@
 
 .inner-image img {
     width: 100%;
-    height: auto;
-    aspect-ratio: 4/3;
+    height: auto;   
+    aspect-ratio: 1/1;
 }
 
 .inner-content {
@@ -92,39 +92,41 @@
 
 .inner-content .inner-title {
     font-size: small;
-    font-weight: bold;
     margin-bottom: 0.25rem;
     color: #333;
-    white-space: nowrap; /* Không cho phép xuống dòng */
     overflow: hidden; /* Ẩn nội dung tràn */
     text-overflow: ellipsis; /* Hiển thị dấu ba chấm khi nội dung bị cắt ngắn */
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Số dòng tối đa */
+    -webkit-box-orient: vertical;
+    height: 3em; /*Chiều cao của 2 dòng, tùy thuộc vào font-size*/
 }
 
 .inner-content .inner-price-new {
-    font-size: 1.2rem;
+    font-size: smaller;
     font-weight: bold;
     color: #27ae60;
     margin-bottom: 0.25rem;
 }
 
 .inner-content .inner-price-old {
-    font-size: 1rem;
+    font-size: x-small;
     text-decoration: line-through;
     font-weight: bold;
-    color: red;
+    color: #BDBDBD;
     margin-bottom: 0.25rem;
 }
 
 .inner-content .inner-discount {
-    font-size: 0.9rem;
+    font-size: x-small;
     font-weight: bold;
-    color: #fff;
+    color: #EB690A;
     margin-bottom: 0.5rem;
-    border: 1px solid red;
-    background-color: red;
+    border: 1px solid #FEEEEA;
+    background-color: #FEEEEA;
     max-width: 70px;
     text-align: center;
-    border-radius: 7px;
+    border-radius: 6px;
 }
 
 a[card-product]:hover{
@@ -173,3 +175,43 @@ a[card-product]:hover{
     top: 0;
 }
 /* End sub-menu */
+
+/* product detail */
+.product-detail .inner-title {
+    font-size: 32px;
+    margin-bottom: 15px;
+}
+
+.product-detail .inner-price-new {
+    font-size: larger;
+    font-weight: bold;
+    color: #27ae60;
+    margin-bottom: 0.25rem;
+}
+
+.product-detail .inner-price-old {
+    font-size: small;
+    text-decoration: line-through;
+    font-weight: bold;
+    color: #BDBDBD;
+    margin-bottom: 0.25rem;
+}
+
+.product-detail .inner-percent {
+    font-size: x-small;
+    font-weight: bold;
+    color: #FEEEEA;
+    margin-bottom: 0.5rem;
+    border: 1px solid #EB690A;
+    background-color: #EB690A;
+    max-width: 70px;
+    text-align: center;
+    border-radius: 6px;
+}
+
+.product-detail .inner-stock{
+    color: #BDBDBD;
+    font-weight: 400;
+}
+
+/* End product detail */

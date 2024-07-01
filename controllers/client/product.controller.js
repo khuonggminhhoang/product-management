@@ -25,6 +25,14 @@ module.exports.detail = async (req, res) => {
             slug: slug
         });
 
+        const productCategory = await ProductCategory.findOne({
+            _id: product.productCategoryId,
+            status: 'active',
+            deleted: false
+        });
+
+        product.category = productCategory;
+
         res.render('./client/pages/products/detail.pug', {
             title: product.title,
             product: product

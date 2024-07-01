@@ -1,5 +1,5 @@
 mixin product-item(product)
-    .col-2.mb-3
+    .col-2.mb-2
         a(href=`/products/detail/${product.slug}` card-product)
             .product-item
                 .inner-image 
@@ -14,4 +14,4 @@ mixin product-item(product)
                     .inner-title #{product.title}
                     .inner-price-new ₫#{(product.price * (100 - product.discountPercentage)/100).toFixed(0)}
                     .inner-price-old ₫#{product.price}
-                    .inner-discount -#{product.discountPercentage}%
+                    .inner-discount #{product.discountPercentage}% GIẢM
