@@ -215,3 +215,9 @@ a[card-product]:hover{
 }
 
 /* End product detail */
+.bottom-bar {
+    width: 10%;
+    background-color: red;
+    height: 2px;
+    display: inline-block;
+}

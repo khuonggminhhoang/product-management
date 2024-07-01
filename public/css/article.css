@@ -1,0 +1,96 @@
+.article-featured {
+    width: 100%;
+    aspect-ratio: 4/3; /* Tỷ lệ 3:4 */
+    overflow: hidden;
+    position: relative;
+}
+
+.article-featured .inner-featured{
+    border-radius: 7px;
+    width: 100%;
+    height: 100%;
+    object-fit: scale-down; /* Đảm bảo ảnh lấp đầy khung chứa */
+    background-size: cover; /* Đảm bảo ảnh phủ toàn bộ khu vực */
+    background-position: center; /* Đặt ảnh ở giữa */
+    background-repeat: no-repeat; /* Không lặp lại ảnh */
+    position: relative;
+}
+
+.inner-featured .content {
+    position: absolute;
+    bottom: 0;
+    padding: 10px;
+}
+
+.content .inner-description {
+    overflow: hidden; /* Ẩn nội dung tràn */
+    text-overflow: ellipsis; /* Hiển thị dấu ba chấm khi nội dung bị cắt ngắn */
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Số dòng tối đa */
+    -webkit-box-orient: vertical;
+    height: 3em; /*Chiều cao của 2 dòng, tùy thuộc vào font-size*/
+    color: #fff;
+    font-size: smaller;
+}
+
+.content .inner-title {
+    font-weight: 600;
+    color: #fff;
+    font-size: larger;
+    text-decoration: none;
+}
+
+.content .inner-title:hover {
+    text-decoration: underline;
+    color: blue;
+}
+
+.content span {
+    color: #cfcfcf;
+}
+
+ul {
+    padding: 0;
+}
+
+.card-article {
+    position: relative;
+    list-style-type: none;
+    width: 100%;
+    margin-bottom: 3em;
+}
+
+.card-article img {
+    position: absolute;
+    width: 30%;
+    height: 100px;
+    border-radius: 7px;
+}
+
+.card-article .inner-title {
+    position: relative;
+    left: 30%;
+    width: 70%;
+    padding-left: 5px;
+    overflow: hidden; /* Ẩn nội dung tràn */
+    text-overflow: ellipsis; /* Hiển thị dấu ba chấm khi nội dung bị cắt ngắn */
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Số dòng tối đa */
+    -webkit-box-orient: vertical;
+    height: 3em; /*Chiều cao của 2 dòng, tùy thuộc vào font-size*/
+    text-decoration: none;
+    font-weight: 600;
+    color: #333;
+}
+
+.card-article .inner-title:hover {
+    color: #EB690A;
+}
+
+.card-article .inner-info {
+    position: relative;
+    left: 30%;
+    width: 70%;
+    padding-left: 5px;
+    font-size: small;
+}

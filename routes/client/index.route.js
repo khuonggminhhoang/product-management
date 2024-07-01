@@ -1,5 +1,6 @@
 const homeRoutes = require('./home.route.js');
 const productRoutes = require('./product.route.js');
+const articleRoutes = require('./article.route.js');
 
 const middleware = require('./../../middlewares/client/sub-menu.middleware.js')
 
@@ -9,4 +10,5 @@ module.exports = (app) => {
 
     app.use("/", homeRoutes);
     app.use('/products', productRoutes);
+    app.use('/articles', articleRoutes);
 }

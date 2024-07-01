@@ -14,7 +14,7 @@ module.exports.index = async (req, res)=> {
         title: 'Danh sách sản phẩm', 
         products: products
     });
-}
+} 
 
 // [GET] /products/detail/:slug
 module.exports.detail = async (req, res) => {

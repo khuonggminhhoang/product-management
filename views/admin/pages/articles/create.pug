@@ -35,10 +35,36 @@ block main
                     option(value="") --Chọn danh mục bài viết --     
                     +tree-level-category(category, 1)
 
+            div Bài viết nổi bật:
+            div(class="form-check form-check-inline mb-3 mr-5")
+                input(
+                    class="form-check-input" 
+                    type="radio" 
+                    name="featured" 
+                    id="featured-true" 
+                    value="true"
+                ) 
+                label(for="featured-true" 
+                class="form-check-label"
+                ) Có
+
+            div(class="form-check form-check-inline mb-3")
+                input(
+                    class="form-check-input" 
+                    type="radio" 
+                    name="featured" 
+                    id="featured-false" 
+                    value="false"
+                    checked
+                ) 
+                label(for="featured-false" 
+                class="form-check-label"
+                ) Không
+
             div(class="form-group")
                 label(for="content") Mô tả ngắn
                 textarea(
-                    class="form-control text-mce"
+                    class="form-control"
                     id="description"
                     name="description"
                     placeholder="Mô tả..."

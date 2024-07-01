@@ -9,6 +9,10 @@ const articleSchema = new mongoose.Schema({
     thumbnail: String,
     status: String,
     position: Number,
+    featured: {
+        type: Boolean,
+        default: false
+    },
     articleCategoryId: {
         type: String,
         default: ''
