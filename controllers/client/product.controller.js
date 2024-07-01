@@ -1,6 +1,8 @@
 const Product = require('./../../models/product.model');
 const ProductCategory = require('./../../models/product-category.model');
 
+const getSubCategoryIdHelper = require('./../../helpers/getSubCategoryId');
+
 // [GET] /products
 module.exports.index = async (req, res)=> {
     const products = await Product.find({
@@ -42,33 +44,15 @@ module.exports.category = async (req, res) => {
             status: 'active'
         });
 
-        // hà lấy ra mảng các category con từ id category cha
-        const getSubCategory = async (parentId) => {
-            const subs = await ProductCategory.find({
-                parentId: parentId,
-                status: 'active',
-                deleted: false
-            });
-
-            let arr = [...subs];
-
-            for(let sub of subs){
-                const childs = await getSubCategory(sub.id); 
-                arr = [...arr, ...childs]
-            }
-            return arr;
-        }
-
-        const arrSubCategory = await getSubCategory(productCategory.id);
-        let arrId = [productCategory.id, ...arrSubCategory.map(item => item.id)];
+        const arrSubCategory = await getSubCategoryIdHelper.getSubCategoryId(ProductCategory, productCategory.id);
+        let arrId = [productCategory.id, ...arrSubCategory];
         
         const products = await Product.find({
             productCategoryId: {$in: arrId},
             status: 'active',
             deleted: false
         })
-         
-
+            
         res.render('./client/pages/products/index.pug', {
             title: productCategory.title, 
             products: products
@@ -76,6 +60,6 @@ module.exports.category = async (req, res) => {
 
     }
     catch(err){
-        res.redirect('back');
+        res.status(404).json('Not found');
     }
 }
