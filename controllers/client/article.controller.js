@@ -7,13 +7,14 @@ const dateTimeFormatterHelper = require('./../../helpers/dateTimeFormatter');
 // [GET] /articles
 module.exports.index = async (req, res) => {
     try{
-        const featuredArticle = await Article.find({
+        // Tin tức nổi bât
+        const featuredArticles = await Article.find({
             featured: true,
             status: "published",
             deleted: false
-        }).sort({position: 'desc'});
+        }).sort({position: 'desc'});;
     
-        for(let item of featuredArticle){
+        for(let item of featuredArticles){
             const accountCreate = await Account.findOne({
                 _id: item.createdBy.accountId
             })
@@ -23,10 +24,29 @@ module.exports.index = async (req, res) => {
                 item.dateTimeCreate = dateTimeFormatterHelper.formatDateTime(item.createdBy.createAt);
             }
         }
+
+        // Tin tức mới nhất
+        const newestArticles = await Article.find({
+            status: "published",
+            deleted: false
+        }).limit(5).sort({position: 'desc'});
+
+        for(let item of newestArticles){
+            const accountCreate = await Account.findOne({
+                _id: item.createdBy.accountId
+            })
+
+            if(accountCreate){
+                item.accountCreate = accountCreate;
+                item.dateTimeCreate = dateTimeFormatterHelper.formatDateTime(item.createdBy.createAt);
+            }
+        }
+
     
         res.render('./client/pages/articles/index.pug', {
             title: 'Blog',
-            featuredArticle: featuredArticle
+            featuredArticles: featuredArticles,
+            newestArticles: newestArticles
         })
 
     }

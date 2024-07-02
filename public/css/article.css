@@ -49,6 +49,8 @@
     color: #cfcfcf;
 }
 
+/* list article */
+
 ul {
     padding: 0;
 }
@@ -56,21 +58,30 @@ ul {
 .card-article {
     position: relative;
     list-style-type: none;
-    width: 100%;
-    margin-bottom: 3em;
+    margin-bottom: 4em;
+    padding: 0;
+}
+
+.box-image {
+    width: 30%;
+    aspect-ratio: 4/3; /* Tỷ lệ 3:4 */
+    overflow: hidden;
+    position: absolute;
 }
 
 .card-article img {
-    position: absolute;
-    width: 30%;
-    height: 100px;
     border-radius: 7px;
+    width: 100%;
+    object-fit: scale-down; /* Đảm bảo ảnh lấp đầy khung chứa */
+    background-size: cover; /* Đảm bảo ảnh phủ toàn bộ khu vực */
+    background-position: center; /* Đặt ảnh ở giữa */
+    background-repeat: no-repeat; /* Không lặp lại ảnh */
 }
 
 .card-article .inner-title {
     position: relative;
-    left: 30%;
     width: 70%;
+    left: 30%;
     padding-left: 5px;
     overflow: hidden; /* Ẩn nội dung tràn */
     text-overflow: ellipsis; /* Hiển thị dấu ba chấm khi nội dung bị cắt ngắn */
@@ -93,4 +104,5 @@ ul {
     width: 70%;
     padding-left: 5px;
     font-size: small;
+    bottom: 0;
 }
