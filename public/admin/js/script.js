@@ -28,13 +28,13 @@ const searchForm = document.querySelector('#form-search');
 if(searchForm){
     searchForm.addEventListener('submit', (event) => {
         event.preventDefault();
-        const productName = event.target.elements.keyword.value;
-        // const productName = event.target[0].value;
+        const keyword = event.target.elements.keyword.value;
+        // const keyword = event.target[0].value;
         
         const url = new URL(window.location.href);
         
-        if(productName !== ''){
-            url.searchParams.set('keyword', productName);
+        if(keyword !== ''){
+            url.searchParams.set('keyword', keyword);
         }
         else{
             url.searchParams.delete('keyword');                // product-name là name của input, được gửi kèm url khi submit

@@ -1,14 +1,15 @@
 include ../mixins/sub-menu.pug
+include ../mixins/form-search.pug
 
 header.header 
     .container 
         .row.align-item-center 
-            .col-1 
+            .col-1
                 .inner-logo 
                     a(href='/')
                         img(src='/images/logo.png' alt='logo')
-            
-            .col-3 
+
+            .col-3
                 .inner-menu 
                     ul 
                         li 
@@ -27,3 +28,6 @@ header.header
                         //- layoutProductCategory
                         //- layoutArticleCategory
                         //- đều lấy từ middleware chứ không phải từ controller trả về
+
+            .col-4
+                +form-search()
