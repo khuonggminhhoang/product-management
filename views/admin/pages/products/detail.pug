@@ -26,7 +26,7 @@ block main
         if (product.discountPercentage)
             div Giảm giá: <b>#{product.discountPercentage}%</b>
 
-        if (product.stock)
+        if (product.stock != undefined)
             div Còn lại: <b>#{product.stock}</b>
 
         if (product.status == 'active')

@@ -1,6 +1,5 @@
 const Product = require('./../../models/product.model');
 
-
 // [GET] /search
 module.exports.index = async (req, res) => {
     const keyword = req.query.keyword;
