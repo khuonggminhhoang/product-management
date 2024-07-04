@@ -26,6 +26,24 @@
 .header .inner-menu > ul > li {
     margin-left: 20px;
 }
+
+.header .inner-menu a{
+    color: #333;
+    font-weight: 700;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+.mini-cart {
+    position: relative;
+}
+
+.mini-cart .badge {
+    border-radius: 45px;
+    font-size: xx-small;
+    position: absolute;
+}
+
 /* End Header */
 
 /* Footer */
