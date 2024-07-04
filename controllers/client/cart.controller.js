@@ -5,19 +5,19 @@ const Product = require('./../../models/product.model');
 module.exports.addPOST = async (req, res) => {
     const cardId =  req.cookies.cartId;
     const productId = req.params.id;
-    const quantity = req.body.quantity;
+    const quantity = parseInt(req.body.quantity);
 
     try {
         const cart = await Cart.findOne({_id: cardId});
         const currProduct = await Product.findOne({_id: productId});
-        const newStock = currProduct.stock - quantity;
+        const newStock =  currProduct.stock - quantity;
 
         if(cart){
             const products = cart.products;
             const product = products.find(item => item.productId == productId);
-            const newQuantity = product.quantity + quantity;
-
+            
             if(product){
+                const newQuantity =  product.quantity + quantity;
                 // thêm sản phẩm đã tồn tại trong giỏ hàng vào giỏ
                 await Cart.updateOne({
                     _id: cardId,
@@ -46,7 +46,6 @@ module.exports.addPOST = async (req, res) => {
         res.sendStatus(500);
         return;
     }
-
 
     res.redirect('back');
 }
