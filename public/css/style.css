@@ -1,5 +1,6 @@
 *{
     color: #191919;
+    box-sizing: border-box;
 }
 
 /* Header */
@@ -239,3 +240,119 @@ a[card-product]:hover{
     height: 2px;
     display: inline-block;
 }
+
+/* counter */
+.inner-counter {
+    border: 1px solid #BDBDBD;
+    width: 7em;
+    user-select: none;
+}
+
+.inner-counter div {
+    background-color: #fff;
+    font-weight: 600;
+    width: 30px;
+    display: inline-block;
+    text-align: center;
+}
+
+.inner-counter div:hover {
+    cursor: pointer;
+}
+
+.inner-counter 
+input[type="number"]::-webkit-outer-spin-button, 
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.inner-counter .input-counter {
+    display: inline-block;
+    width: 50px;
+    text-align: center;
+    border: none;
+    border-left: #DADBDD 1px solid;
+    border-right: #DADBDD 1px solid;
+    background-color: #EDEDED;
+}
+
+.inner-counter .add-counter:hover {
+    background-color: #28A745;
+}
+
+.inner-counter .sub-counter:hover {
+    background-color: red;
+}
+/* end counter */
+
+/* Cart */
+.image-container {
+    width: 100px; 
+    height: 100px; 
+    overflow: hidden;
+}
+
+.image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Giúp ảnh bao phủ toàn bộ khung và giữ tỷ lệ */
+}
+
+.media-body {
+    position: relative;
+}
+
+.media-body .inner-title{
+    text-decoration: none;
+    font-weight: 600;
+    color: #333;
+}
+
+.media-body .inner-title:hover{
+    color: #EB690A;
+}
+
+.media-body .inner-price {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    font-weight: 600;
+}
+
+.media-body .close {
+    position: absolute;
+    top: -20px;
+    right: 0;
+    height: 20px;
+}
+
+.media-body .close svg:hover {
+    cursor: pointer;
+    background-color: red;
+    border-radius: 100px;
+}
+
+.total-price .price {
+    color: #EB690A;
+    font-weight: 600;
+}
+
+.modal-footer span {
+    font-size: 12px;
+    display: block;
+}
+/* End Cart */
+
+/* Card checkout */
+.card-checkout .text-continue, .fa {
+    text-decoration: none;
+    color: #EB690A;
+}
+
+.card-checkout .text-continue:hover, .text-continue:hover * {
+    color: orange;
+}
+
+/* End card checkout */
+

@@ -1,6 +1,37 @@
 const Cart = require('./../../models/cart.models');
 const Product = require('./../../models/product.model');
 
+// [GET] /cart
+module.exports.index = async (req, res) => {
+    const cartId = req.cookies.cartId;
+    try{
+        const cart = await Cart.findOne({_id: cartId});
+        let totalPrice = 0;
+        const products = [];
+
+        for(let item of cart.products){
+            const idProduct = item.productId;
+            const qty = parseInt(item.quantity);
+            const product = await Product.findOne({_id: idProduct});
+            product.newPrice = parseInt(((100 - product.discountPercentage)/100) * product.price);
+            product.quantity = item.quantity;
+            product.totalPrice = product.newPrice * item.quantity;
+            totalPrice += qty * product.newPrice;
+            products.push(product);
+        }        
+
+        res.render('./client/pages/cart/index.pug', {
+            title: 'Giỏ hàng',
+            products: products,
+            totalPrice: totalPrice
+        })
+    }
+    catch(err){
+        res.sendStatus(500);
+    }
+}
+
+
 // [POST] /cart/add/:id
 module.exports.addPOST = async (req, res) => {
     const cardId =  req.cookies.cartId;
@@ -49,4 +80,5 @@ module.exports.addPOST = async (req, res) => {
 
     res.redirect('back');
 }
+
 

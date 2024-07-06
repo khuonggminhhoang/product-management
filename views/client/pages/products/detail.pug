@@ -35,15 +35,21 @@ block main
                         action=`/cart/add/${product.id}`
                         method='POST'
                     )
-                        input(
-                            class='form-control mb-2'
-                            type='number'
-                            name='quantity'
-                            value= (product.stock == 0 ? 0 : 1)
-                            min=1
-                            max=product.stock
-                            readonly= (product.stock == 0 ? true : false)
-                        )
+
+                        div(class='inner-counter mb-2')
+                            div(class='sub-counter') - 
+                            input(
+                                type='number' 
+                                class='input-counter' 
+                                value= (product.stock == 0 ? 0 : 1) 
+                                name='quantity'
+                                min=1 
+                                max=product.stock
+                                readonly= (product.stock == 0 ? true : false)
+                            )
+                            div(class='add-counter') +
+
+
                         if (product.stock > 0)
                             button(
                                 class='btn btn-success btn-block'
