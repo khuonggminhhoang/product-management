@@ -31,7 +31,6 @@ module.exports.index = async (req, res) => {
     }
 }
 
-
 // [POST] /cart/add/:id
 module.exports.addPOST = async (req, res) => {
     const cardId =  req.cookies.cartId;
@@ -57,10 +56,6 @@ module.exports.addPOST = async (req, res) => {
                     $set: {'products.$.quantity': newStock >= 0 ? newQuantity : product.quantity}
                 });
                 
-                // giảm stock của product khi thêm hàng vào giỏ
-                await Product.updateOne({_id: productId},{
-                    $set: {stock: newStock >= 0 ? newStock : currProduct.stock}
-                })
             }   
             else {
                 // Nếu sản phẩm chưa tồn tại thì thêm mới
