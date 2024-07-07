@@ -1,4 +1,4 @@
-// Xử lý sự kiện counter
+/* Xử lý sự kiện counter */
 const componentCounters = document.querySelectorAll('.inner-counter');
 if(componentCounters.length > 0){
     for(let componentCounter of componentCounters){
@@ -6,15 +6,10 @@ if(componentCounters.length > 0){
         const subCounter = componentCounter.querySelector('.sub-counter'); 
         const addCounter = componentCounter.querySelector('.add-counter');
         const inputCounter = componentCounter.querySelector('.input-counter');
-        const innerPrice = componentCounter.parentElement.querySelector('.inner-price');
 
         let qty, unitPrice;
 
         if(subCounter && addCounter && inputCounter){
-            if(innerPrice){
-                qty = parseInt(inputCounter.value); 
-                unitPrice = parseInt(innerPrice.textContent)/qty;
-            }
 
             subCounter.addEventListener('click', (event) => {
                 const min = parseInt(inputCounter.min);
@@ -23,10 +18,9 @@ if(componentCounters.length > 0){
                     inputCounter.value = value - 1;
                 }
 
-                if(innerPrice){
-                    innerPrice.innerHTML = `${parseInt(inputCounter.value) * unitPrice}đ`;
-                }
-
+                // để add sự kiện 'change' cho inputCounter
+                const e = new Event('change');
+                inputCounter.dispatchEvent(e);
             });
     
             addCounter.addEventListener('click', (event) => {
@@ -35,17 +29,17 @@ if(componentCounters.length > 0){
                 if(value < max ){
                     inputCounter.value = value + 1;
                 }
-
-                if(innerPrice){
-                    innerPrice.innerHTML = `${parseInt(inputCounter.value) * unitPrice}đ`;
-                }
+                
+                // để add sự kiện 'change' cho inputCounter
+                const e = new Event('change');
+                inputCounter.dispatchEvent(e);
 
             });
     
             inputCounter.addEventListener('change', (event) => {
                 const min = parseInt(inputCounter.min);
                 const max = parseInt(inputCounter.max);
-    
+
                 if(inputCounter.value == ''){
                     inputCounter.value = 1;
                 }
@@ -56,13 +50,26 @@ if(componentCounters.length > 0){
                     inputCounter.value = min;
                 }
 
-                if(innerPrice){
-                    innerPrice.innerHTML = `${parseInt(inputCounter.value) * unitPrice}đ`;
-                }
             });
         }
 
     }
 } 
 
-// END
+/* End Xử lý sự kiện counter */ 
+
+/* Notification */
+const notification = document.querySelector('[show-alert]');
+if(notification){
+    const time = parseInt(notification.getAttribute('data-time'));
+    setTimeout(() => {
+        notification.classList.add('show-hidden');
+    }, time)
+
+    const btnClose = notification.querySelector('.close');
+    btnClose.addEventListener('click', () => {
+        notification.classList.add('show-hidden');
+    });
+}
+
+/* End notification */

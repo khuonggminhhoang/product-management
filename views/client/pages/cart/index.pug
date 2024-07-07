@@ -1,7 +1,10 @@
 extends ../../layouts/default.pug
 include ../../mixins/box-head.pug
+include ../../mixins/notification-success.pug
 
 block main 
+    +notification-success(messages.success)
+
     .container.my-5 
         .row 
             .col-12
@@ -22,7 +25,7 @@ block main
                                         span (Tùy chọn size - màu)
                                     div(class='inner-counter')
                                         div(class='sub-counter') - 
-                                        input(type='number' class='input-counter' value=item.quantity min='1' max=(item.stock + item.quantity))
+                                        input(type='number' class='input-counter' name='quantity' value=item.quantity min='1' max=item.stock product-id=item.id update-cart)
                                         div(class='add-counter') +
                                     div(class='inner-price') #{item.totalPrice}đ
                                     a(class='close' href=`/cart/delete/${item.id}`) 
@@ -47,5 +50,5 @@ block main
                             a(href='/products' class='text-continue') 
                                 i(class="fa fa-reply mr-1")
                                 | Tiếp tục mua hàng
-
+    script(src="/js/cart.js") 
                     

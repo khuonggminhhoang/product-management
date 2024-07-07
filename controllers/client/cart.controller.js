@@ -55,7 +55,7 @@ module.exports.addPOST = async (req, res) => {
                 }, {
                     $set: {'products.$.quantity': newStock >= 0 ? newQuantity : product.quantity}
                 });
-                
+                req.flash('success', 'Đã thêm sản phẩm vào giỏ hàng');
             }   
             else {
                 // Nếu sản phẩm chưa tồn tại thì thêm mới
@@ -65,7 +65,9 @@ module.exports.addPOST = async (req, res) => {
                         quantity: quantity
                     }}
                 });
+                req.flash('success', 'Đã thêm sản phẩm vào giỏ hàng');
             }
+
         }
     }
     catch(err) {
@@ -80,15 +82,44 @@ module.exports.addPOST = async (req, res) => {
 module.exports.delete = async (req, res) => {
     const cartId = req.cookies.cartId;
     const idProduct = req.params.id;
+    try {
 
-    await Cart.updateOne({_id: cartId}, {
-        $pull: {
-            products: {
-                productId: idProduct
+        await Cart.updateOne({_id: cartId}, {
+            $pull: {
+                products: {
+                    productId: idProduct
+                }
             }
-        }
-    });
-    
-    
-    res.redirect('back');
+        });
+        req.flash('success', 'Xóa sản phẩm thành công khỏi giỏ hàng')
+        res.redirect('back');
+    }
+    catch(err) {
+        res.sendStatus(500);
+    }
 }
+
+// [GET] /cart/update/:productId/:quantity
+module.exports.update = async (req, res) => {
+    const productId = req.params.productId;
+    const quantity = req.params.quantity;   // string
+    const cartId = req.cookies.cartId;
+
+    try {
+        await Cart.updateOne({
+            _id: cartId,
+            'products.productId': productId
+        }, {
+            $set: {
+                'products.$.quantity': quantity
+            }
+        })
+
+        req.flash('success', 'Cập nhật số lượng thành công');
+        res.redirect('back');
+    }
+    catch(err) {
+        res.sendStatus(500);
+    }
+}
+

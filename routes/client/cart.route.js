@@ -9,4 +9,6 @@ router.post('/add/:id', controller.addPOST);
 
 router.get('/delete/:id', controller.delete);
 
+router.get('/update/:productId/:quantity', controller.update);
+
 module.exports = router;

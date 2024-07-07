@@ -1,7 +1,10 @@
 extends ./../../layouts/default.pug
 include ./../../mixins/box-head.pug
+include ../../mixins/notification-success.pug
 
 block main 
+    +notification-success(messages.success)
+
     .product-detail
         .container.my-5
             .row 
