@@ -76,4 +76,19 @@ module.exports.addPOST = async (req, res) => {
     res.redirect('back');
 }
 
+// [GET] /cart/delete/:id       { Không cần bảo mật quá cao nên dùng method GET thay cho DELETE đỡ rườm rà }
+module.exports.delete = async (req, res) => {
+    const cartId = req.cookies.cartId;
+    const idProduct = req.params.id;
 
+    await Cart.updateOne({_id: cartId}, {
+        $pull: {
+            products: {
+                productId: idProduct
+            }
+        }
+    });
+    
+    
+    res.redirect('back');
+}
