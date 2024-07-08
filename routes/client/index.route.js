@@ -3,6 +3,7 @@ const productRoutes = require('./product.route.js');
 const articleRoutes = require('./article.route.js');
 const searchRoutes = require('./search.route.js');
 const cartRoutes = require('./cart.route.js');
+const checkoutRoutes = require('./checkout.route.js');
 
 const middlewareSubmenu = require('./../../middlewares/client/sub-menu.middleware.js')
 const middlewareCart = require('./../../middlewares/client/cart.middleware.js')
@@ -17,4 +18,5 @@ module.exports = (app) => {
     app.use('/articles', articleRoutes);
     app.use('/search', searchRoutes);
     app.use('/cart', cartRoutes);
+    app.use('/checkout', checkoutRoutes);
 }

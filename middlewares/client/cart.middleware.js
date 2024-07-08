@@ -4,8 +4,8 @@ module.exports.cartId = async (req, res, next) => {
     if(!req.cookies.cartId){
         try {
             const cart = new Cart();
-            console.log('Tạo cart mới');
             await cart.save();
+            console.log('Tạo cart mới');
             
             const expires = new Date(Date.now() + 1000 * 60 * 60 * 24 * 365);
 

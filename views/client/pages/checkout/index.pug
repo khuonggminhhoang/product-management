@@ -1,0 +1,80 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+include ../../mixins/notification-success.pug
+include ../../mixins/notification-error.pug
+
+block main 
+    +notification-success(messages.success)
+    +notification-error(messages.error)
+
+    .container.my-5 
+        .row 
+            .col-12
+                +box-head('Địa chỉ nhận hàng')
+
+        .row 
+            .col-6 
+                form(
+                    method='POST'
+                    action='/checkout/order'
+                )
+                    div(class='card')
+                        div(class='card-header') 
+                            h5 Thông tin người nhận
+                        
+                        div(class='card-body')
+                            div(class='form-group')
+                                label(for='input-fullName') Họ tên <span class='text-danger'>*</span>
+                                input(
+                                    id='input-fullName'
+                                    name='fullName'
+                                    placeholder='Nguyễn Văn A'
+                                    class='form-control mb-3'
+                                    required
+                                )
+
+                            div(class='form-group')
+                                label(for='input-fullName') Số điện thoại <span class='text-danger'>*</span>
+                                input(
+                                    id='input-fullName'
+                                    type='text'
+                                    name='phone'
+                                    placeholder='0123456789'
+                                    class='form-control mb-3'
+                                    required
+                                )
+
+                            div(class='form-group')
+                                label(for='input-fullName') Địa chỉ <span class='text-danger'>*</span>
+                                input(
+                                    id='input-fullName'
+                                    type='text'
+                                    name='address'
+                                    placeholder='Mộ Lao - Hà Đông - Hà Nội'
+                                    class='form-control mb-3'
+                                    required
+                                )
+
+                        div(class='card-footer text-right')
+                            button(type='submit' class='btn btn-primary') Tiếp tục
+                            
+                            
+                        
+
+            .col-6 
+                ul(class='list-unstyled')
+                    hr
+                    if (products.length > 0)
+                        each item in products
+                            li(class="media")
+                                div(class='image-container')
+                                    img(src=item.product.thumbnail class='mr-3 ' alt='Ảnh sản phẩm')
+                                div(class="media-body ml-3")
+                                    a(href=`/products/detail/${item.product.slug}` class="mt-0 inner-title d-block") #{item.product.title}
+                                    p 
+                                        span (Tùy chọn size - màu)
+                                    p(class='small') Số lượng: #{item.quantity}
+                                    div(class='inner-price') #{item.totalPrice}đ
+                            hr
+                div Thành tiền #{totalPrice}đ
+

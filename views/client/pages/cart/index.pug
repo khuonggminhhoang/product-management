@@ -46,7 +46,10 @@ block main
                                 span(class='d-inline-block price') #{totalPrice}đ
                         div(class="modal-footer")
                             span Phí vận chuyển sẽ được tính ở trang thanh toán. Bạn cũng có thể nhập mã giảm giá ở trang thanh toán.
-                            a(href='/checkout' class='btn btn-success btn-block') Thanh toán
+                            if (products.length > 0)
+                                a(href='/checkout' class='btn btn-success btn-block') Đặt hàng
+                            else 
+                                div( class='btn btn-secondary btn-block') Đặt hàng
                             a(href='/products' class='text-continue') 
                                 i(class="fa fa-reply mr-1")
                                 | Tiếp tục mua hàng
