@@ -25,8 +25,8 @@ block main
                         a(href=`/products/${product.category.slug}`) #{product.category.title}
                     
                     if (product.price)
-                        div(class='inner-price-new') ₫#{(product.price * (100 - product.discountPercentage)/100).toFixed(0)}
-                        div(class='inner-price-old') ₫#{product.price}
+                        div(class='inner-price-new' money) #{(product.price * (100 - product.discountPercentage)/100).toFixed(0)}đ
+                        div(class='inner-price-old' money) #{product.price}đ
 
                     if (product.discountPercentage)
                         div(class='inner-percent') #{product.discountPercentage}% GIẢM

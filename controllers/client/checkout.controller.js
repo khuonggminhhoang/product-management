@@ -82,9 +82,38 @@ module.exports.order = async (req, res) => {
             products: []
         })
         
-        res.json('Successfully')
+        res.redirect(`/checkout/success/${order.id}`);
     }
     catch(err){
+        res.sendStatus(500);
+    }
+
+}
+
+// [GET] /checkout/success/:idOrder
+module.exports.success = async (req, res) => {
+    const idOrder = req.params.idOrder;
+    try{
+        const order = await Order.findOne({_id: idOrder});
+        if(!order) throw new Error('Không tìm thấy đơn hàng!');
+
+        for(let item of order.products){
+            const product = await Product.findOne({_id: item.productId}).select('thumbnail title');
+            item.title = product.title;
+            item.thumbnail = product.thumbnail;
+
+            item.newPrice = parseInt((100 - item.discountPercentage)/100 * item.price);
+            item.totalPrice = item.newPrice * item.quantity;
+        }
+
+        order.totalPrice = order.products.reduce((sum, item) => sum +item.totalPrice, 0);
+        res.render('./client/pages/checkout/success.pug', {
+            title: 'Đặt hàng',
+            order: order
+        })
+    }
+    catch(err){
+        console.error('[ERROR]',err.message);
         res.sendStatus(500);
     }
 

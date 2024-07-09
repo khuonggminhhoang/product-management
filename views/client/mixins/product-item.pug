@@ -12,6 +12,6 @@ mixin product-item(product)
                 
                 .inner-content  
                     .inner-title #{product.title}
-                    .inner-price-new ₫#{(product.price * (100 - product.discountPercentage)/100).toFixed(0)}
-                    .inner-price-old ₫#{product.price}
+                    .inner-price-new(money) #{(product.price * (100 - product.discountPercentage)/100).toFixed(0)}đ
+                    .inner-price-old(money) #{product.price}đ
                     .inner-discount #{product.discountPercentage}% GIẢM

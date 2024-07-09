@@ -27,7 +27,7 @@ block main
                                         div(class='sub-counter') - 
                                         input(type='number' class='input-counter' name='quantity' value=item.quantity min='1' max=item.stock product-id=item.id update-cart)
                                         div(class='add-counter') +
-                                    div(class='inner-price') #{item.totalPrice}đ
+                                    div(class='inner-price' money) #{item.totalPrice}đ
                                     a(class='close' href=`/cart/delete/${item.id}`) 
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
                                             <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
@@ -43,7 +43,7 @@ block main
                         div(class="modal-body") 
                             p(class='total-price d-flex justify-content-between') 
                                 span(class='d-inline-block') Tổng tiền:
-                                span(class='d-inline-block price') #{totalPrice}đ
+                                span(class='d-inline-block price' money) #{totalPrice}đ
                         div(class="modal-footer")
                             span Phí vận chuyển sẽ được tính ở trang thanh toán. Bạn cũng có thể nhập mã giảm giá ở trang thanh toán.
                             if (products.length > 0)

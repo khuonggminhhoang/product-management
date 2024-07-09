@@ -8,4 +8,6 @@ router.get('/', controller.index);
 
 router.post('/order', validate.orderValid, controller.order); 
 
+router.get('/success/:idOrder', controller.success);
+
 module.exports = router;

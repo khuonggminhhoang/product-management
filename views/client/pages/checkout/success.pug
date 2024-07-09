@@ -1,0 +1,61 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+
+block main 
+    .container.my-5 
+        .row 
+            .col-12
+                +box-head('Đặt hàng thành công')
+
+        .row 
+            .col-12 
+                div(class="alert alert-success" role="alert") Đặt hàng thành công! Chúng tôi sẽ xử lý đơn hàng trong thời gian sớm nhất.
+
+        .row.my-3
+            .col-12
+                h5 Thông tin cá nhân    
+
+                table(class="table table-bordered")
+                    tbody 
+                        tr  
+                            td Họ tên
+                            th #{order.userInfo.fullName}
+                        tr  
+                            td Số điện thoại
+                            th #{order.userInfo.phone}
+                        tr  
+                            td Địa chỉ nhận hàng
+                            th #{order.userInfo.address}
+
+        .row.my-3
+            .col-12
+                h5 Thông tin đơn hàng
+
+                table(class="table table-bordered")
+                    thead 
+                        tr 
+                            th Stt 
+                            th Ảnh 
+                            th Tên sản phẩm 
+                            th Giá
+                            th Số lượng
+                            th Tổng tiền 
+                    tbody 
+                        each product, index in order.products
+                            tr 
+                                td #{index + 1} 
+                                td 
+                                    img(src=product.thumbnail width='80px')
+                                td #{product.title}
+                                td(money) #{product.newPrice}đ
+                                td #{product.quantity}
+                                td(money) #{product.totalPrice}đ
+                        tr 
+                            td(colspan='6') 
+                                h5(class='text-right') Thành tiền: 
+                                    span(money) #{order.totalPrice}đ
+
+
+
+
+

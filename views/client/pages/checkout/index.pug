@@ -58,9 +58,6 @@ block main
                         div(class='card-footer text-right')
                             button(type='submit' class='btn btn-primary') Tiếp tục
                             
-                            
-                        
-
             .col-6 
                 ul(class='list-unstyled')
                     hr
@@ -74,7 +71,7 @@ block main
                                     p 
                                         span (Tùy chọn size - màu)
                                     p(class='small') Số lượng: #{item.quantity}
-                                    div(class='inner-price') #{item.totalPrice}đ
+                                    div(class='inner-price' money) #{item.totalPrice}đ
                             hr
-                div Thành tiền #{totalPrice}đ
+                div Thành tiền <span money>#{totalPrice}đ</span>
 
