@@ -1,0 +1,46 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+include ../../mixins/notification-error.pug
+
+block main 
+    +notification-error(messages.error)
+
+    .container.my-5 
+        .row.justify-content-center
+            .col-6
+                h2(class='text-center') Đăng nhập tài khoản
+                form(
+                    action=`/user/login`
+                    method='POST'
+                )
+                    div(class="form-group")
+                        label(for="email") Email <span class='text text-danger'>*</span>
+                        input(
+                            type="email" 
+                            class="form-control"
+                            id="email"
+                            name="email"
+                            placeholder="email@example.com"
+                            required
+                        )
+
+                    div(class="form-group")
+                        label(for="password") Mật khẩu <span class='text text-danger'>*</span>
+                        input(
+                            type="password" 
+                            class="form-control"
+                            id="password"
+                            name="password"
+                            placeholder="********"
+                            required
+                        )
+                        small(class="form-text text-muted") Mật khẩu ít nhất 8 ký tự, bao gồm chữ thường, chữ hoa và các ký tự đặc biệt.
+
+
+                    div(class="form-group")
+                        button(type='submit' class='btn btn-primary btn-block') Đăng nhập
+                    hr.my-4
+                    a(href='/user/reset')
+                        small(class="form-text text-primary") Quên mật khẩu
+                    p Bạn chưa có tài khoản?
+                        a(href='/user/register') Đăng ký.

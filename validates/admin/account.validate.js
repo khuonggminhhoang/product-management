@@ -1,4 +1,3 @@
-const { model } = require('mongoose');
 const Account = require('./../../models/account.model');
 
 module.exports.accountValid = async (req, res, next) => {

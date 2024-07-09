@@ -1,0 +1,76 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+include ../../mixins/notification-error.pug
+
+block main 
+    +notification-error(messages.error)
+    
+    .container.my-5 
+        .row.justify-content-center
+            .col-6
+                h2(class='text-center') Đăng ký tài khoản
+                form(
+                    action=`/user/register`
+                    method='POST'
+                )
+                    div(class="form-group")
+                        label(for="full-name") Họ tên <span class='text text-danger'>*</span>
+                        input(
+                            type="text" 
+                            class="form-control"
+                            id="full-name"
+                            name="fullName"
+                            placeholder="Nguyễn Văn A"
+                            required
+                        )
+
+                    div(class="form-group")
+                        label(for="email") Email <span class='text text-danger'>*</span>
+                        input(
+                            type="email" 
+                            class="form-control"
+                            id="email"
+                            name="email"
+                            placeholder="email@example.com"
+                            required
+                        )
+
+                    div(class="form-group")
+                        label(for="phone") Số điện thoại <span class='text text-danger'>*</span>
+                        input(
+                            type="text" 
+                            class="form-control"
+                            id="phone"
+                            name="phone"
+                            placeholder="0912345678"
+                            required
+                        )
+
+                    div(class="form-group")
+                        label(for="password") Mật khẩu <span class='text text-danger'>*</span>
+                        input(
+                            type="password" 
+                            class="form-control"
+                            id="password"
+                            name="password"
+                            placeholder="********"
+                            required
+                        )
+                        small(class="form-text text-muted") Mật khẩu ít nhất 8 ký tự, bao gồm chữ thường, chữ hoa và các ký tự đặc biệt.
+
+                    div(class="form-group")
+                        label(for="enter-password") Nhập lại mật khẩu <span class='text text-danger'>*</span>
+                        input(
+                            type="password" 
+                            class="form-control"
+                            id="enter-password"
+                            name="enter-password"
+                            placeholder="********"
+                            required
+                        )
+
+                    div(class="form-group")
+                        button(type='submit' class='btn btn-primary btn-block') Đăng ký
+                    hr.my-4
+                    p Bạn đã có tài khoản?
+                        a(href='/user/login') Đăng nhập.

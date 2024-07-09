@@ -1,5 +1,5 @@
 const Product = require('./../../models/product.model');
-const Cart = require('./../../models/cart.models');
+const Cart = require('./../../models/cart.model');
 const Order = require('./../../models/order.model');
 
 // [GET] /checkout

@@ -1,4 +1,4 @@
-const Cart = require('./../../models/cart.models');
+const Cart = require('./../../models/cart.model');
 const Product = require('./../../models/product.model');
 
 // [GET] /cart
