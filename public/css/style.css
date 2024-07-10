@@ -382,3 +382,31 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 /* End Notification */
+
+.multi-menu {
+    position: relative;
+}
+
+.multi-menu > .inner-menu{
+    position: relative;
+    display: none;
+    text-decoration: none;
+    width: 100%;
+    font-size: medium;
+}
+
+.multi-menu:hover > .inner-menu {
+    position: absolute;
+    display: block;
+    top: 100%;
+    border-radius: 8px;
+    background-color: #fff;
+}
+
+.multi-menu .inner-menu a:hover {
+    background-color: #EDEDED;
+    border-radius: 4px;
+    color: #EB690A;
+    width: 100%;
+    display: inline-block;
+}

@@ -5,6 +5,7 @@ const User = require('./../../models/user.model');
 
 // [GET] /user/login
 module.exports.login = (req, res) => {
+    res.clearCookie('tokenUser');
 
     res.render('./client/pages/users/login.pug', {
         title: 'Đăng nhập'
@@ -52,7 +53,7 @@ module.exports.loginPOST = async (req, res) => {
 
 // [GET] /user/register
 module.exports.register = (req, res) => {
-
+    res.clearCookie('tokenUser');
     res.render('./client/pages/users/register.pug', {
         title: 'Đăng ký'
     })
@@ -98,4 +99,11 @@ module.exports.registerPOST = async (req, res) => {
     catch(err) {
         res.sendStatus(500);
     }
+}
+
+// [GET] /user/logout
+module.exports.logout = (req, res) => {
+    res.clearCookie('tokenUser');
+
+    res.redirect('/user/login');
 }

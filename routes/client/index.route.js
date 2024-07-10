@@ -8,11 +8,13 @@ const userRoutes = require('./user.route.js');
 
 const middlewareSubmenu = require('./../../middlewares/client/sub-menu.middleware.js')
 const middlewareCart = require('./../../middlewares/client/cart.middleware.js')
+const middlewareUser = require('./../../middlewares/client/user.middleware.js')
 
 module.exports = (app) => {
     app.use(middlewareSubmenu.productCategory);
     app.use(middlewareSubmenu.articleCategory);
     app.use(middlewareCart.cartId);
+    app.use(middlewareUser.infoUser);
 
     app.use("/", homeRoutes);
     app.use('/products', productRoutes);
