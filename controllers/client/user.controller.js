@@ -19,11 +19,23 @@ module.exports.loginPOST = async (req, res) => {
     try{
         const user = await User.findOne({
             email: email,
-            password: password
+            deleted: false,
         });
 
         if(!user){
-            req.flash('error', 'Sai email hoặc mật khẩu');
+            req.flash('error', 'Email chưa được đăng ký');
+            res.redirect('back');
+            return;
+        }
+
+        if(user.password != password){
+            req.flash('error', 'Sai mật khẩu');
+            res.redirect('back');
+            return;
+        }
+
+        if(user.status != 'active'){
+            req.flash('error', 'Tài khoản đã bị khóa');
             res.redirect('back');
             return;
         }
