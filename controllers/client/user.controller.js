@@ -5,7 +5,7 @@ const User = require('./../../models/user.model');
 const ForgotPassword = require('./../../models/forgot-password.model');
 
 const StringRandomHelper = require('./../../helpers/stringRandom');
-const { TypedEventEmitter } = require('mongodb');
+const sendMailHelper = require('./../../helpers/sendMail');
 
 // [GET] /user/login
 module.exports.login = (req, res) => {
@@ -150,6 +150,19 @@ module.exports.forgotPasswordPOST = async (req, res) => {
 
         await forgotPassword.save();
 
+        // Gửi otp qua mail
+        const toEmail = email;
+        const subject = '[K_TECOM] OTP đổi mật khẩu'
+        const html = `
+                        Mã OTP của bạn: 
+                        <b>${otp}</b>. 
+                        <br>
+                        Lưu ý: OTP chỉ có hiệu lực trong 60s
+                        <hr>
+                        FACEBOOK: <a href='https://www.facebook.com/khuongminhminh.hoang/'> [ADMIN_K_TECH]
+        `   
+        sendMailHelper.sendMail(toEmail, subject, html);
+
         res.redirect(`/user/password/otp?email=${email}`);
     }
     catch(err) {
@@ -183,10 +196,45 @@ module.exports.otpPasswordPOST = async (req, res) => {
         return;
     }
 
+    // const user = await User.findOne({
+    //     email: email
+    // });
+
+    // res.cookie('tokenUser', user.tokenUser);
+    res.cookie('email', btoa(email));
+    res.redirect('/user/password/reset');
+}
+
+// [GET] /user/password/reset
+module.exports.resetPassword = (req, res) => {
+    res.render('./client/pages/users/reset-password.pug', {
+        title: 'Cập nhật mật khẩu'
+    });
+}
+
+// [POST] /user/password/reset
+module.exports.resetPasswordPOST = async (req, res) => {
+    const password = req.body.password;
+    const email = atob(req.cookies.email);
+    
     const user = await User.findOne({
-        email: email
+        email: email,
     });
 
+    if(user.password == md5(password)) {
+        req.flash('error', 'Mật khẩu này đã được dùng')
+        res.redirect('back');
+        return;
+    }
+    
+    await User.updateOne({
+        email: email
+    }, {
+        password: md5(password)
+    });
+
+
     res.cookie('tokenUser', user.tokenUser);
-    res.redirect('/user/password/reset');
+    req.flash('success', 'Cập nhật mật khẩu thành công');
+    res.redirect('/');
 }

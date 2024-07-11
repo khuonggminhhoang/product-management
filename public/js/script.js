@@ -95,3 +95,26 @@ elements.forEach(item => {
 })
 
 /* END */
+
+/* count down */
+const countDown = document.querySelector('.count-down');
+if(countDown){
+    let time = parseInt(countDown.textContent);
+    
+    function countDownFunction() {
+        countDown.textContent = time;
+        time -= 1;
+
+        if(time < 0){
+            clearInterval(intervalId);  
+            const btnConfirm = document.querySelector('[confirm-in-time]');
+            btnConfirm.disabled = true;
+            btnConfirm.classList.add('btn-secondary');
+        }
+    }
+
+    const intervalId = setInterval(countDownFunction, 1000);
+}
+
+/* END count down */
+
