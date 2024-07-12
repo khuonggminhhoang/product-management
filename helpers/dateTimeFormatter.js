@@ -25,7 +25,7 @@ module.exports.formatDate = (date) => {
     if(MM.length < 2){
         MM = '0' + MM;
     }
-    return `${DD}/${MM}/${YYYY}`;
+    return `${YYYY}-${MM}-${DD}`;
 }
 
 module.exports.formatDateTime = (date) => {

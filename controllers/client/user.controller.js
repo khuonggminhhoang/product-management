@@ -6,6 +6,7 @@ const ForgotPassword = require('./../../models/forgot-password.model');
 
 const StringRandomHelper = require('./../../helpers/stringRandom');
 const sendMailHelper = require('./../../helpers/sendMail');
+const formatDateTimeHelper = require('./../../helpers/dateTimeFormatter');
 
 // [GET] /user/login
 module.exports.login = (req, res) => {
@@ -237,4 +238,33 @@ module.exports.resetPasswordPOST = async (req, res) => {
     res.cookie('tokenUser', user.tokenUser);
     req.flash('success', 'Cập nhật mật khẩu thành công');
     res.redirect('/');
+}
+
+// [GET] /user/info
+module.exports.info = (req, res) => {
+    const user = res.locals.user;
+    user.dob = formatDateTimeHelper.formatDate(user.dateOfBirth);
+    
+    res.render('./client/pages/users/info.pug', {
+        title: 'Hồ sơ cá nhân',
+        user: user
+    })
+}
+
+module.exports.infoPATCH = async (req, res) => {
+    try {
+        if(!req.body.phone) {
+            delete req.body.phone;
+        } 
+        
+        await User.updateOne({
+            tokenUser: req.cookies.tokenUser
+        }, req.body);
+
+        req.flash('success', 'Cập nhật hồ sơ thành công');
+        res.redirect('back');
+    }
+    catch(err) {
+        res.sendStatus(500);
+    }
 }

@@ -107,3 +107,26 @@ ul {
     bottom: 0;
 }
 
+/* Avatar hồ sơ cá nhân*/
+.circle-img {
+    border-radius: 200px;
+    width: 100px;
+    height: 100px;
+    object-fit: cover; /* Đảm bảo ảnh lấp đầy khung chứa */
+    background-position: center; /* Đặt ảnh ở giữa */
+    position: relative;
+    display: block;
+    margin: 0 auto;
+    margin-top: 10%;
+}
+
+.mini-avatar {
+    border-radius: 200px;
+    width: 20px;
+    height: 20px;
+    object-fit: cover; /* Đảm bảo ảnh lấp đầy khung chứa */
+    background-position: center; /* Đặt ảnh ở giữa */
+    position: relative;
+}
+
+/* End avatar hồ sơ cá nhân*/

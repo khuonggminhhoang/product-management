@@ -1,0 +1,89 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+include ../../mixins/notification-success.pug
+
+block main 
+    +notification-success(messages.success)
+    .container.my-5 
+        //- Modal
+        div(class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" form-change-phone)
+            div(class="modal-dialog")
+                div(class="modal-content")
+                    div(class="modal-header")
+                        h5(class="modal-title" id="exampleModalLabel") Đổi số điện thoại
+                        button(type="button" class="close" data-dismiss="modal" aria-label="Close")
+                            span(aria-hidden="true") &times;
+                        
+                    div(class="modal-body")
+                        label.text-muted.text-right Số điện thoại mới 
+                        span(class='pl-3 input-group input-group-sm')
+                            input(type='text' class='form-control' name='phone' placeholder='Ví dụ: 0344836527')
+                            p(class='text text-muted text-sm') Nhập đúng định dạng số điện thoại
+
+                    div(class="modal-footer")
+                        button(type="button" class="btn btn-secondary" data-dismiss="modal") Đóng 
+                        button(class='btn btn-primary' data-dismiss="modal" btn-ok) OK
+        //- End modal (ẩn nha)
+
+        .card 
+            .row    
+                .col-12.m-3
+                    h5.m-0 Hồ sơ của tôi
+                    small Quản lý thông tin hồ sơ để bảo mật tài khoản
+            hr.m-0
+            form(
+                id='form-update-info'
+                action="/user/info?_method=PATCH"
+                method='POST'
+                class='row info'
+                enctype="multipart/form-data" 
+            ) 
+                .col-8.m-3
+                    table(class="table table-borderless table-sm border-right")
+                        tbody
+                            tr 
+                                td.text-muted.text-right Họ và tên 
+                                td.pl-3 #{user.fullName}
+                            tr 
+                                td.text-muted.text-right Email
+                                td(class='pl-3 input-group input-group-sm')
+                                    input(class='form-control col-6' value=user.email readonly)
+
+                            tr 
+                                td.text-muted.text-right Số điện thoại
+                                td.pl-3 
+                                    span(id='phone-number') #{user.phone}
+                                    input(type='text' name='phone' width='100px' class='d-none') 
+                                    //- click button a thì mới hiện modal bên trên
+                                    a(href='javascript:' type="button" data-toggle="modal" data-target="#exampleModal") <i class="fa-solid fa-arrows-rotate ml-3"></i>
+                                    //- end modal
+                            
+                            tr 
+                                td.text-muted.text-right Giới tính
+                                td(class="pl-3")
+                                    div(class="form-check form-check-inline")
+                                        input(name='gender' type='radio' value='male' id='male' class="form-check-input" checked=(user.gender == 'male' ? true : false)) 
+                                        label(for='male' class="form-check-label") Nam
+                                    div(class="form-check form-check-inline")
+                                        input(name='gender' type='radio' value='female' id='female' class="form-check-input" checked=(user.gender == 'female' ? true : false)) 
+                                        label(for='female' class="form-check-label") Nữ
+                                    div(class="form-check form-check-inline")
+                                        input(name='gender' type='radio' value='other' id='other' class="form-check-input" checked=(user.gender == 'other' ? true : false)) 
+                                        label(for='other' class="form-check-label") Khác
+                            
+                            tr 
+                                td.text-muted.text-right Ngày sinh
+                                td(class='pl-3 input-group input-group-sm')
+                                    input(type='date' class='form-control col-3' name='dateOfBirth' value=user.dob)
+
+                            tr
+                                td.text-center(colspan='2').pt-3
+                                    button(class='btn btn-success'  btn-submit) Lưu
+                .col-3
+                    div.preview-image
+                        img(src=user.avatar class='circle-img border border-info' id='avatar')
+                        span(class='btn btn-sm btn-light d-block mx-auto mt-3 border-secondary' btn-choose) Chọn ảnh
+                        input.d-none(type='file' accept="image/*" name='avatar' input-temp )
+                        small(class='text-center d-block text-muted mt-2') Định dạng:.JPEG, .PNG
+                                
+    script(src="/js/info.js") 

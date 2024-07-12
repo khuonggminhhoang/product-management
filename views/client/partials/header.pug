@@ -49,8 +49,8 @@ header.header
                                     span(style='font-weight:400; text-transform: capitalize') Đăng nhập
                         else 
                             li(class='multi-menu')  
-                                a(href='/user/detail' class='btn btn-outline-dark btn-sm' style='border-radius:40px; background-color: inherit;color: inherit;') 
-                                    image(src=user.avatar width='20px' class='rounded-circle img-fluid') 
+                                a(href='/user/info' class='btn btn-outline-dark btn-sm' style='border-radius:40px; background-color: inherit;color: inherit;') 
+                                    image(src=user.avatar class='mini-avatar border') 
                                     span(style='font-weight:400; text-transform: capitalize') #{user.fullName}
                                 .inner-menu
                                     a(href='/user/logout')

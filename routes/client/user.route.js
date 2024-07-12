@@ -1,8 +1,13 @@
 const express = require('express');
 const router = express.Router();
 
+const multer = require('multer');
+const upload = multer();
+
 const controller = require('./../../controllers/client/user.controller');
 const validate = require('./../../validates/client/user.validate'); 
+const middlewareUpload = require('./../../middlewares/client/upload.middleware');
+const middlewareAuth = require('./../../middlewares/client/auth.middleware');
 
 router.get('/login', controller.login);
 
@@ -25,5 +30,9 @@ router.post('/password/otp', validate.otpPasswordPOST, controller.otpPasswordPOS
 router.get('/password/reset', controller.resetPassword);
 
 router.post('/password/reset', validate.resetPassword,controller.resetPasswordPOST);
+
+router.get('/info', middlewareAuth.requireAuth, controller.info);
+
+router.patch('/info', middlewareAuth.requireAuth, upload.single('avatar'), middlewareUpload.upload, controller.infoPATCH);
 
 module.exports = router;
