@@ -31,8 +31,6 @@ module.exports.index = async (req, res) => {
             products.push(objectProduct);
         };
         const totalPrice = products.reduce((total, item) => total + item.totalPrice, 0);
-
-        
         
         res.render('./client/pages/checkout/index.pug', {
             title: 'Thanh toán',

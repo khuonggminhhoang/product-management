@@ -36,6 +36,8 @@ block main
                     else 
                         div(class='text-center text-danger') Giỏ hàng trống
             .col-4 
+                if (!flag)
+                    small(class='text text-danger m-0') Bạn cần đăng nhập để có thể đặt hàng!
                 div(class="modal-dialog card-checkout")
                     div(class="modal-content")
                         div(class="modal-header")

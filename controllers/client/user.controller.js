@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 
 const User = require('./../../models/user.model');
 const ForgotPassword = require('./../../models/forgot-password.model');
+const Cart = require('./../../models/cart.model');
 
 const StringRandomHelper = require('./../../helpers/stringRandom');
 const sendMailHelper = require('./../../helpers/sendMail');
@@ -47,6 +48,11 @@ module.exports.loginPOST = async (req, res) => {
         }
 
         res.cookie('tokenUser', user.tokenUser);
+        await Cart.updateOne({
+            _id: req.cookies.cartId
+        }, {
+            userId: user.id
+        })
 
         res.redirect('/');
     }
@@ -109,6 +115,7 @@ module.exports.registerPOST = async (req, res) => {
 // [GET] /user/logout
 module.exports.logout = (req, res) => {
     res.clearCookie('tokenUser');
+    res.clearCookie('cartId');
 
     res.redirect('/user/login');
 }

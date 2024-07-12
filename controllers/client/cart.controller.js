@@ -3,8 +3,8 @@ const Product = require('./../../models/product.model');
 
 // [GET] /cart
 module.exports.index = async (req, res) => {
-    const cartId = req.cookies.cartId;
     try{
+        const cartId = req.cookies.cartId;
         const cart = await Cart.findOne({_id: cartId});
         let totalPrice = 0;
         const products = [];
@@ -20,14 +20,18 @@ module.exports.index = async (req, res) => {
             products.push(product);
         }        
 
+        const tokenUser = req.cookies.tokenUser;
+        const flag = typeof tokenUser === 'string' ? true : false 
+
         res.render('./client/pages/cart/index.pug', {
             title: 'Giỏ hàng',
             products: products,
-            totalPrice: totalPrice
-        })
+            totalPrice: totalPrice,
+            flag: flag
+        });
     }
     catch(err){
-        res.sendStatus(500);
+        res.sendStatus(404);
     }
 }
 
