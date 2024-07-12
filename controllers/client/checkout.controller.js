@@ -35,7 +35,7 @@ module.exports.index = async (req, res) => {
         res.render('./client/pages/checkout/index.pug', {
             title: 'Thanh toán',
             products: products,
-            totalPrice: totalPrice
+            totalPrice: totalPrice,
         });
     }
     catch(err) {
@@ -49,6 +49,7 @@ module.exports.order = async (req, res) => {
     try{
         const userInfo = req.body;
         const cartId = req.cookies.cartId;
+        const user = res.locals.user;
     
         const cart = await Cart.findOne({_id: cartId});
         const products = [];
@@ -65,6 +66,7 @@ module.exports.order = async (req, res) => {
         }
         
         const objectOrder = {
+            userId: user.id,
             cartId: cartId,
             userInfo: userInfo,
             products: products

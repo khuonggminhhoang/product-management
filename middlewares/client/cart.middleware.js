@@ -32,15 +32,21 @@ module.exports.cartId = async (req, res, next) => {
     }
     else {
         try {
+
             const user = await User.findOne({tokenUser: req.cookies.tokenUser});
             if(!user) throw new Error('Không tìm được user hợp lệ trong db');
 
             const cart = await Cart.findOne({userId: user.id});
             if(!cart) throw new Error('Không tìm thấy cart trong db');
+
+            if(cart.id != req.cookies.cartId) {
+                await Cart.deleteOne({_id: req.cookies.cartId});
+            }
             
             cart.total = cart.products.reduce((total, item) => total + item.quantity, 0); 
             
             res.locals.miniCart = cart;
+            res.cookie('cartId', cart.id);
         }
         catch(err) {
             res.status(500).send(err.message);
