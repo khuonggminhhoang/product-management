@@ -14,18 +14,20 @@ const settingGeneralSchema = new mongoose.Schema({
     socialLink: [
         {
             name: String,
-            link: String
+            domain: String,
+            path: String
         }
     ],
     eCommerceLink:[
         {
             name: String,
-            link: String
+            domain: String,
+            path: String
         }
     ],
     branch: [
         {
-            nameBranch: String,
+            branchName: String,
             phoneNumber: String,
             email: String,
             address: String

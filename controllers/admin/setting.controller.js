@@ -31,3 +31,74 @@ module.exports.generalPATCH = async (req, res) => {
     req.flash('success', 'Cập nhật thành công');
     res.redirect('back');
 }
+
+// [POST] /admin/setting/branch/add
+module.exports.addBranch = async (req, res) => {
+    try {
+        const settingGeneral = await SettingGeneral.findOne({});
+        if(!settingGeneral) {
+            req.flash('error', 'Cần lưu các thông tin chính trước');
+            res.redirect('back');
+            return;
+        }
+
+        await SettingGeneral.updateOne({
+            _id: settingGeneral.id
+        },{
+            $push: {
+                branch: req.body
+            }
+        })
+
+        req.flash('success', 'Thêm cơ sở thành công');
+        res.redirect('back');
+    }
+    catch(err) {
+        res.sendStatus(500);
+    }
+}
+
+// [GET] /admin/setting/branch/delete
+module.exports.deleteBranch = async (req, res) => {
+    try {
+        const settingGeneral = await SettingGeneral.findOne({});
+        if(!settingGeneral) {
+            req.flash('error', 'Cần lưu các thông tin chính trước');
+            res.redirect('back');
+            return;
+        }
+
+        if(!req.query.branchName) {
+            req.flash('error', 'Nhập tên cơ sở để xóa');
+            res.redirect('back');
+            return;
+        } 
+
+        const flag = false;
+        for(let item of settingGeneral.branch) {
+            if(item.branchName == req.query.branchName) {
+                flag = true;
+                break;
+            }
+        }
+
+        if(flag) {
+            await SettingGeneral.updateOne({
+                _id: settingGeneral.id  
+            }, {
+                $pull: {
+                    branch: {branchName: req.query.branchName}
+                }
+            })
+            req.flash('success', 'Xóa cơ sở thành công');
+        }
+        else {
+            req.flash('error', 'Tên cơ sở không tồn tại');
+        }
+    
+        res.redirect('back');
+    }
+    catch(err) {
+        res.sendStatus(500);
+    }
+}

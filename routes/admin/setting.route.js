@@ -12,5 +12,8 @@ router.get('/general', controller.general);
 
 router.patch('/general', upload.fields([{name: 'favicon'}, {name: 'logo'}]), middleware.uploadMulti , controller.generalPATCH);
 
+router.post('/branch/add', controller.addBranch);
+
+router.get('/branch/delete', controller.deleteBranch);
 
 module.exports = router;

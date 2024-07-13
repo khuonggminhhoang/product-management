@@ -1,3 +1,4 @@
+// Cập nhật form 
 const btnUpdate = document.querySelector('[update]');
 if(btnUpdate) {
     btnUpdate.addEventListener('click', () => {
@@ -27,9 +28,8 @@ if(btnUpdate) {
 
         const objectMainInfo = {};
         for(let input of inputsInfo) {
-            if(input.value){
-                objectMainInfo[input.name] = input.value;
-            }
+            objectMainInfo[input.name] = input.value;
+            
         }
         // end object main info
 
@@ -39,12 +39,11 @@ if(btnUpdate) {
         let prefixPaths = cardSocialLink.querySelectorAll('.social-path'); 
         const objectSocialLink = [];
         for(let i = 0; i < inputsSociaLink.length; ++i) {
-            if(inputsSociaLink[i].value) {
-                const object = {};
-                object.name = inputsSociaLink[i].name;
-                object.link = prefixPaths[i].innerHTML + inputsSociaLink[i].value;
-                objectSocialLink.push(object);
-            }
+            const object = {};
+            object.name = inputsSociaLink[i].name;
+            object.domain = 'https://' + prefixPaths[i].innerHTML;
+            object.path = inputsSociaLink[i].value;
+            objectSocialLink.push(object);
         }
         // end object social link
 
@@ -55,12 +54,11 @@ if(btnUpdate) {
 
         const objectEcommerceLink = [];
         for(let i = 0; i < inputsEcommerceLink.length; ++i) {
-            if(inputsEcommerceLink[i].value) {
-                const object = {};
-                object.name = inputsEcommerceLink[i].name;
-                object.link = prefixPaths[i].innerHTML + inputsEcommerceLink[i].value;
-                objectEcommerceLink.push(object);
-            }
+            const object = {};
+            object.name = inputsEcommerceLink[i].name;
+            object.domain = 'https://' + prefixPaths[i].innerHTML;
+            object.path = inputsEcommerceLink[i].value;
+            objectEcommerceLink.push(object);
         } 
         // end object ecommerce link
         input.value = JSON.stringify({
@@ -68,7 +66,64 @@ if(btnUpdate) {
             objectSocialLink: objectSocialLink,
             objectEcommerceLink: objectEcommerceLink
         });
-        console.log(input.value);
         form.submit();
     });
 }
+
+// End Cập nhật form
+
+// preview image
+const faviconFrame = document.querySelector('.favicon-frame');
+const inputFavicon = document.querySelector('[name="favicon"]');
+if(faviconFrame) {
+    const pencil = faviconFrame.querySelector('.pencil');
+    const img = faviconFrame.getElementsByTagName('img')[0];
+    pencil.addEventListener('click', () => {
+        inputFavicon.click();
+    });
+
+    inputFavicon.addEventListener('change', () => {
+        const [file] = inputFavicon.files;
+        if(file && img) {
+            const url = URL.createObjectURL(file);
+            img.src = url;
+        }
+    });
+}
+
+const logoFrame = document.querySelector('.logo-frame');
+const inputLogo = document.querySelector('[name="logo"]');
+if(logoFrame) {
+    const pencil = logoFrame.querySelector('.pencil');
+    const img = logoFrame.getElementsByTagName('img')[0];
+
+    pencil.addEventListener('click', () => {
+        inputLogo.click();
+    });
+
+    inputLogo.addEventListener('change', () => {
+        const [file] = inputLogo.files;
+        if(file && img) {
+            const url = URL.createObjectURL(file);
+            img.src = url;
+        }
+    });
+
+}
+
+// END preview image
+
+// Xử lý sự kiện form branch
+const formBranch = document.querySelector('.form-branch');
+if(formBranch) {
+    const deleteBtn = formBranch.querySelector('[delete-btn]');
+    const inputNameBranch = formBranch.querySelector('input[name="branchName"]');
+    inputNameBranch.addEventListener('change', () => {
+        console.log('ok');
+        if(inputNameBranch.value) {
+            deleteBtn.href = `${deleteBtn.href}?branchName=${inputNameBranch.value}`;
+        }
+    });
+}
+// END xử lý sự kiện form branch
+

@@ -3,11 +3,11 @@ include ../mixins/form-search.pug
 
 header.header 
     .container 
-        .row.align-item-center 
-            .col-1
+        .row.align-item-center.pt-2 
+            .col-2.pr-5
                 .inner-logo 
                     a(href='/')
-                        img(src='/images/logo.png' alt='logo')
+                        img(src=settingGeneral.logo alt='logo' height='auto' width='100%')
 
             .col-4
                 .inner-menu 
@@ -29,7 +29,7 @@ header.header
                         //- layoutArticleCategory
                         //- đều lấy từ middleware chứ không phải từ controller trả về
 
-            .col-4
+            .col-3
                 +form-search()
 
             .col-3 

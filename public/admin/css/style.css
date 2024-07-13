@@ -76,3 +76,47 @@
 }
 
 /* End Notification */
+
+/* Start css favicon + logo preview */
+.main-info .favicon-frame {
+    width: auto;
+    height: 96px;
+    aspect-ratio: 1/1; 
+    overflow: hidden;
+    border: 1px #ddd solid;
+    border-radius: 7px;
+    padding: 1px;
+    position: relative;
+}
+
+.favicon-frame img {
+    border-radius: 7px;
+    width: 100%;
+    object-fit: scale-down; /* Đảm bảo ảnh lấp đầy khung chứa */
+    background-size: cover; /* Đảm bảo ảnh phủ toàn bộ khu vực */
+    background-position: center; /* Đặt ảnh ở giữa */
+}
+
+.main-info .logo-frame {
+    width: 400;
+    overflow: hidden;
+    border: 1px #ddd solid;
+    border-radius: 7px;
+    padding: 1px;
+    position: relative;
+} 
+
+.logo-frame img {
+    border-radius: 7px;
+    width: 100%;
+    object-fit: scale-down; /* Đảm bảo ảnh lấp đầy khung chứa */
+    background-size: cover; /* Đảm bảo ảnh phủ toàn bộ khu vực */
+    background-position: center; /* Đặt ảnh ở giữa */
+}
+
+.pencil {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+/* End css favicon + logo preview */
