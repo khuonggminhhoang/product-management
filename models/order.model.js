@@ -1,8 +1,13 @@
 const mongoose = require('mongoose');
+const mongodb = require('mongodb');
 
 const orderSchema = new mongoose.Schema({
     userId: String,
     cartId: String,
+    status: {
+        type: String,
+        default: 'confirmed'
+    },
     userInfo: {
         fullName: String,
         phone: String,
@@ -15,9 +20,26 @@ const orderSchema = new mongoose.Schema({
             discountPercentage: Number,
             quantity: Number
         }
-    ]
-}, {
-    timestamps: true
+    ],
+    createdBy: {
+        accountId: String,
+        createAt: {
+            type: Date,
+            default: Date.now
+        }
+    },
+    deletedBy: {
+        accountId: String,
+        deleteAt: Date            
+    },
+    updatedBy: {
+        accountId: String,
+        updateAt: Date
+    }, 
+    deleted: {
+        type: Boolean,
+        default: false
+    }
 })
 
 module.exports = mongoose.model('Order', orderSchema, 'orders');

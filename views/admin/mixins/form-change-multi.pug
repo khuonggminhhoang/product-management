@@ -18,9 +18,9 @@ mixin form-change-multi(middle_path, array_status)
                         optgroup(label='Trạng thái')
                             each status in array_status.slice(1)
                                 option(value=status.status) #{status.name}                            
-                                
-                        optgroup(label='Vị trí')
-                            option(value="change-position") Thay đổi vị trí                            
+                        if (middle_path != 'orders')            
+                            optgroup(label='Vị trí')
+                                option(value="change-position") Thay đổi vị trí                            
 
                     if (roles.permission.includes(`${temp}_delete`))                         
                         optgroup(label='Xóa')

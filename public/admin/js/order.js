@@ -1,4 +1,4 @@
-// Status product
+// Status order
 const btnStatus = document.querySelectorAll('a[status]');
 
 if(btnStatus.length > 0){
@@ -6,20 +6,23 @@ if(btnStatus.length > 0){
         const currentStatus = btn.getAttribute('status');           // nếu attribute tự ý đặt thì dùng getAttribute() mới lấy ra được
         const id = btn.id;                                          // ngược lại thì làm như này
         let status = currentStatus;
-        if(status == 'draft'){
-            status = 'pending review';
+        if(status == 'delivered'){
+            status = 'canceled';
         }
-        else if(status == 'pending review'){
-            status = 'published';
+        else if(status == 'canceled'){
+            status = 'confirmed';
         }
-        else if(status == 'published'){
-            status = 'archived';
+        else if(status == 'confirmed'){
+            status = 'processing';
         }
-        else if(status == 'archived'){
-            status = 'rejected';
+        else if(status == 'processing'){
+            status = 'shipped';
+        }
+        else if(status == 'shipped'){
+            status = 'in transit';
         }
         else{
-            status = 'draft';
+            status = 'delivered';
         }
 
         btn.addEventListener('click', () => {
@@ -34,7 +37,7 @@ if(btnStatus.length > 0){
 }
 // END 
 
-// Delete Products
+// Delete order
 const buttonsDelete = document.querySelectorAll('[button-delete-product]');
 
 if(buttonsDelete.length > 0){
@@ -43,10 +46,10 @@ if(buttonsDelete.length > 0){
             const cf = confirm('Có chắc chắn muốn xóa sản phẩm không?');
 
             if(cf == true){
-                const idProduct = button.getAttribute('data-id');
+                const idOrder = button.getAttribute('data-id');
                 const deleteForm = document.querySelector('#form-delete');
                 const path = deleteForm.getAttribute('path');
-                const action = `${path}/${idProduct}?_method=DELETE`;
+                const action = `${path}/${idOrder}?_method=DELETE`;
     
                 deleteForm.action = action;
                 deleteForm.submit();

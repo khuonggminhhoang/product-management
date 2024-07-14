@@ -1,0 +1,222 @@
+extends ./../../layouts/default.pug
+include ./../../mixins/filter-button.pug
+include ./../../mixins/form-search.pug
+include ./../../mixins/pagination.pug
+include ./../../mixins/form-change-multi.pug
+include ./../../mixins/notification-success.pug
+include ./../../mixins/notification-error.pug
+
+block main 
+    if (roles.permission.includes('order_view'))
+        h1(class="mb-4") Danh sách sản phẩm 
+
+        //- notification
+        +notification-success(messages.success)
+        +notification-error(messages.error)
+
+        //- Filter
+        .card.bg-light.mb-3
+            .card-header Bộ lọc và tìm kiếm
+            .card-body
+                .row 
+                    //- các button để lọc sản phẩm
+                    .col-6
+                        +filter-button(filterStatus)
+
+                    //- form tìm kiếm
+                    .col-6
+                        +form-search(orderName)
+
+        //- List orders
+        .card.bg-light.mb-3
+            .card-header Danh sách
+                .row 
+                    .col-7
+                        if (roles.permission.includes('order_edit') || roles.permission.includes('order_delete'))
+                            +form-change-multi('orders', filterStatus)
+                    
+                    .col-2  
+                        
+                    .col-3
+                        if (roles.permission.includes('order_create'))
+                            a(
+                                type="button" 
+                                class=`btn btn-outline-success mr-1 alert-success`
+                                href=`${prefixAdmin}/orders/create`
+                                button-add
+                            )  + Thêm mới                    
+                    
+            .card-body
+                table(class="table table-hover table-sm" checbox-multi)
+                    thead
+                        tr
+                            if (roles.permission.includes('order_edit') || roles.permission.includes('order_delete'))
+                                th(class="form-check text-center") 
+                                    input(
+                                        type="checkbox" 
+                                        name="checkall"   
+                                    )
+
+                            th(class='text-center') STT
+                            th(class='text-center') Mã hóa đơn 
+                            th(class='text-left') Khách hàng
+                            th(class='text-center') Trạng thái
+                            th(class='text-left') Người tạo
+                            th(class='text-left') Khởi tạo
+                            th(class='text-left') Tổng tiền
+                            th(class='text-left') Người cập nhật
+                            th(class='text-center') Hành Động
+                    tbody
+                        //- for như js
+                        -for(let i = 0; i < orders.length; ++i)
+                            tr
+                                if (roles.permission.includes('order_edit') || roles.permission.includes('order_delete'))
+                                    td(class="form-check text-center")
+                                        input(
+                                            type="checkbox" 
+                                            name="id"
+                                            value=orders[i]._id
+                                        )
+                                    
+                                td(class='text-center') #{pagination.limitItems * (pagination.currentPage - 1) + i + 1}
+                                td(class='text-center') #{orders[i].id.toUpperCase()}
+                                td(class='text-left') #{orders[i].userName}
+
+                                //- if else như js
+                                if (roles.permission.includes('order_edit'))
+                                    td(class='text-center') 
+                                        if (orders[i].status == 'delivered')
+                                            a( 
+                                                href='javascript:;'
+                                                class="badge badge-success col-8"
+                                                id = orders[i]._id
+                                                status= orders[i].status
+                                            ) Đã giao hàng
+                                        else if (orders[i].status == 'in transit')
+                                            a(
+                                                href='javascript:;'
+                                                class="badge badge-primary col-8"
+                                                id = orders[i]._id
+                                                status= orders[i].status
+                                            ) Đang giao
+                                        else if (orders[i].status == 'shipped')
+                                            a(
+                                                href='javascript:;'
+                                                class="badge badge-dark col-8"
+                                                id = orders[i]._id
+                                                status= orders[i].status
+                                            ) Gửi hàng
+                                        else if (orders[i].status == 'processing')
+                                            a(
+                                                href='javascript:;'
+                                                class="badge badge-warning col-8"
+                                                id = orders[i]._id
+                                                status= orders[i].status
+                                            ) Đang xử lý 
+                                        else if (orders[i].status == 'confirmed')
+                                            a(
+                                                href='javascript:;'
+                                                class="badge badge-info col-8"
+                                                id = orders[i]._id
+                                                status= orders[i].status
+                                            ) Xác nhận 
+                                        else 
+                                            a(
+                                                href='javascript:;'
+                                                class="badge badge-danger col-8"
+                                                id = orders[i]._id
+                                                status= orders[i].status
+                                            ) Đã hủy
+
+                                else 
+                                    td(class='text-center') 
+                                        if (orders[i].status == 'delivered')
+                                            a( 
+                                                href='javascript:;'
+                                                class="badge badge-success col-8"
+                                            ) Đã giao hàng
+                                        else if (orders[i].status == 'in transit')
+                                            a(
+                                                href='javascript:;'
+                                                class="badge badge-primary col-8"
+                                            ) Đang giao
+                                        else if (orders[i].status == 'shipped')
+                                            a(
+                                                href='javascript:;'
+                                                class="badge badge-dark col-8"
+                                            ) Gửi hàng
+                                        else if (orders[i].status == 'processing')
+                                            a(
+                                                href='javascript:;'
+                                                class="badge badge-warning col-8"
+                                            ) Đang xử lý 
+                                        else if (orders[i].status == 'confirmed')
+                                            a(
+                                                href='javascript:;'
+                                                class="badge badge-info col-8"
+                                            ) Xác nhận 
+                                        else 
+                                            a(
+                                                href='javascript:;'
+                                                class="badge badge-danger col-8"
+                                            ) Đã hủy
+
+                                if (orders[i].accountFullNameCreate)
+                                    td 
+                                        p #{orders[i].accountFullNameCreate}
+                                else 
+                                    td Hệ thống
+
+                                td(class='text-left') #{orders[i].createAt}
+
+                                td(class='text-left') #{orders[i].totalPrice}đ
+
+                                if (orders[i].accountFullNameUpdate)
+                                    td 
+                                        p #{orders[i].accountFullNameUpdate}
+                                        //- p #{orders[i].updateAt}
+                                else 
+                                    td Hệ thống
+
+
+                                td(class='text-center') 
+                                    if (roles.permission.includes('order_view'))
+                                        a(
+                                            type="button" 
+                                            href=`${prefixAdmin}/orders/detail/${orders[i]._id}`
+                                            class="btn btn-info btn-sm mr-1"
+                                        ) Chi tiết
+                                    if (roles.permission.includes('order_edit'))
+                                        a(
+                                            type="button" 
+                                            href=`${prefixAdmin}/orders/edit/${orders[i]._id}`
+                                            class="btn btn-warning btn-sm mr-1"
+                                        ) Sửa
+                                    if (roles.permission.includes('order_delete'))
+                                        a(
+                                            type="button" 
+                                            class="btn btn-danger btn-sm"
+                                            data-id=orders[i]._id 
+                                            button-delete-product
+                                        ) Xóa
+
+        //- Pagination
+        +pagination(pagination)
+
+        form(
+            id='form-change-status'
+            method='POST'
+            action=""
+            path=`${prefixAdmin}/orders/change-status`
+        )
+
+        form(
+            id='form-delete'
+            method='POST'
+            action=""
+            path=`${prefixAdmin}/orders/delete`
+        )
+
+        script(type='text/javascript' src="/admin/js/order.js")
+    else 
+        div Không được cấp quyền truy cập trang này, liên hệ <a href='https://www.facebook.com/khuongminhminh.hoang'>Hoàng Minh Khương</a> để được cấp quyền

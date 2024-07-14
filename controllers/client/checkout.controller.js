@@ -69,7 +69,7 @@ module.exports.order = async (req, res) => {
             userId: user.id,
             cartId: cartId,
             userInfo: userInfo,
-            products: products
+            products: products,
         }
         
         const order = new Order(objectOrder);
