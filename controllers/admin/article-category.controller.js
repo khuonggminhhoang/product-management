@@ -5,6 +5,7 @@ const filterStatusHelper = require('./../../helpers/filterStatus');
 const objectSearchHelper = require('./../../helpers/search');
 const dateTimeFormatterHelper = require('./../../helpers/dateTimeFormatter');
 const createTreeHelper = require('./../../helpers/createTree');
+const getSubCategoryHelper = require('./../../helpers/getSubCategoryId');
 
 const systemConfig = require('./../../config/system');
 
@@ -60,7 +61,7 @@ module.exports.index = async (req, res) => {
 
     }
 
-    const records = createTreeHelper(arr, '');
+    const records = req.query.status != undefined ? arr : createTreeHelper(arr, '');
 
     res.render('./admin/pages/article-category/index.pug', {
         title: 'Danh mục sản phẩm', 
@@ -127,6 +128,19 @@ module.exports.changeStatus = async (req, res) => {
                     updateAt: new Date()    
                 }
             });
+
+            // update status cho các child
+            const arrSub = await getSubCategoryHelper.getSubCategoryId(ArticleCategory, id);
+            for(let id of arrSub) {
+                await ArticleCategory.updateOne({_id: id}, {
+                    status: status,
+                    updatedBy: {
+                        accountId: res.locals.account.id,
+                        updateAt: new Date()    
+                    }
+                });
+            }
+            
             req.flash('success', 'Thay đổi trạng thái thành công');
         }
         catch(err){

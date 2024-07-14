@@ -7,6 +7,8 @@ const systemConfig = require('./../../config/system');
 const dateTimeFormatterHelper = require('./../../helpers/dateTimeFormatter');
 
 const createTreeHelper = require('./../../helpers/createTree');
+const getSubCategoryHelper = require('./../../helpers/getSubCategoryId');
+
 
 // [GET] /admin/products-category
 module.exports.index = async (req, res) => {
@@ -59,7 +61,7 @@ module.exports.index = async (req, res) => {
 
     }
 
-    const records = createTreeHelper(arr, '');
+    const records = req.query.status != undefined ? arr :  createTreeHelper(arr, '');
 
     res.render('./admin/pages/product-category/index.pug', {
         title: 'Danh mục sản phẩm', 
@@ -129,6 +131,19 @@ module.exports.changeStatus = async (req, res) => {
                     updateAt: new Date()    
                 }
             });
+
+            // update status cho các child
+            const arrSub = await getSubCategoryHelper.getSubCategoryId(ProductCategory, id);
+            for(let id of arrSub) {
+                await ProductCategory.updateOne({_id: id}, {
+                    status: status,
+                    updatedBy: {
+                        accountId: res.locals.account.id,
+                        updateAt: new Date()    
+                    }
+                });
+            }
+
             req.flash('success', 'Thay đổi trạng thái thành công');
         }
         catch(err){

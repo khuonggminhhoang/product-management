@@ -1,6 +1,6 @@
 mixin record-level-table(arr, level = 1, middle_path)
     each item, index in arr
-        - const prefix = Array(level + 1).join('-- ')
+        - const prefix = Array(level).join('-- ')
         - let temp = middle_path.split('-').map(item => item.slice(-1) == 's' ? item.slice(0,-1) : item).join('-');
         tr 
             if (roles.permission.includes(`${temp}_edit`) || roles.permission.includes(`${temp}_delete`))
@@ -46,14 +46,14 @@ mixin record-level-table(arr, level = 1, middle_path)
                     if (item.status == 'active')
                         a( 
                             href='javascript:;'
-                            class="badge badge-success col-10"
+                            class="badge badge-success col-12"
                             id = item._id
                             status= item.status
                         ) Hoạt động
                     else
                         a(
                             href='javascript:;'
-                            class="badge badge-danger col-10"
+                            class="badge badge-danger col-12"
                             id = item._id
                             status= item.status
                         ) Dừng hoạt động
