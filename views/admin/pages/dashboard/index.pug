@@ -3,6 +3,91 @@ extends ./../../layouts/default.pug
 block main 
     h1(class="mb-4") Trang tổng quan
 
-    div #{account}
-    div ----------------------
-    div #{roles}
+    //- div #{account}
+    //- div ----------------------
+    //- div #{roles}
+    .row
+        .col-6
+            .card.border-dark.mb-3.card-product-category
+                .card-header 
+                    h5 Danh mục sản phẩm
+                .card-body.text-dark
+                    p.card-text Số lượng: 
+                        b #{statistic.productCategory.total}
+                    p.card-text Hoạt động: 
+                        b #{statistic.productCategory.active}
+                    p.card-text Dừng hoạt động: 
+                        b #{statistic.productCategory.inactive}
+                        
+        .col-6
+            .card.border-dark.mb-3.card-product
+                .card-header 
+                    h5 Sản phẩm
+                .card-body.text-dark
+                    p.card-text Số lượng: 
+                        b #{statistic.product.total}
+                    p.card-text Hoạt động: 
+                        b #{statistic.product.active}
+                    p.card-text Dừng hoạt động: 
+                        b #{statistic.product.inactive}
+
+    .row
+        .col-6
+            .card.border-dark.mb-3.card-article-category
+                .card-header 
+                    h5 Danh mục bài viết
+                .card-body.text-dark
+                    p.card-text Tất cả: 
+                        b #{statistic.articleCategory.total}
+                    p.card-text Hoạt động: 
+                        b #{statistic.articleCategory.active}
+                    p.card-text Dừng hoạt động: 
+                        b #{statistic.articleCategory.inactive}
+                        
+        .col-6
+            .card.border-dark.mb-3.card-article
+                .card-header 
+                    h5 Bài viết
+                .card-body.text-dark
+                    .row
+                        .col-6
+                            p.card-text Tất cả: 
+                                b #{statistic.article.total}
+                            p.card-text Xuất bản: 
+                                b #{statistic.article.published}
+                            p.card-text Chờ duyệt: 
+                                b #{statistic.article['pending review']}
+                        .col-6
+                            p.card-text Bản nháp: 
+                                b #{statistic.article.draft}
+                            p.card-text Lưu trữ: 
+                                b #{statistic.article.archived}
+                            p.card-text Từ chối: 
+                                b #{statistic.article.rejected}
+
+    .row
+        .col-6
+            .card.border-dark.mb-3.card-account
+                .card-header 
+                    h5 Tài khoản admin
+                .card-body.text-dark
+                    p.card-text Số lượng: 
+                        b #{statistic.account.total}
+                    p.card-text Hoạt động: 
+                        b #{statistic.account.active}
+                    p.card-text Đã khóa: 
+                        b #{statistic.account.inactive}
+                        
+        .col-6
+            .card.border-dark.mb-3.card-user
+                .card-header 
+                    h5 Tài khoản user
+                .card-body.text-dark
+                    p.card-text Số lượng: 
+                        b #{statistic.user.total}
+                    p.card-text Hoạt động: 
+                        b #{statistic.user.active}
+                    p.card-text Đã khóa: 
+                        b #{statistic.user.inactive}
+
+    

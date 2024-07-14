@@ -119,4 +119,8 @@
     top: 0;
     right: 0;
 }
+
+.pencil:hover {
+    cursor: pointer;
+}
 /* End css favicon + logo preview */

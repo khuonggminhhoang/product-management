@@ -1,0 +1,21 @@
+/*404 Not found*/
+.content-error {
+    position: relative;
+    top: 10em;
+}
+
+.content-error .content {
+    display: block;
+    margin: 0 auto;
+}
+
+.w-8 {
+    width: 8em;
+}
+
+.fz-100 {
+    font-size: 100px;
+}
+
+
+/*End 404 Not found*/

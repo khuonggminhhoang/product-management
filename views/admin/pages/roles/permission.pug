@@ -183,6 +183,15 @@ block main
                         each record in records
                             td(class="text-center")
                                 input(type="checkbox" checked = (record.permission.includes("account_delete") ? true : false))
+
+                    tr 
+                        td(colspan='4')
+                            b Cài đặt
+                    tr(data-name="setting-general")
+                        td Cài đặt chung 
+                        each record in records
+                            td(class="text-center")
+                                input(type="checkbox" checked = (record.permission.includes("setting-general") ? true : false))
     else 
         div Không được cấp quyền truy cập trang này, liên hệ <a href='https://www.facebook.com/khuongminhminh.hoang'>Hoàng Minh Khương</a> để được cấp quyền
                 
