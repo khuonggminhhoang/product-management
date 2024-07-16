@@ -1,0 +1,55 @@
+extends ../../layouts/default.pug 
+include ../../mixins/notification-error.pug
+
+block main 
+    if (roles.permission.includes('order_create'))
+        h5 Đang update, quay lại sau
+        //- h1(class='mb-4') Tạo hóa đơn 
+
+        //- +notification-error(messages.error)
+
+        //- form(
+        //-     action=`${prefixAdmin}/orders/create`
+        //-     method="POST"
+        //-     id="form-create-product"
+        //-     enctype="multipart/form-data"                    
+        //- )   
+        //-     .card 
+        //-         .card-header.text-center
+        //-             h5 Hóa đơn [#ID]
+        //-         .card-body 
+        //-             .row    
+        //-                 .col-6 
+        //-                     h6 [company name]
+        //-                     p [address]
+        //-                     p Điện thoại: [0377476212]
+        //-                     p Website: [nameWeb]
+        //-                     p Ngày tạo đơn: [11/11/2000]
+
+        //-                 .col-6
+        //-                     p
+        //-                     p Người nhận: [Hoàng Minh Khương]
+        //-                     p Địa chỉ: [Hà Đông - Hà Nội]
+        //-                     p Điện thoại: [0123456789]
+        //-                     p Ngày nhận(dự kiến): [14/11/2000]
+
+        //-             hr
+
+        //-             .row 
+        //-                 .col-6 
+        //-                     .input-group.input-group-sm 
+        //-                         input(class='input-prepend form-control' type="text" id="product-input" placeholder="Nhập sản phẩm...")
+        //-                         .input-append
+        //-                             a(href='javascript:;' class='btn btn-info btn-sm' tabindex='1') + Thêm
+        //-                         br
+        //-                         div(id="suggestions" class="suggestions" tabindex='-1')
+        //-                         textarea(class='array-product d-none') #{arrProduct}
+
+                            
+
+        //-     br
+        //-     button(type="submit" class="btn btn-primary mt-3") Tạo mới
+
+        //- script(type='text/javascript' src="/admin/js/order.js")
+    else 
+         div Không được cấp quyền truy cập trang này, liên hệ <a href='https://www.facebook.com/khuongminhminh.hoang'>Hoàng Minh Khương</a> để được cấp quyền.

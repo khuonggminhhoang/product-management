@@ -124,3 +124,18 @@
     cursor: pointer;
 }
 /* End css favicon + logo preview */
+
+/*css để in hóa đơn*/
+@media print {
+    body * {
+      visibility: hidden;
+    }
+    .card-print, .card-print * {
+      visibility: visible;
+    }
+    .card-print {
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+  }

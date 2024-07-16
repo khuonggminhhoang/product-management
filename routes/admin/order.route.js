@@ -11,7 +11,7 @@ router.patch('/change-multi', controller.changeMulti);
 
 router.delete('/delete/:id', controller.delete);
 
-// router.get('/create', controller.create);
+router.get('/create', controller.create);
 
 // router.post('/create', upload.single('thumbnail'), middleware.upload, validate.productValid, controller.createPOST);  // thumbnail là name của input trong form
 
@@ -19,6 +19,6 @@ router.delete('/delete/:id', controller.delete);
 
 // router.patch('/edit/:id', upload.single('thumbnail'), middleware.upload, validate.productValid, controller.editProduct);
 
-// router.get('/detail/:id', controller.detail);
+router.get('/detail/:id', controller.detail);
 
 module.exports = router;

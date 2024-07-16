@@ -59,3 +59,12 @@ if(buttonsDelete.length > 0){
 
 }
 // END
+
+// Sự kiện in hóa đơn
+const btnPrintOrder = document.querySelector('#print-order');
+if(btnPrintOrder) {
+    btnPrintOrder.addEventListener('click', () => {
+        window.print();
+    }); 
+}
+// END

@@ -11,6 +11,7 @@ const Product = require('./../../models/product.model');
 const ProductCategory = require('./../../models/product-category.model');
 const Account = require('./../../models/account.model');
 const Order = require('./../../models/order.model');
+const SettingGeneral = require('./../../models/setting-general.model');
 
 // [GET] /admin/orders
 module.exports.index = async (req, res) => {
@@ -126,7 +127,7 @@ module.exports.index = async (req, res) => {
     }
 
     res.render('./admin/pages/orders/index.pug', {
-        title: 'Danh sách sản phẩm', 
+        title: 'Danh sách đơn hàng', 
         orders: orders,
         filterStatus: filterStatus, 
         orderName: objectSearch.target,
@@ -284,5 +285,54 @@ module.exports.delete = async (req, res) => {
     }
     else{
         return;
+    }
+}
+
+// [GET] admin/orders/create
+module.exports.create = async (req, res) => {
+    const arrProduct = await Product.find({deleted: false});
+
+    res.render('./admin/pages/orders/create', {
+        title: 'Tạo hóa đơn',
+        arrProduct:JSON.stringify(arrProduct)
+    });
+}
+
+// [GET] admin/orders/detail/:id
+module.exports.detail = async (req, res) => {
+    try{
+        const order = await Order.findOne({_id: req.params.id, deleted: false});
+        const settingGeneral = await SettingGeneral.findOne({});
+        order.create = dateTimeFormatterHelper.formatDateTime(order.createdBy.createAt);
+        
+        const user = await User.findOne({_id: order.userId});
+    
+        order.deliverdDate = dateTimeFormatterHelper.formatDate(new Date(order.createdBy.createAt.setDate(order.createdBy.createAt.getDate() + 3)));
+
+        let sum = 0;
+        let totalQty = 0;
+        for(let item of order.products) {
+            const product = await Product.findOne({_id: item.productId});
+            if(product) {
+                item.title = product.title;
+                item.cost = parseInt(product.price * ( 1 - product.discountPercentage/100))
+                item.totalPrice = item.cost * item.quantity; 
+                sum += item.totalPrice;
+                totalQty += item.quantity;
+            }
+        }
+
+        order.totalPrice = sum;
+        order.totalQty = totalQty;
+
+        res.render('./admin/pages/orders/detail.pug', {
+            title: `Hóa đơn ${ req.params.id.toUpperCase()}`,
+            settingGeneral: settingGeneral,
+            user: user,
+            order: order
+        })
+    }
+    catch(err){
+        res.sendStatus(500);
     }
 }
