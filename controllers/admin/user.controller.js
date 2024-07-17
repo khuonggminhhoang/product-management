@@ -51,8 +51,7 @@ module.exports.createPOST = async (req, res) => {
         const payload = {
             fullName: req.body.fullName,
             email: req.body.email,
-            phone: req.body.phone,
-            gender: req.body.gender
+            phone: req.body.phone
         }
     
         const tokenUser = jwt.sign(payload, process.env.SECRET_KEY);
@@ -150,20 +149,19 @@ module.exports.editPATCH = async (req, res) => {
     }
 }
 
-// // [GET] /admin/accounts/detail/:id
-// module.exports.detail = async (req, res) => {
-//     try{
-//         const id = req.params.id;
-//         const account = await Account.findOne({_id: id}).select('-password -token');
-//         const role = await Role.findOne({_id: account.roleId});
-//         account.role = role.title
-
-//         res.render('./admin/pages/accounts/detail.pug', {
-//             title: 'Thông tin tài khoản',
-//             account: account
-//         })
-//     }
-//     catch(err){
-//         res.status(404).json('NOT FOUND');
-//     }
-// }
+// [GET] /admin/users/detail/:id
+module.exports.detail = async (req, res) => {
+    try{
+        const id = req.params.id;
+        const user = await User.findOne({_id: id}).select('-password -tokenUser');
+        user.dob = dateTimeFormatterHelper.formatDate(user.dateOfBirth);
+        
+        res.render('./admin/pages/users/detail.pug', {
+            title: 'Thông tin tài khoản',
+            user: user
+        })
+    }
+    catch(err){
+        res.sendStatus(500);
+    }
+}

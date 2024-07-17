@@ -13,12 +13,13 @@ block main
                 .row
                     .col-8
                     .col-4.text-center
-                        a(
-                            type="button" 
-                            class=`btn btn-outline-success mr-1 alert-success`
-                            href=`${prefixAdmin}/accounts/create`
-                            button-add
-                        )  + Thêm tài khoản
+                        if (roles.permission.includes('account_create'))
+                            a(
+                                type="button" 
+                                class=`btn btn-outline-success mr-1 alert-success`
+                                href=`${prefixAdmin}/accounts/create`
+                                button-add
+                            )  + Thêm tài khoản
             .card-body  
                 if (records.length == 0)
                     a(class='text-center text-danger' href=`${prefixAdmin}/accounts/create`) Chưa có tài khoản, vui lòng tạo mới

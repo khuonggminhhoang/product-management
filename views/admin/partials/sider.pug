@@ -11,6 +11,10 @@
             if (roles.permission.includes('product_view'))
                 li 
                     a(href=`${prefixAdmin}/products`) Sản phẩm
+            
+            if (roles.permission.includes('order_view'))
+                li 
+                    a(href=`${prefixAdmin}/orders`) Đơn hàng
 
             if (roles.permission.includes('article-category_view'))
                 li 
@@ -19,6 +23,14 @@
             if (roles.permission.includes('article_view'))
                 li 
                     a(href=`${prefixAdmin}/articles`) Bài viết
+                    
+            if (roles.permission.includes('user_view'))
+                li 
+                    a(href=`${prefixAdmin}/users`) Tài khoản người dùng        
+                    
+            if (roles.permission.includes('account_view'))
+                li 
+                    a(href=`${prefixAdmin}/accounts`) Tài khoản admin
 
             if (roles.permission.includes('role_view'))
                 li  
@@ -27,17 +39,6 @@
             if (roles.permission.includes('role_permission'))
                 li 
                     a(href=`${prefixAdmin}/roles/permissions`) Phân quyền
-                    
-            if (roles.permission.includes('account_view'))
-                li 
-                    a(href=`${prefixAdmin}/accounts`) Tài khoản admin
-            if (roles.permission.includes('user_view'))
-                li 
-                    a(href=`${prefixAdmin}/users`) Tài khoản người dùng
-
-            if (roles.permission.includes('order_view'))
-                li 
-                    a(href=`${prefixAdmin}/orders`) Đơn hàng
 
             if (roles.permission.includes('setting-general'))
                 li 

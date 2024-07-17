@@ -1,0 +1,38 @@
+extends ../../layouts/default.pug
+
+block main 
+
+    if (roles.permission.includes('user_view'))
+        div(class="card")
+            h5(class="card-header text-center") Thông tin tài khoản 
+            div(class="card-body")
+                div(class="card-title")
+                    img(src=user.avatar class="rounded-circle mr-3" style="width: 50px; height:50px; object-fit: cover")
+                    span <b>#{user.fullName}</b>
+                p(class="card-text") Email: #{user.email}
+                p(class="card-text") Số điện thoại: #{user.phone}
+                p(class="card-text") Giới tính: #{user.gender == 'male' ? 'Nam' : 'Nữ'}
+                p(class="card-text") Ngày sinh: 
+                    input(type='date' value=user.dob readonly)
+
+
+                p(class="card-text") Trạng thái: 
+                    if (user.status == 'active')
+                        a( 
+                            href='javascript:;'
+                            class="badge badge-success"
+                        ) Hoạt động
+                    else 
+                        a(
+                            href='javascript:;'
+                            class="badge badge-danger"
+                        ) Đã khóa
+
+            div(class="card-footer text-muted") 
+                span Khởi tạo: #{user.createdAt}
+                br
+                span Sửa đổi: #{user.updatedAt}
+        if (roles.permission.includes('user_edit'))
+            a(type="button" class="btn btn-warning mt-4" href=`${prefixAdmin}/users/edit/${user.id}`) Chỉnh sửa
+    else 
+        div Không được cấp quyền truy cập trang này, liên hệ <a href='https://www.facebook.com/khuongminhminh.hoang'>Hoàng Minh Khương</a> để được cấp quyền

@@ -3,8 +3,8 @@ include ../../mixins/notification-success.pug
 include ../../mixins/notification-error.pug
 
 block main 
-    if (roles.permission.includes('account_create'))
-        h1(class="mb-4") Sửa tài khoản
+    if (roles.permission.includes('user_create'))
+        h1(class="mb-4") Sửa tài khoản user
         +notification-success(messages.success)
         +notification-error(messages.error)
 
