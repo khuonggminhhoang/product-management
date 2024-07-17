@@ -315,7 +315,7 @@ module.exports.detail = async (req, res) => {
             const product = await Product.findOne({_id: item.productId});
             if(product) {
                 item.title = product.title;
-                item.cost = parseInt(product.price * ( 1 - product.discountPercentage/100))
+                item.cost = parseInt(item.price * ( 1 - item.discountPercentage/100))
                 item.totalPrice = item.cost * item.quantity; 
                 sum += item.totalPrice;
                 totalQty += item.quantity;
@@ -334,5 +334,103 @@ module.exports.detail = async (req, res) => {
     }
     catch(err){
         res.sendStatus(500);
+    }
+}
+
+// [GET] admin/orders/edit/:id
+module.exports.edit = async (req, res) => {
+    try{
+        const order = await Order.findOne({_id: req.params.id, deleted: false});
+        const settingGeneral = await SettingGeneral.findOne({});
+        order.create = dateTimeFormatterHelper.formatDateTime(order.createdBy.createAt);
+        
+        const user = await User.findOne({_id: order.userId});
+    
+        order.deliverdDate = dateTimeFormatterHelper.formatDate(new Date(order.createdBy.createAt.setDate(order.createdBy.createAt.getDate() + 3)));
+
+        let sum = 0;
+        let totalQty = 0;
+        for(let item of order.products) {
+            const product = await Product.findOne({_id: item.productId});
+            if(product) {
+                item.title = product.title;
+                item.cost = parseInt(item.price * ( 1 - item.discountPercentage/100))
+                item.totalPrice = item.cost * item.quantity; 
+                sum += item.totalPrice;
+                totalQty += item.quantity;
+            }
+        }
+
+        order.totalPrice = sum;
+        order.totalQty = totalQty;
+
+        res.render('./admin/pages/orders/edit.pug', {
+            title: `Hóa đơn ${ req.params.id.toUpperCase()}`,
+            settingGeneral: settingGeneral,
+            user: user,
+            order: order
+        })
+    }
+    catch(err){
+        res.sendStatus(500);
+    }
+}
+
+
+// [PATCH] /admin/orders/edit/:id
+module.exports.editPATCH = async (req, res) => {
+    if(res.locals.roles.permission.includes('order_edit')){
+        try{
+            const idOrder = req.params.id;
+            const userInfo = {
+                fullName: req.body.fullName,
+                address: req.body.address,
+                phone: req.body.phone
+            }
+
+            const products = [];
+            if(req.body.quantity.length > 1){
+                for(let i = 0; i < req.body.quantity.length; ++i) {
+                    const object = {
+                        productId: req.body.productId[i],
+                        quantity: req.body.quantity[i],
+                        price: req.body.price[i],
+                        discountPercentage: req.body.discountPercentage[i]
+                    };
+                    products.push(object);
+                }
+            }
+            else {
+                const object = {
+                    productId: req.body.productId,
+                    quantity: req.body.quantity,
+                    price: req.body.price,
+                    discountPercentage: req.body.discountPercentage
+                };
+                products.push(object);
+            }
+            
+            console.log(products);
+            for(let item of products) {
+                await Order.updateOne({
+                    _id: idOrder,
+                    'products.productId': item.productId
+                }, {
+                    'products.$.quantity': item.quantity,
+                    'products.$.price': item.price,
+                    'products.$.discountPercentage': item.discountPercentage
+                })
+            }
+
+            
+            req.flash('success', 'Cập nhật hóa đơn thành công');
+        }
+        catch(err) {
+            req.flash('error', 'Cập nhật hóa đơn thất bại');
+        }
+        res.redirect('back');
+    }
+    else{
+        return;
     }
 }

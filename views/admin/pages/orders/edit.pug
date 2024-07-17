@@ -1,0 +1,97 @@
+extends ../../layouts/default.pug 
+include ../../mixins/notification-error.pug
+
+block main 
+    if (roles.permission.includes('order_edit'))
+
+        +notification-error(messages.error)
+        form(
+            action=`${prefixAdmin}/orders/edit/${order.id}?_method=PATCH`
+            method='POST'
+        )
+            .card.card-print 
+                .card-header.text-center
+                    h5 Hóa đơn #{order.id.toUpperCase()}
+                .card-body 
+                    .d-flex.justify-content-between.flex-row
+                        div
+                            h5 #{settingGeneral.companyName}
+                            p #{settingGeneral.address}
+                            p Điện thoại: #{settingGeneral.phoneNumber}
+                            p Website: #{settingGeneral.websiteName}
+                            p Ngày tạo đơn: #{order.create}
+
+                        div
+                            p
+                            p Người nhận:
+                                span 
+                                    input(class="form-control form-control-sm" type="text" placeholder="Tên người nhận" name='fullName' value=order.userInfo.fullName )
+                            p Địa chỉ:
+                                span 
+                                    input(class="form-control form-control-sm" type="text" placeholder="Địa chỉ nhận" name='address' value=order.userInfo.address ) 
+                            p Điện thoại: 
+                                span 
+                                    input(class="form-control form-control-sm" type="text" placeholder="Số điện thoại" name='phone' value=user.phone ) 
+
+                            p Ngày nhận(dự kiến): #{order.deliverdDate}
+
+                    hr
+
+                    .row 
+                        .col-12 
+                            table.table.table-bordered.table-sm
+                                thead 
+                                    tr 
+                                        th.text-center(scope="col") Tên sản phẩm 
+                                        th.text-center(scope="col") Số lượng 
+                                        th.text-center(scope="col") Giá gốc 
+                                        th.text-center(scope="col") Giảm giá(%)
+                                        th.text-center(scope="col") Giá bán
+                                        th.text-center(scope="col") T.Tiền
+                                tbody 
+                                    each product, index in order.products
+                                        tr 
+                                            td #{product.title}
+                                            td.d-none
+                                                input(class="form-control form-control-sm" type="text" name='productId' value=product.productId )  
+                                            td.text-center 
+                                                input(class="form-control form-control-sm" type="number" name='quantity' value=product.quantity ) 
+                                            td.text-right 
+                                                input(class="form-control form-control-sm" type="number" name='price' value=product.price ) 
+                                            td.text-right 
+                                                input(class="form-control form-control-sm" type="number" name='discountPercentage' value=product.discountPercentage step=0.01)
+                                            td.text-right(money) #{product.cost}
+                                            td.text-right(money) #{product.totalPrice}
+                                
+                                    tr 
+                                        td(colspan='6')
+                                    tr 
+                                        td.text-right(colspan='5') Tổng số lượng
+                                        td.text-right #{order.totalQty}
+                                    tr 
+                                        td.text-right(colspan='5') Tổng tiền hàng
+                                        td.text-right(money) #{order.totalPrice}
+                                    tr 
+                                        td.text-right(colspan='5') Giảm giá hóa đơn
+                                        td.text-right 0
+                                    tr 
+                                        td.text-right(colspan='5') Phí ship
+                                        td.text-right(money) 0
+                                    tr 
+                                        td.text-right(colspan='5') Đã thanh toán
+                                        td.text-right(money) 0
+                                    tr 
+                                        td.text-right(colspan='5') Còn nợ
+                                        td.text-right(money) #{order.totalPrice}
+                    div.text.text-center 
+                        p.mb-0  <b>Quý khách vui lòng kiểm tra sản phẩm trước khi nhận hàng.</b>
+                        p <b>Hàng mua rồi xin miễn đổi trả.</b>
+
+            .row
+                .col-12.text-right
+                    button(type="submit" class='btn btn-primary m-3' ) Lưu
+
+
+            script(type='text/javascript' src="/admin/js/order.js")
+    else 
+         div Không được cấp quyền truy cập trang này, liên hệ <a href='https://www.facebook.com/khuongminhminh.hoang'>Hoàng Minh Khương</a> để được cấp quyền.

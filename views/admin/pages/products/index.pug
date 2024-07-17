@@ -82,7 +82,7 @@ block main
                             th(class='text-center') STT
                             th(class='text-center') Hình ảnh 
                             th(class='text-left') Tiêu đề
-                            th(class='text-center') Giá
+                            th(class='text-center') Giá gốc
                             th(class='text-center') Vị trí
                             th(class='text-center') Trạng thái
                             th(class='text-left') Người tạo
@@ -108,7 +108,7 @@ block main
                                         style="aspect-ratio: 4/3"
                                     )
                                 td(class='col-3') #{products[i].title}
-                                td(class='text-center') #{products[i].price}$
+                                td(class='text-center' money) #{products[i].price}
 
                                 if (roles.permission.includes('product_edit'))
                                     td(class='text-center')

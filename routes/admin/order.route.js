@@ -15,9 +15,9 @@ router.get('/create', controller.create);
 
 // router.post('/create', upload.single('thumbnail'), middleware.upload, validate.productValid, controller.createPOST);  // thumbnail là name của input trong form
 
-// router.get('/edit/:id', controller.edit);
+router.get('/edit/:id', controller.edit);
 
-// router.patch('/edit/:id', upload.single('thumbnail'), middleware.upload, validate.productValid, controller.editProduct);
+router.patch('/edit/:id', controller.editPATCH);
 
 router.get('/detail/:id', controller.detail);
 

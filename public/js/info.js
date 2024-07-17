@@ -36,15 +36,5 @@ if(cardInfo){
             }
         });
     }
-    
-    // const formUpdate = document.querySelector('#form-update-info');
-    // if(formUpdate) {
-    //     formUpdate.addEventListener('submit', (e) => {
-    //         e.preventDefault();
-            
-
-    //     })
-        
-    // }
 
 }

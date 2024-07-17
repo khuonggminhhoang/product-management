@@ -8,7 +8,7 @@ include ./../../mixins/notification-error.pug
 
 block main 
     if (roles.permission.includes('order_view'))
-        h1(class="mb-4") Danh sách sản phẩm 
+        h1(class="mb-4") Danh sách hóa đơn
 
         //- notification
         +notification-success(messages.success)
@@ -169,7 +169,7 @@ block main
 
                                 td(class='text-left') #{orders[i].createAt}
 
-                                td(class='text-left') #{orders[i].totalPrice}đ
+                                td(class='text-left' money) #{parseInt(orders[i].totalPrice)}
 
                                 if (orders[i].accountFullNameUpdate)
                                     td 
