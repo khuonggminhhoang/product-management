@@ -113,3 +113,37 @@ module.exports.resetPassword = (req, res, next) => {
 
     next();
 }
+
+module.exports.changePassword = (req, res, next) => {
+    if(!req.body.email) {
+        req.flash('error', 'Email không được bỏ trống');
+        res.redirect('back');
+        return;
+    }
+
+    if(!req.body.oldPassword || !req.body.newPassword || !req.body.confirmPassword) {
+        req.flash('error', 'Mật khẩu không được bỏ trống');
+        res.redirect('back');
+        return;
+    }
+    
+    if(req.body.oldPassword.length < 8) {
+        req.flash('error', 'Mật khẩu phải từ 8 ký tự trở lên');
+        res.redirect('back');
+        return;
+    }
+
+    if(req.body.newPassword.length < 8) {
+        req.flash('error', 'Mật khẩu phải từ 8 ký tự trở lên');
+        res.redirect('back');
+        return;
+    }
+
+    if(req.body.newPassword != req.body.confirmPassword) {
+        req.flash('error', 'Mật khẩu không trùng khớp');
+        res.redirect('back');
+        return;
+    }
+
+    next();
+}

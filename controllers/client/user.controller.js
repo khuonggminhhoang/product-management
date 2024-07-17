@@ -8,6 +8,7 @@ const Cart = require('./../../models/cart.model');
 const StringRandomHelper = require('./../../helpers/stringRandom');
 const sendMailHelper = require('./../../helpers/sendMail');
 const formatDateTimeHelper = require('./../../helpers/dateTimeFormatter');
+const { emit } = require('../../models/product.model');
 
 // [GET] /user/login
 module.exports.login = (req, res) => {
@@ -222,29 +223,34 @@ module.exports.resetPassword = (req, res) => {
 
 // [POST] /user/password/reset
 module.exports.resetPasswordPOST = async (req, res) => {
-    const password = req.body.password;
-    const email = atob(req.cookies.email);
+    try {
+        const password = req.body.password;
+        const email = atob(req.cookies.email);
+        
+        const user = await User.findOne({
+            email: email,
+        });
     
-    const user = await User.findOne({
-        email: email,
-    });
-
-    if(user.password == md5(password)) {
-        req.flash('error', 'Mật khẩu này đã được dùng')
-        res.redirect('back');
-        return;
+        if(user.password == md5(password)) {
+            req.flash('error', 'Mật khẩu này đã được dùng')
+            res.redirect('back');
+            return;
+        }
+        
+        await User.updateOne({
+            email: email
+        }, {
+            password: md5(password)
+        });
+    
+    
+        res.cookie('tokenUser', user.tokenUser);
+        req.flash('success', 'Cập nhật mật khẩu thành công');
+        res.redirect('/');
     }
-    
-    await User.updateOne({
-        email: email
-    }, {
-        password: md5(password)
-    });
-
-
-    res.cookie('tokenUser', user.tokenUser);
-    req.flash('success', 'Cập nhật mật khẩu thành công');
-    res.redirect('/');
+    catch(err) {
+        res.status(500).json('Lỗi /user/password/reset');
+    }
 }
 
 // [GET] /user/info
@@ -258,6 +264,7 @@ module.exports.info = (req, res) => {
     })
 }
 
+// [PATCH] /user/info
 module.exports.infoPATCH = async (req, res) => {
     try {
         if(!req.body.phone) {
@@ -274,4 +281,108 @@ module.exports.infoPATCH = async (req, res) => {
     catch(err) {
         res.sendStatus(500);
     }
+}
+
+// [GET] /user/password/change
+module.exports.changePassword = (req, res) => {
+    res.render('./client/pages/users/change-password.pug', {
+        title: 'Thay đổi mật khẩu'
+    });
+}
+
+// [POST] /user/password/change
+module.exports.changePasswordPOST = async (req, res) => {
+    try {
+
+        const user = await User.findOne({email: req.body.email, deleted: false, status: 'active'});
+        if(user) {
+            if(user.password != md5(req.body.oldPassword)) {
+                req.flash('error', 'Sai mật khẩu cũ');
+                res.redirect('back');
+                return;
+            }
+    
+            if(req.body.oldPassword ==  req.body.newPassword) {
+                req.flash('error', 'Mật khẩu mới từng được dùng');
+                res.redirect('back');
+                return;
+            }
+    
+            if(req.body.newPassword !=  req.body.confirmPassword) {
+                req.flash('error', 'Xác nhận mật khẩu chưa chính xác');
+                res.redirect('back');
+                return;
+            }   
+
+            const otp = StringRandomHelper.ramdomNumber(8);
+            const forgotPassword = new ForgotPassword({
+                email: req.body.email,
+                otp: otp,
+                expireAt: Date.now()
+            });
+    
+            await forgotPassword.save();
+
+            const subject = '[K_TECOM] OTP đổi mật khẩu'
+            const html = `
+                            Mã OTP của bạn: 
+                            <b>${otp}</b>. 
+                            <br>
+                            Lưu ý: OTP chỉ có hiệu lực trong 60s
+                            <hr>
+                            FACEBOOK: <a href='https://www.facebook.com/khuongminhminh.hoang/'> [ADMIN_K_TECH]
+            `   
+    
+            sendMailHelper.sendMail(req.body.email, subject, html);
+
+            const payload = {
+                newPassword: req.body.newPassword
+            }
+            
+            const npw = jwt.sign(payload, process.env.SECRET_KEY);
+            res.cookie('npw', npw);
+            res.redirect(`/user/password/change/otp?email=${req.body.email}`);
+        }
+        else {
+            throw new Error('[ERR] not found user');
+        }
+    }
+    catch(err) {
+        console.log(err.messages);
+        res.sendStatus(500);
+    }
+
+}
+
+// [GET] /users/password/change/otp
+module.exports.otpChangePassword = (req, res) => {
+    const email = req.query.email;
+    res.render('./client/pages/users/otp-change-password.pug', {
+        title: 'Xác thực email',
+        email: email
+    });
+}
+
+// [POST] /users/password/change/otp
+module.exports.otpChangePasswordPOST = async (req, res) => {
+    const otp = req.body.otp;
+    const email = req.body.email;
+    const forgotPassword = await ForgotPassword.findOne({email: email, otp: otp}); 
+    if(forgotPassword) {
+        const token = req.cookies.npw;
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
+        const newPassword = decoded.newPassword;
+        
+        await User.updateOne({email: req.body.email}, {
+            password: md5(newPassword)
+        });
+        req.flash('success', 'Đổi mật khẩu thành công');
+        res.clearCookie('npw');
+        res.redirect('/user/login');
+    }
+    else {
+        req.flash('error', 'OTP không hợp lệ');
+        res.redirect('back');
+    }
+
 }

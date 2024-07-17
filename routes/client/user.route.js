@@ -29,7 +29,15 @@ router.post('/password/otp', validate.otpPasswordPOST, controller.otpPasswordPOS
 
 router.get('/password/reset', controller.resetPassword);
 
-router.post('/password/reset', validate.resetPassword,controller.resetPasswordPOST);
+router.post('/password/reset', validate.resetPassword, controller.resetPasswordPOST);
+
+router.get('/password/change', controller.changePassword);
+
+router.post('/password/change', validate.changePassword,controller.changePasswordPOST);
+
+router.get('/password/change/otp', controller.otpChangePassword);
+
+router.post('/password/change/otp', controller.otpChangePasswordPOST);
 
 router.get('/info', middlewareAuth.requireAuth, controller.info);
 

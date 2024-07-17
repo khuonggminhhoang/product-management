@@ -1,9 +1,11 @@
 extends ../../layouts/default.pug
 include ../../mixins/box-head.pug
 include ../../mixins/notification-error.pug
+include ../../mixins/notification-success.pug
 
 block main 
     +notification-error(messages.error)
+    +notification-success(messages.success)
 
     .container.my-5 
         .row.justify-content-center
@@ -40,6 +42,9 @@ block main
                     div(class="form-group")
                         button(type='submit' class='btn btn-primary btn-block') Đăng nhập
                     hr.my-4
-                    a(href='/user/password/forgot') Quên mật khẩu?
+                    div(class="d-flex justify-content-between")
+                        a(href='/user/password/change') Đổi mật khẩu?
+                        a(href='/user/password/forgot') Quên mật khẩu?
+
                     p Bạn chưa có tài khoản?
                         a(href='/user/register') Đăng ký.
