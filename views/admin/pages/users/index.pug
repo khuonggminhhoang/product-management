@@ -3,8 +3,8 @@ include ../../mixins/notification-success.pug
 include ../../mixins/notification-error.pug
 
 block main 
-    if (roles.permission.includes('account_view'))
-        h1(class="mb-4") Tài khoản Admin
+    if (roles.permission.includes('user_view'))
+        h1(class="mb-4") Tài khoản người dùng
         +notification-success(messages.success)
         +notification-error(messages.error)
 
@@ -16,12 +16,12 @@ block main
                         a(
                             type="button" 
                             class=`btn btn-outline-success mr-1 alert-success`
-                            href=`${prefixAdmin}/accounts/create`
+                            href=`${prefixAdmin}/users/create`
                             button-add
                         )  + Thêm tài khoản
-            .card-body  
+        .card-body  
                 if (records.length == 0)
-                    a(class='text-center text-danger' href=`${prefixAdmin}/accounts/create`) Chưa có tài khoản, vui lòng tạo mới
+                    a(class='text-center text-danger' href=`${prefixAdmin}/users/create`) Chưa có tài khoản, vui lòng tạo mới
                 else 
                     table(class="table table-hover table-sm")
                         thead
@@ -30,7 +30,6 @@ block main
                                 th(class='text-center') Avatar
                                 th(class='text-left') Họ tên
                                 th(class='text-left') Email
-                                th(class='text-left') Vai trò
                                 th(class='text-center') Trạng thái
                                 th(class='text-center') Hành Động
                         tbody 
@@ -46,21 +45,20 @@ block main
                                         )
                                     td(class='text-left') #{record.fullName}
                                     td(class='text-left') #{record.email}
-                                    td(class='text-left') #{record.role}
                                     
                                     td(class='text-center') 
-                                        if (roles.permission.includes('account_edit'))
+                                        if (roles.permission.includes('user_edit'))
                                             if (record.status == 'active')
                                                 a( 
                                                     href='javascript:;'
-                                                    class="badge badge-success"
+                                                    class="badge badge-success col-12"
                                                     id = record.id
                                                     status= record.status
                                                 ) Hoạt động
                                             else
                                                 a(
                                                     href='javascript:;'
-                                                    class="badge badge-danger"
+                                                    class="badge badge-danger col-12"
                                                     id = record.id
                                                     status= record.status
                                                 ) Đã khóa
@@ -68,28 +66,28 @@ block main
                                             if (record.status == 'active')
                                                 a( 
                                                     href='javascript:;'
-                                                    class="badge badge-success"
+                                                    class="badge badge-success col-12"
                                                 ) Hoạt động
                                             else
                                                 a(
                                                     href='javascript:;'
-                                                    class="badge badge-danger"
+                                                    class="badge badge-danger col-12"
                                                 ) Đã khóa
 
                                     td(class='text-center') 
-                                        if (roles.permission.includes('account_view'))
+                                        if (roles.permission.includes('user_view'))
                                             a(
                                                 type="button" 
-                                                href=`${prefixAdmin}/accounts/detail/${record.id}`
+                                                href=`${prefixAdmin}/users/detail/${record.id}`
                                                 class="btn btn-info btn-sm mr-1"
                                             ) Chi tiết
-                                        if (roles.permission.includes('account_edit'))
+                                        if (roles.permission.includes('user_edit'))
                                             a(
                                                 type="button" 
-                                                href=`${prefixAdmin}/accounts/edit/${record.id}`
+                                                href=`${prefixAdmin}/users/edit/${record.id}`
                                                 class="btn btn-warning btn-sm mr-1"
                                             ) Sửa
-                                        if (roles.permission.includes('account_delete'))
+                                        if (roles.permission.includes('user_delete'))
                                             a(
                                                 type="button" 
                                                 class="btn btn-danger btn-sm"
@@ -101,15 +99,16 @@ block main
             id='form-change-status-product'
             method='POST'
             action=""
-            path=`${prefixAdmin}/accounts/change-status`
+            path=`${prefixAdmin}/users/change-status`
         )
 
         form(
             id='form-delete-product'
             method='POST'
             action=""
-            path=`${prefixAdmin}/accounts/delete`
+            path=`${prefixAdmin}/users/delete`
         )
+
     else 
         div Không được cấp quyền truy cập trang này, liên hệ <a href='https://www.facebook.com/khuongminhminh.hoang'>Hoàng Minh Khương</a> để được cấp quyền
 

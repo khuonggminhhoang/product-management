@@ -1,0 +1,139 @@
+extends ../../layouts/default.pug
+include ../../mixins/notification-success.pug
+include ../../mixins/notification-error.pug
+
+block main 
+    if (roles.permission.includes('account_create'))
+        h1(class="mb-4") Thêm tài khoản
+        +notification-success(messages.success)
+        +notification-error(messages.error)
+
+        form(
+            action="/admin/users/create"
+            method="POST"
+            enctype="multipart/form-data" 
+        )
+            div(class='form-group')
+                label(for='full-name') Họ tên *
+                input(
+                    id='full-name'
+                    class='form-control' 
+                    type='text'
+                    name='fullName'
+                    placeholder='Họ và tên...'  
+                    required  
+                )
+
+            div(class="form-check form-check-inline pl-0")
+                p.mb-0 Giới tính *
+                div(class="form-check form-check-inline ml-3")
+                    input(
+                        class="form-check-input" 
+                        type="radio" 
+                        name="gender" 
+                        id="male" 
+                        value="male"
+                        checked
+                    ) 
+                    label(for="male" class="form-check-label") Nam
+                div(class="form-check form-check-inline ml-3")
+                    input(
+                        class="form-check-input" 
+                        type="radio" 
+                        name="gender" 
+                        id="female" 
+                        value="female"
+                    ) 
+                    label(for="female" class="form-check-label") Nữ
+
+            div(class='form-group mt-3')
+                label(for='dateOfBirth') Ngày sinh *
+                input(
+                    id='dateOfBirth'
+                    class='form-control' 
+                    type='date'
+                    name='dateOfBirth'
+                    placeholder='mail@gmail.com...'    
+                    required
+                )
+
+            div(class='form-group mt-3')
+                label(for='email') Email *
+                input(
+                    id='email'
+                    class='form-control' 
+                    type='email'
+                    name='email'
+                    placeholder='mail@gmail.com...'    
+                    required
+                )
+
+            div(class='form-group')
+                label(for='phone') Điện thoại *
+                input(
+                    id='phone'
+                    class='form-control' 
+                    type='text'
+                    name='phone'
+                    placeholder='(+84) 023 ...'  
+                    required  
+                )
+                
+            div(class='form-group')
+                label(for='password') Mật khẩu *
+                input(
+                    id='password'
+                    class='form-control' 
+                    type='password'
+                    name='password'
+                    placeholder='**********'    
+                    required
+                )
+
+            div(class="form-group")
+                label(for="thumbnail") Avatar
+                input(
+                    type="file"
+                    class="form-control-file"
+                    id="thumbnail"
+                    name="avatar"
+                    placeholder="image.jpg"
+                    accept="image/*"
+                )
+                div(class="preview")
+                    img(
+                        id="preview-image"
+                        class="img-thumbnail"
+                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTxKjw7UKMErGf4sBC7uz44m65E6QemoO7Tbw&s"
+                        width="150px"
+                    )
+                    a(class="btn btn-danger btn-sm" deleted) x
+            
+            div(class="form-check form-check-inline")
+                input(
+                    class="form-check-input" 
+                    type="radio" 
+                    name="status" 
+                    id="active" 
+                    value="active"
+                    checked
+                ) 
+                label(for="active" 
+                class="form-check-label"
+                ) Hoạt động
+            div(class="form-check form-check-inline")
+                input(
+                    class="form-check-input" 
+                    type="radio" 
+                    name="status" 
+                    id="inactive" 
+                    value="inactive"
+                ) 
+                label(for="inactive" 
+                class="form-check-label"
+                ) Dừng hoạt động
+            br
+            button(type="submit" class="btn btn-primary") Tạo mới
+    else    
+        div Không được cấp quyền truy cập trang này, liên hệ <a href='https://www.facebook.com/khuongminhminh.hoang'>Hoàng Minh Khương</a> để được cấp quyền
+        

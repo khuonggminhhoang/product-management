@@ -290,12 +290,22 @@ module.exports.delete = async (req, res) => {
 
 // [GET] admin/orders/create
 module.exports.create = async (req, res) => {
-    const arrProduct = await Product.find({deleted: false});
+    if(res.locals.roles.permission.includes('order_create')){
+        try {
+            const arrProduct = await Product.find({deleted: false});
 
-    res.render('./admin/pages/orders/create', {
-        title: 'Tạo hóa đơn',
-        arrProduct:JSON.stringify(arrProduct)
-    });
+            res.render('./admin/pages/orders/create', {
+                title: 'Tạo hóa đơn',
+                arrProduct:JSON.stringify(arrProduct)
+            });
+        }
+        catch(err) {
+            res.sendStatus(500);
+        }
+    }
+    else {
+        return;
+    }
 }
 
 // [GET] admin/orders/detail/:id

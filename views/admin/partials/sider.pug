@@ -30,10 +30,14 @@
                     
             if (roles.permission.includes('account_view'))
                 li 
-                    a(href=`${prefixAdmin}/accounts`) Tài khoản
+                    a(href=`${prefixAdmin}/accounts`) Tài khoản admin
+            if (roles.permission.includes('user_view'))
+                li 
+                    a(href=`${prefixAdmin}/users`) Tài khoản người dùng
 
-            li 
-                a(href=`${prefixAdmin}/orders`) Đơn hàng
+            if (roles.permission.includes('order_view'))
+                li 
+                    a(href=`${prefixAdmin}/orders`) Đơn hàng
 
             if (roles.permission.includes('setting-general'))
                 li 
