@@ -1,10 +1,10 @@
 // [GET] /chat
 module.exports.index = (req, res) => {
     // SOCKET IO
-    global._io.on('connection', (socket) => {
-        socket.on('CLIENT_SEND_SERVER', (msg) => {
+    global._io.once('connection', (socket) => {
+        socket.on('CLIENT_SEND_MESSAGES', (msg) => {
             // Gửi lại tới client
-            socket.emit('SERVER_SEND_CLIENT', `${socket.id}: ${msg}`);
+            socket.emit('SERVER_RETURN_MESSAGES', `${socket.id}: ${msg}`);
     
         })
     });
