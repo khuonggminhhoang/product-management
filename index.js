@@ -1,4 +1,7 @@
 const express = require("express");
+const http = require('http');
+const { Server } = require('socket.io'); 
+
 const bodyParser = require("body-parser");                      // thư viện hỗ trợ parse data của form gửi lên từ fe
 const methodOverride = require('method-override');              // thư viện hỗ trợ ghi đè các method fe khi gửi tới server
 const flash = require('express-flash');                         // thư viện hỗ trợ in thông báo
@@ -13,6 +16,13 @@ const routeClient = require('./routes/client/index.route');
 const routeAdmin = require('./routes/admin/index.route');
 
 const app = express();
+const server = http.createServer(app);
+const io = new Server(server);
+
+// SOCKET IO
+global._io = io;                     // dùng biến global để truy cập được từ tất cả các file js trong app
+// END
+
 const port = process.env.PORT;
 
 app.use(methodOverride('_method'));
@@ -49,6 +59,6 @@ app.get('*', (req, res) => {
     res.render('./client/pages/error/404.pug');
 });
 
-app.listen(port,() => {
+server.listen(port,() => {
     console.log('server listening on port 3000');
 }); 

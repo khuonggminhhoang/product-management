@@ -452,9 +452,11 @@ input[type="number"]::-webkit-inner-spin-button {
     outline: none;
 }
 
-/* .chat .inner-body {
-    position: relative;
-} */
+.chat .inner-body {
+    /* position: relative; */
+    overflow: auto;
+    height: 600px;
+}
 
 .chat .inner-incoming {
     display: flex;
@@ -475,10 +477,10 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .inner-content {
+    display: inline;
     border-radius: 15px;
     padding: 5px;
     margin-bottom: 2px;
-    display: inline-block;
     max-width: 50vw;
     margin-right: 10px;
 }
@@ -497,7 +499,7 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .inner-avatar {
     align-self: last baseline;
-    margin: 0 10px;
+    margin: 0 10px 5px 10px;
 }
 
 
