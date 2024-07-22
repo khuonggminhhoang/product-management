@@ -25,7 +25,6 @@ const systemConfig = require('./config/system');
 // App local variable: dùng được mọi nơi ở trong file pug
 app.locals.prefixAdmin = systemConfig.prefixAdmin;
 
-
 app.use(express.static(`${__dirname}/public`));
 
 // tinyMce
