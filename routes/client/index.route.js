@@ -20,8 +20,6 @@ module.exports = (app) => {
     app.use(middlewareUser.infoUser);
     app.use(middlewareSettingGeneral.settingGeneral);
 
-    console.log('client running...');
-
     app.use("/", homeRoutes);
     app.use('/products', productRoutes);
     app.use('/articles', articleRoutes);

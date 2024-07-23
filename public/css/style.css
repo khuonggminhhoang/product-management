@@ -511,3 +511,14 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 /* End Chat */
+
+/* Icon board */
+.tooltip {
+    visibility: hidden;
+}
+
+.tooltip.shown{
+    visibility: visible;
+    opacity: 1;
+}
+/* End icon board */

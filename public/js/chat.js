@@ -1,3 +1,5 @@
+import * as Popper from 'https://cdn.jsdelivr.net/npm/@popperjs/core@^2/dist/esm/index.js'
+
 // Xử lý sự kiện gửi tin nhắn
 const form = document.querySelector('.chat .inner-form');
 if(form) {
@@ -58,3 +60,25 @@ if(bodyChat) {
     bodyChat.scrollTop = bodyChat.scrollHeight;
 }
 // End scroll chat to bottom
+
+// Click icon event
+// tham khảo https://github.com/nolanlawson/emoji-picker-element?tab=readme-ov-file#custom-emoji-font
+const tooltip = document.querySelector('.tooltip');
+const btnIcon = document.querySelector('.btn-icon');
+Popper.createPopper(btnIcon, tooltip);
+btnIcon.addEventListener('click', () => {
+    tooltip.classList.toggle('shown');
+});
+
+const emojiPicker = document.querySelector('emoji-picker');
+if(emojiPicker) {
+    emojiPicker.addEventListener('emoji-click', (event) => {
+        if(form) {
+            const input = form.querySelector('input[name="content"]');
+            input.value += event.detail.unicode;
+        }
+
+    });
+}
+
+// End click icon event
