@@ -6,8 +6,10 @@ if(form) {
     const input = form.querySelector('input[name="content"]');
     form.addEventListener('submit', (e) => {
         e.preventDefault();
-        socket.emit('CLIENT_SEND_MESSAGES', input.value);
-        input.value = "";
+        if(input.value !== "") {
+            socket.emit('CLIENT_SEND_MESSAGES', input.value);
+            input.value = "";
+        }
     });
 }
 // End
@@ -63,6 +65,11 @@ if(bodyChat) {
 
 // Click icon event
 // tham khảo https://github.com/nolanlawson/emoji-picker-element?tab=readme-ov-file#custom-emoji-font
+import { polyfillCountryFlagEmojis } from "https://cdn.skypack.dev/country-flag-emoji-polyfill";;
+
+// emoji-picker-element will use "Twemoji Mozilla" and fall back to other fonts for non-flag emoji
+polyfillCountryFlagEmojis("Twemoji Mozilla");
+
 const tooltip = document.querySelector('.tooltip');
 const btnIcon = document.querySelector('.btn-icon');
 Popper.createPopper(btnIcon, tooltip);
@@ -81,4 +88,11 @@ if(emojiPicker) {
     });
 }
 
+// xử lý sự kiện click vào nơi khác btn-icon thì ẩn icon board
+document.addEventListener('click', (e) => {
+    const arr = [...e.target.classList];
+    if(!arr.includes('btn-icon') && !arr.includes('fa-face-grin-beam') && !arr.includes(...emojiPicker.classList)) {
+        tooltip.classList.remove('shown');
+    }
+})
 // End click icon event
