@@ -8,7 +8,6 @@ const Cart = require('./../../models/cart.model');
 const StringRandomHelper = require('./../../helpers/stringRandom');
 const sendMailHelper = require('./../../helpers/sendMail');
 const formatDateTimeHelper = require('./../../helpers/dateTimeFormatter');
-const { emit } = require('../../models/product.model');
 
 // [GET] /user/login
 module.exports.login = (req, res) => {
@@ -66,6 +65,7 @@ module.exports.loginPOST = async (req, res) => {
 // [GET] /user/register
 module.exports.register = (req, res) => {
     res.clearCookie('tokenUser');
+
     res.render('./client/pages/users/register.pug', {
         title: 'Đăng ký'
     })
@@ -104,9 +104,16 @@ module.exports.registerPOST = async (req, res) => {
         const userRecord = new User(req.body);
         await userRecord.save();
         
+        await Cart.updateOne({
+            _id: req.cookies.cartId
+        }, {
+            userId: userRecord.id
+        });
+
         res.cookie('tokenUser', tokenUser);
         req.flash('success', 'Đăng ký tài khoản thành công');
         res.redirect('/');
+
     }
     catch(err) {
         res.sendStatus(500);

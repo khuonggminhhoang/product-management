@@ -10,7 +10,7 @@ mixin product-item(product)
                     if (product.featured)
                         .inner-featured nổi bật
                 
-                .inner-content  
+                .inner-content
                     .inner-title #{product.title}
                     .inner-price-new(money) #{(product.price * (100 - product.discountPercentage)/100).toFixed(0)}đ
                     .inner-price-old(money) #{product.price}đ

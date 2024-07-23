@@ -476,7 +476,7 @@ input[type="number"]::-webkit-inner-spin-button {
     margin-bottom: 5px;
 }
 
-.inner-content {
+.chat .inner-content {
     display: inline;
     border-radius: 15px;
     padding: 5px;
@@ -501,8 +501,6 @@ input[type="number"]::-webkit-inner-spin-button {
     align-self: last baseline;
     margin: 0 10px 5px 10px;
 }
-
-
 
 
 .inner-avatar img {

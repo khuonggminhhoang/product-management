@@ -47,10 +47,11 @@ header.header
                                 a(href='/user/login' class='btn btn-outline-dark btn-sm' style='border-radius:40px; background-color: inherit;color: inherit;') 
                                     i(class="fa-solid fa-circle-user mr-2") 
                                     span(style='font-weight:400; text-transform: capitalize') Đăng nhập
-                        else 
-                            li(class='multi-menu')  
+                        else    
+                            li 
                                 a(href='/chat') 
                                     i(class="fa-regular fa-comment-dots")
+                            li(class='multi-menu')  
 
                                 a(href='/user/info' class='btn btn-outline-dark btn-sm' style='border-radius:40px; background-color: inherit;color: inherit;') 
                                     image(src=user.avatar class='mini-avatar border') 
