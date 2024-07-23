@@ -22,7 +22,7 @@ header.header
 
                         li(class='sub-menu')
                             - const pathArticle = '/articles'
-                            a(href=pathArticle) Blog 
+                            a(href=pathArticle) Tin tức 
                                 +sub-menu(layoutArticleCategory, pathArticle)
                                 
                         //- layoutProductCategory
@@ -51,8 +51,8 @@ header.header
                             li 
                                 a(href='/chat') 
                                     i(class="fa-regular fa-comment-dots")
-                            li(class='multi-menu')  
 
+                            li(class='multi-menu mt-1')  
                                 a(href='/user/info' class='btn btn-outline-dark btn-sm' style='border-radius:40px; background-color: inherit;color: inherit;') 
                                     image(src=user.avatar class='mini-avatar border') 
                                     span(style='font-weight:400; text-transform: capitalize') #{user.fullName}

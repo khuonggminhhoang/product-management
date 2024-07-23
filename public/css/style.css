@@ -10,7 +10,7 @@
 }
 
 .header .inner-logo img {
-    max-height: 25px;
+    max-height: 50px;
     max-width: 100%;
 }
 
@@ -453,9 +453,8 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .chat .inner-body {
-    /* position: relative; */
-    overflow: auto;
-    height: 600px;
+    overflow-y: auto;
+    height: 450px;
 }
 
 .chat .inner-incoming {
@@ -510,7 +509,5 @@ input[type="number"]::-webkit-inner-spin-button {
     border-radius: 45px;
     border: #17A2B8 solid 1px;
 }
-
-
 
 /* End Chat */

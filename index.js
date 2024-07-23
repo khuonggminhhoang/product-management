@@ -49,11 +49,12 @@ app.use(cookieParser(process.env.SECRET_KEY));  // cái này chỉ là một chu
 app.use(session({ cookie: { maxAge: 60000 }}));
 app.use(flash());
 
+// Routes admin
+routeAdmin(app);
+
 // Routes client
 routeClient(app);
 
-// Routes admin
-routeAdmin(app);
 
 app.get('*', (req, res) => {
     res.render('./client/pages/error/404.pug');

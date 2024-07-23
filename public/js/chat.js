@@ -7,11 +7,6 @@ if(form) {
         socket.emit('CLIENT_SEND_MESSAGES', input.value);
         input.value = "";
     });
-
-    socket.on('SERVER_RETURN_MESSAGES', (infoMessage) => {
-        console.log(infoMessage);
-
-    });
 }
 // End
 
@@ -51,7 +46,15 @@ if(chat) {
         `;
         
         innerBody.appendChild(div);
+
+        innerBody.scrollTop = innerBody.scrollHeight;
     });
 }
 // End
 
+// Scroll chat to bottom
+const bodyChat = document.querySelector('.chat .inner-body');
+if(bodyChat) {
+    bodyChat.scrollTop = bodyChat.scrollHeight;
+}
+// End scroll chat to bottom
