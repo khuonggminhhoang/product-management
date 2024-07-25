@@ -10,7 +10,16 @@ if(form) {
             socket.emit('CLIENT_SEND_MESSAGES', input.value);
             input.value = "";
         }
+        socket.emit('CLIENT_SEND_TYPING', 'hidden');  
     });
+
+    input.addEventListener('input', () => {
+        socket.emit('CLIENT_SEND_TYPING', 'show');      // show typing 
+    });
+
+    input.focus();
+    input.setSelectionRange(input.value.length, input.value.length);
+
 }
 // End
 
@@ -21,6 +30,7 @@ if(chat) {
     const myId = chat.getAttribute('my-id');
     
     socket.on('SERVER_RETURN_MESSAGES', (infoMessage) => {
+        const typing = innerBody.querySelector('.typing');
         const div = document.createElement('div');
 
         let innerAvatar = '';
@@ -49,10 +59,42 @@ if(chat) {
             </div>
         `;
         
-        innerBody.appendChild(div);
+        if(typing) {
+            innerBody.insertBefore(div, typing);
+        }
+        else {
+            innerBody.appendChild(div);
+        }
 
         innerBody.scrollTop = innerBody.scrollHeight;
     });
+
+    // bắt sự kiện typing gửi từ server về client 
+    socket.on('SERVER_RETURN_TYPING', ({fullName, state}) => {
+        const typing = innerBody.querySelector('.typing');
+        if(state == 'show') {
+            if(!typing) {
+                const div = document.createElement('div');
+                div.className = 'typing';
+                div.innerHTML = `
+                    <small class='inner-name'>${fullName} đang soạn tin</small>
+                    <div class='inner-dots'>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                `;
+                innerBody.appendChild(div);
+                innerBody.scrollTop = innerBody.scrollHeight;
+            }
+        }   
+        else {
+            if(typing) {
+                innerBody.removeChild(typing);
+            }
+        }
+    });
+
 }
 // End
 
@@ -83,6 +125,9 @@ if(emojiPicker) {
         if(form) {
             const input = form.querySelector('input[name="content"]');
             input.value += event.detail.unicode;
+
+            socket.emit('CLIENT_SEND_TYPING', 'show');
+            input.focus();
         }
 
     });

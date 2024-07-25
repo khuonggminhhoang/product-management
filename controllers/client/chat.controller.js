@@ -24,6 +24,22 @@ module.exports.index = async (req, res) => {
             });
         });
 
+        let timer;          // set time cho dấu nháy sau 3 giây mới ngắt
+        socket.on('CLIENT_SEND_TYPING', (state) => {
+            socket.broadcast.emit('SERVER_RETURN_TYPING', {
+                fullName: fullName,
+                state: state
+            });
+            
+            if(state == 'show') {
+                clearTimeout(timer);
+
+                timer = setTimeout(() => {
+                    socket.broadcast.emit('SERVER_RETURN_TYPING', 'hidden');
+                }, 3000);
+            }
+        });
+
     });
 
     const chats = await Chat.find({
@@ -32,7 +48,8 @@ module.exports.index = async (req, res) => {
      
     for(let chat of chats) {
         const userInfo = await User.findOne({
-            _id: chat.userId
+            _id: chat.userId,
+            deleted: false
         }).select('fullName avatar');
 
         chat.userInfo = userInfo;

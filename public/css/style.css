@@ -532,3 +532,57 @@ input[type="number"]::-webkit-inner-spin-button {
     opacity: 1;
 }
 /* End icon board */
+
+/* Typing */
+.inner-body {
+    position: relative;
+}
+
+.typing {
+    position: absolute;
+    /* top: 100%; */
+    border-bottom: #17A2B8 1px solid;
+}
+
+.typing .inner-name {
+    margin-left: 5px;
+    color: #555;
+}
+
+.typing .inner-dots {
+    display: inline-block;
+}
+
+.typing .inner-dots span {
+    display: inline-block;
+    width: 3px;
+    height: 3px;
+    border-radius: 45px;
+    background-color: #555;
+    margin-left: 3px;
+    animation: blink 1.4s infinite both;
+}
+
+.inner-dots span:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.inner-dots span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.inner-dots span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes blink {
+    0%, 80%, 100% {
+        opacity: 0;
+    }
+    40% {
+        opacity: 1;
+    }
+}
+
+/* End Typing */
+
