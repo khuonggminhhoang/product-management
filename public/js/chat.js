@@ -141,3 +141,13 @@ document.addEventListener('click', (e) => {
     }
 })
 // End click icon event
+
+// FileUploadWithPreview
+const upload = new FileUploadWithPreview.FileUploadWithPreview('image-upload', {
+    multiple: true,
+    maxFileCount: 6
+});
+
+console.log(upload.cachedFileArray);
+
+// End FileUploadWithPreview

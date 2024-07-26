@@ -49,13 +49,15 @@ block main
                                     name='content'
                                     autocomplete='off'
                                 )
+
+                                div(class="custom-file-container" data-upload-id="image-upload")
+                                
                                 span(class='btn btn-icon')
                                     i(class="fa-regular fa-face-grin-beam")
                                 button
                                     i(class="fa-regular fa-paper-plane")
+                                    
     div(class="tooltip" role="tooltip") 
         emoji-picker(class='light')
-                                
-    script(src="/socket.io/socket.io.js") 
-    script(src="/js/socket.js") 
+                              
     script(type='module' src="/js/chat.js") 
