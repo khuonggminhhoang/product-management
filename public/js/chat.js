@@ -1,14 +1,29 @@
 import * as Popper from 'https://cdn.jsdelivr.net/npm/@popperjs/core@^2/dist/esm/index.js'
 
+// FileUploadWithPreview
+const upload = new FileUploadWithPreview.FileUploadWithPreview('image-upload', {
+    multiple: true,
+    maxFileCount: 6
+});
+// End FileUploadWithPreview
+
 // Xử lý sự kiện gửi tin nhắn
 const form = document.querySelector('.chat .inner-form');
 if(form) {
     const input = form.querySelector('input[name="content"]');
     form.addEventListener('submit', (e) => {
         e.preventDefault();
-        if(input.value !== "") {
-            socket.emit('CLIENT_SEND_MESSAGES', input.value);
+        const content = e.target.content.value;
+        const images = upload.cachedFileArray;  // arrray images
+        const blockInfo = {
+            content: content,
+            images: images
+        }     
+
+        if(content !== "" || images.length > 0) {
+            socket.emit('CLIENT_SEND_MESSAGES', blockInfo);
             input.value = "";
+            upload.resetPreviewPanel(); // clear all selected images
         }
         socket.emit('CLIENT_SEND_TYPING', 'hidden');  
     });
@@ -19,7 +34,6 @@ if(form) {
 
     input.focus();
     input.setSelectionRange(input.value.length, input.value.length);
-
 }
 // End
 
@@ -50,12 +64,30 @@ if(chat) {
         else {
             div.className = 'inner-outgoing';
         }
-        
+
+        let innerContent = '';
+        if(infoMessage.content != '') {
+            innerContent = `<div class='inner-content'>${infoMessage.content}</div>`;
+        }
+
+        let innerImage = '';
+        if(infoMessage.images.length > 0) {
+            innerImage += "<div class='inner-image mr-2'> <div>";
+            
+            for(let linkImage of infoMessage.images) {
+                innerImage += `
+                <img src='${linkImage}'>
+                `;
+            }
+            innerImage += "</div> </div>";
+        }
+
         div.innerHTML = `
             ${innerAvatar}
             <div class='inner-text'>
                 ${innerName}
-                <div class='inner-content'>${infoMessage.content}</div>
+                ${innerImage}
+                ${innerContent}
             </div>
         `;
         
@@ -142,12 +174,8 @@ document.addEventListener('click', (e) => {
 })
 // End click icon event
 
-// FileUploadWithPreview
-const upload = new FileUploadWithPreview.FileUploadWithPreview('image-upload', {
-    multiple: true,
-    maxFileCount: 6
-});
-
-console.log(upload.cachedFileArray);
-
-// End FileUploadWithPreview
+// chỉ nhận ảnh đầu vào
+const inputFileUpload = document.querySelector('#file-upload-with-preview-image-upload');
+if(inputFileUpload) {
+    inputFileUpload.setAttribute('accept', 'image/*');
+}

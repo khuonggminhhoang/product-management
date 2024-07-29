@@ -445,11 +445,10 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 .chat .inner-form button {
-    border-radius: 15px;
-    border: #17A2B8 1px solid;
-    background-color: #17A2B8;
+    background-color: #fff;
     padding: 0 10px;
     outline: none;
+    border-radius: 100px;
 }
 
 .chat .inner-body {
@@ -475,8 +474,36 @@ input[type="number"]::-webkit-inner-spin-button {
     margin-bottom: 5px;
 }
 
+.chat .inner-image {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 550px;
+}
+
+.chat .inner-outgoing .inner-image {
+    justify-content: flex-end;
+}
+
+.chat .inner-incoming .inner-image {
+    justify-content: flex-start;
+}
+
+.chat .inner-image div {
+    width: 150px;
+}
+
+.chat .inner-image div img {
+    display: inline-block;
+    max-width: 100%;
+    height: auto;
+    object-fit: scale-down;
+    margin: 2px;
+    border: #ddd solid 1px;
+    border-radius: 5px;
+}
+
 .chat .inner-content {
-    display: inline;
+    display: inline-block;
     border-radius: 15px;
     padding: 5px;
     margin-bottom: 2px;
@@ -501,7 +528,6 @@ input[type="number"]::-webkit-inner-spin-button {
     margin: 0 10px 5px 10px;
 }
 
-
 .inner-avatar img {
     width: 2em;
     height: 2em;
@@ -510,14 +536,11 @@ input[type="number"]::-webkit-inner-spin-button {
     border: #17A2B8 solid 1px;
 }
 
+
 /* End Chat */
 
 /* Icon board */
-.chat .btn-icon {
-    border-radius: 100px;
-}
-
-.btn-icon:hover {
+.chat .btn:hover {
     background-color: #BDBDBD;
 }
 
@@ -585,4 +608,25 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 /* End Typing */
+
+/* Chat image previrew*/
+.inner-preview .custom-file-container .label-container {
+    display: none;
+} 
+
+.inner-preview .custom-file-container .input-container {
+    display: none;
+} 
+
+.inner-preview .custom-file-container .image-preview {
+    height: auto;
+    padding: 0;
+}
+
+.inner-preview .custom-file-container .image-preview-item {
+    width: 100px;
+    background-size: contain;
+}
+
+/* End chat image previrew*/
 
