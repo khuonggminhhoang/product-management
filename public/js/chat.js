@@ -174,8 +174,16 @@ document.addEventListener('click', (e) => {
 })
 // End click icon event
 
-// chỉ nhận ảnh đầu vào
+// chỉ nhận ảnh đầu vào [chat]
 const inputFileUpload = document.querySelector('#file-upload-with-preview-image-upload');
 if(inputFileUpload) {
     inputFileUpload.setAttribute('accept', 'image/*');
 }
+
+
+// 
+const gallery = new Viewer(document.querySelector('.inner-body'), {
+    movable: false,
+    rotatable: false,
+    tooltip: false,
+});

@@ -16,7 +16,8 @@ module.exports.index = async (req, res) => {
     for(let chat of chats) {
         const userInfo = await User.findOne({
             _id: chat.userId,
-            deleted: false
+            deleted: false,
+            status: 'active'
         }).select('fullName avatar');
 
         chat.userInfo = userInfo;
@@ -28,3 +29,4 @@ module.exports.index = async (req, res) => {
         chats: chats
     });
 }
+

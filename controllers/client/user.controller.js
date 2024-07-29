@@ -13,7 +13,7 @@ const formatDateTimeHelper = require('./../../helpers/dateTimeFormatter');
 module.exports.login = (req, res) => {
     res.clearCookie('tokenUser');
 
-    res.render('./client/pages/users/login.pug', {
+    res.render('./client/pages/user/login.pug', {
         title: 'Đăng nhập'
     });
 }
@@ -66,7 +66,7 @@ module.exports.loginPOST = async (req, res) => {
 module.exports.register = (req, res) => {
     res.clearCookie('tokenUser');
 
-    res.render('./client/pages/users/register.pug', {
+    res.render('./client/pages/user/register.pug', {
         title: 'Đăng ký'
     })
 }
@@ -132,7 +132,7 @@ module.exports.logout = (req, res) => {
 module.exports.forgotPassword = (req, res) => {
     res.clearCookie('tokenUser');
 
-    res.render('./client/pages/users/forgot-password.pug', {
+    res.render('./client/pages/user/forgot-password.pug', {
         title: 'Xác thực email'
     })
 }
@@ -190,7 +190,7 @@ module.exports.forgotPasswordPOST = async (req, res) => {
 module.exports.otpPassword = async (req, res) => {
     const email = req.query.email;
 
-    res.render('./client/pages/users/otp-password.pug', {
+    res.render('./client/pages/user/otp-password.pug', {
         title: 'Nhập mã OTP',
         email: email
     })
@@ -223,7 +223,7 @@ module.exports.otpPasswordPOST = async (req, res) => {
 
 // [GET] /user/password/reset
 module.exports.resetPassword = (req, res) => {
-    res.render('./client/pages/users/reset-password.pug', {
+    res.render('./client/pages/user/reset-password.pug', {
         title: 'Cập nhật mật khẩu'
     });
 }
@@ -265,7 +265,7 @@ module.exports.info = (req, res) => {
     const user = res.locals.user;
     user.dob = formatDateTimeHelper.formatDate(user.dateOfBirth);
     
-    res.render('./client/pages/users/info.pug', {
+    res.render('./client/pages/user/info.pug', {
         title: 'Hồ sơ cá nhân',
         user: user
     })
@@ -292,7 +292,7 @@ module.exports.infoPATCH = async (req, res) => {
 
 // [GET] /user/password/change
 module.exports.changePassword = (req, res) => {
-    res.render('./client/pages/users/change-password.pug', {
+    res.render('./client/pages/user/change-password.pug', {
         title: 'Thay đổi mật khẩu'
     });
 }
@@ -361,16 +361,16 @@ module.exports.changePasswordPOST = async (req, res) => {
 
 }
 
-// [GET] /users/password/change/otp
+// [GET] /user/password/change/otp
 module.exports.otpChangePassword = (req, res) => {
     const email = req.query.email;
-    res.render('./client/pages/users/otp-change-password.pug', {
+    res.render('./client/pages/user/otp-change-password.pug', {
         title: 'Xác thực email',
         email: email
     });
 }
 
-// [POST] /users/password/change/otp
+// [POST] /user/password/change/otp
 module.exports.otpChangePasswordPOST = async (req, res) => {
     const otp = req.body.otp;
     const email = req.body.email;
