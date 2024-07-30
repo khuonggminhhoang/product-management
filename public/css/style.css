@@ -630,11 +630,11 @@ input[type="number"]::-webkit-inner-spin-button {
 
 /* End chat image previrew*/
 
+/* Card users */
 .card-user .card-title {
     font-size: small;
     display: -webkit-box;
-    -webkit-line-clamp: 2; /* Số dòng tối đa */
-    height: 3em;
+    height: 2em;
 }
 
 .card-user .card-body {
@@ -647,3 +647,31 @@ input[type="number"]::-webkit-inner-spin-button {
     aspect-ratio: 1/1;
     object-fit: cover;
 }
+
+ .card-user .card-body.add [btn-add-friend]{
+    visibility: hidden;
+}
+
+.card-user .card-body.add [btn-del-friend]{
+    display: none;
+}
+
+.card-user .card-body.add .sent-friend {
+    visibility: visible;
+}
+
+.card-user .card-body.add [btn-cancel-friend] {
+    display: block;
+}
+
+.card-user .card-body .sent-friend {
+    font-size: small;
+    visibility: hidden;
+}
+
+.card-user .card-body [btn-cancel-friend] {
+    display: none;
+} 
+
+/* End card users */
+
