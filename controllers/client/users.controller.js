@@ -35,10 +35,22 @@ module.exports.notFriend = async (req, res) => {
     });
 
     const userId = res.locals.user.id;
+    const me = await User.findOne({
+        _id: userId
+    });
+
+    const requestFriends = me.requestFriends;
+    const acceptFriends = me.acceptFriends;
+
+    console.log(requestFriends);
+    console.log(acceptFriends);
+
     const users = await User.find({
-        _id: {
-            $ne: userId
-        },
+        $and: [
+            { _id: { $ne : userId } },
+            { _id: { $nin: requestFriends} },
+            { _id: { $nin: acceptFriends} }
+        ],
         deleted: false,
         status: 'active'
     })
