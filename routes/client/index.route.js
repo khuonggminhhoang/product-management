@@ -5,6 +5,7 @@ const searchRoutes = require('./search.route.js');
 const cartRoutes = require('./cart.route.js');
 const checkoutRoutes = require('./checkout.route.js');
 const userRoutes = require('./user.route.js');
+const usersRoutes = require('./users.route.js');
 const chatRoutes = require('./chat.route.js');
 
 const middlewareSubmenu = require('./../../middlewares/client/sub-menu.middleware.js');
@@ -27,5 +28,6 @@ module.exports = (app) => {
     app.use('/cart', cartRoutes);
     app.use('/checkout', middlewareAuth.requireAuth, checkoutRoutes);
     app.use('/user', userRoutes);
+    app.use('/users', middlewareAuth.requireAuth, usersRoutes);
     app.use('/chat', middlewareAuth.requireAuth, chatRoutes);
 }

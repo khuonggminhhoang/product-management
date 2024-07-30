@@ -630,3 +630,20 @@ input[type="number"]::-webkit-inner-spin-button {
 
 /* End chat image previrew*/
 
+.card-user .card-title {
+    font-size: small;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Số dòng tối đa */
+    height: 3em;
+}
+
+.card-user .card-body {
+    padding: 6px;
+}
+
+.card-user .card-img-top {
+    width: 100%;
+    height: auto;   
+    aspect-ratio: 1/1;
+    object-fit: cover;
+}

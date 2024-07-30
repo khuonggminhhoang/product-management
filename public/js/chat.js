@@ -30,10 +30,10 @@ if(form) {
 
     input.addEventListener('input', () => {
         socket.emit('CLIENT_SEND_TYPING', 'show');      // show typing 
+        input.focus();
+        input.setSelectionRange(input.value.length, input.value.length);
     });
 
-    input.focus();
-    input.setSelectionRange(input.value.length, input.value.length);
 }
 // End
 

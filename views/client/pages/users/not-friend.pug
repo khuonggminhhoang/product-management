@@ -1,0 +1,29 @@
+extends ../../layouts/default.pug
+include ./../../mixins/box-head.pug
+include ./../../mixins/layout-grid.pug
+include ../../mixins/notification-error.pug
+include ../../mixins/notification-success.pug
+
+block main 
+    +notification-success(messages.success)
+    +notification-error(messages.error)
+
+    include ../../partials/list-btn-users.pug
+
+    .container.my-3.card-user
+        .row 
+            .col-12 
+                +box-head("Những người bạn có thể biết")
+
+        .row    
+            each user in users
+                .col-2
+                    .card.mb-2
+                        img.card-img-top(src=user.avatar alt='avatar')
+                        .card-body
+                            p.card-title <b>#{user.fullName}</b>
+                            button.btn-block.btn.btn-info.btn-sm( btn-add-friend = user.id) Kết bạn
+                            button.btn-block.btn.btn-secondary.btn-sm Xóa
+
+
+            
