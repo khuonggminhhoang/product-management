@@ -74,14 +74,13 @@ module.exports.deleteBranch = async (req, res) => {
             return;
         } 
 
-        const flag = false;
+        let flag = false;
         for(let item of settingGeneral.branch) {
             if(item.branchName == req.query.branchName) {
                 flag = true;
                 break;
             }
         }
-
         if(flag) {
             await SettingGeneral.updateOne({
                 _id: settingGeneral.id  
