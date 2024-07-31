@@ -7,14 +7,14 @@ block main
     .container.my-3
         .row 
             .col-12 
-                +box-head("Những người bạn có thể biết")
+                +box-head("Yêu cầu kết bạn")
 
         .row    
             each user in users
                 .col-2.card-user(user-id=user.id)
                     .card.mb-2
                         img.card-img-top(src=user.avatar alt='avatar')
-                        .card-body
+                        .card-body.add
                             p.card-title <b>#{user.fullName}</b>
                             small.sent-friend Đã gửi lời mời
                             button.btn-block.btn.btn-info.btn-sm( btn-add-friend = user.id) Thêm bạn bè
@@ -28,4 +28,3 @@ block main
                             
 block script
     script(src="/js/users.js") 
-            

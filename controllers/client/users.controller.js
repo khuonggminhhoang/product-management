@@ -33,3 +33,48 @@ module.exports.notFriend = async (req, res) => {
         users: users
     });
 };
+
+module.exports.requestFriend = async (req, res) => {
+    // Socket
+    usersSocket(res);
+    // End Socket
+
+    const userId = res.locals.user.id;
+    const me = await User.findOne({
+        _id: userId
+    });
+
+    const users = await User.find({
+        _id: me.requestFriends,
+        deleted: false,
+        status: 'active'
+    });
+
+    res.render('./client/pages/users/request.pug', {
+        title: 'Bạn bè',
+        users: users
+    });
+
+}
+
+module.exports.acceptFriend = async (req, res) => {
+    // Socket
+    usersSocket(res);
+    // End Socket
+
+    const userId = res.locals.user.id;
+    const me = await User.findOne({
+        _id: userId
+    });
+
+    const users = await User.find({
+        _id: me.acceptFriends,
+        deleted: false,
+        status: 'active'
+    });
+
+    res.render('./client/pages/users/accept.pug', {
+        title: 'Bạn bè',
+        users: users
+    });
+}

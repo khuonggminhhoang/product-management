@@ -130,7 +130,10 @@ module.exports = (res) => {
                 _id: fromUserId
             }, {
                 $push: {
-                    friendList: { userId: toUserId }
+                    friendList: { 
+                        userId: toUserId, 
+                        roomChatId: ''
+                    }
                 }
             });
 
@@ -139,7 +142,10 @@ module.exports = (res) => {
                 _id: toUserId
             }, {
                 $push: {
-                    friendList: { userId: fromUserId }
+                    friendList: { 
+                        userId: fromUserId,
+                        roomChatId: ''
+                    }
                 }
             });
 
@@ -150,7 +156,7 @@ module.exports = (res) => {
                 $pull: { requestFriends: fromUserId }
             });
 
-
+            
         });
 
     });
