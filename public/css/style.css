@@ -648,7 +648,7 @@ input[type="number"]::-webkit-inner-spin-button {
     object-fit: cover;
 }
 
- .card-user .card-body.add [btn-add-friend]{
+.card-user .card-body.add [btn-add-friend]{
     visibility: hidden;
 }
 
@@ -669,9 +669,37 @@ input[type="number"]::-webkit-inner-spin-button {
     visibility: hidden;
 }
 
-.card-user .card-body [btn-cancel-friend] {
+.card-user .card-body [noti-accepted],
+.card-user .card-body [noti-denied],
+.card-user .card-body [btn-cancel-friend],
+.card-user .card-body [btn-accept-friend],
+.card-user .card-body [btn-denied-friend] {
     display: none;
-} 
+}
+
+.card-user .card-body.request [btn-accept-friend],
+.card-user .card-body.request [btn-denied-friend] {
+    display: block;
+}
+
+.card-user .card-body.denied [btn-add-friend],
+.card-user .card-body.denied [btn-del-friend],
+.card-user .card-body.accept [btn-add-friend],
+.card-user .card-body.accept [btn-del-friend],
+.card-user .card-body.request [btn-add-friend],
+.card-user .card-body.request [btn-del-friend] {
+    display: none;
+}
+
+
+.card-user .card-body.accept [noti-accepted] {
+    display: block;
+}
+
+.card-user .card-body.denied [noti-denied] {
+    display: block;
+}
+
 
 /* End card users */
 

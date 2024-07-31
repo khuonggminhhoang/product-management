@@ -23,6 +23,8 @@ const io = new Server(server);
 global._io = io;                     // dùng biến global để truy cập được từ tất cả các file js trong app
 // END
 
+global.objectId = {};               // lưu key là userId, value là socketId khi connect tới socket 
+
 const port = process.env.PORT;
 
 app.use(methodOverride('_method'));

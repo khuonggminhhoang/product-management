@@ -181,7 +181,7 @@ if(inputFileUpload) {
 }
 
 
-// 
+// view fullscreen image
 const gallery = new Viewer(document.querySelector('.inner-body'), {
     movable: false,
     rotatable: false,
