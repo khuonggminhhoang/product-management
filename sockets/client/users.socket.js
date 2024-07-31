@@ -116,5 +116,42 @@ module.exports = (res) => {
 
         });
 
+        // Xác nhận kết bạn
+        socket.on('CLIENT_ACCEPT_FRIEND', async (toUserId) => {
+            // xóa toUserId trong acceptFriends của fromUserId
+            await User.updateOne({
+                _id: fromUserId
+            }, {
+                $pull: { acceptFriends: toUserId }
+            });
+
+            // đẩy toUserId vào friendList của fromUserId
+            await User.updateOne({
+                _id: fromUserId
+            }, {
+                $push: {
+                    friendList: { userId: toUserId }
+                }
+            });
+
+            // đẩy fromUserId vào friendList của toUserId
+            await User.updateOne({
+                _id: toUserId
+            }, {
+                $push: {
+                    friendList: { userId: fromUserId }
+                }
+            });
+
+            // xóa fromUserId trong requestFriends của toUserId
+            await User.updateOne({
+                _id: toUserId
+            }, {
+                $pull: { requestFriends: fromUserId }
+            });
+
+
+        });
+
     });
 }

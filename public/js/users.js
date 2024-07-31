@@ -83,6 +83,8 @@ if(btnAcceptFriends.length > 0) {
             const cardBody = btn.closest('.card-body');
             cardBody.classList.remove('request');
             cardBody.classList.add('accept');
+
+            socket.emit('CLIENT_ACCEPT_FRIEND', btn.getAttribute('btn-accept-friend'));
         });
     });
 }

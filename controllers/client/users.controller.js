@@ -13,12 +13,16 @@ module.exports.notFriend = async (req, res) => {
 
     const requestFriends = me.requestFriends;
     const acceptFriends = me.acceptFriends;
- 
+    const arr = me.friendList;
+    const friendListId = arr.map(item => item.userId);
+
     const users = await User.find({
         $and: [
             { _id: { $ne : userId } },
             { _id: { $nin: requestFriends} },
-            { _id: { $nin: acceptFriends} }
+            { _id: { $nin: acceptFriends} },
+            { _id: { $nin: friendListId} }
+
         ],
         deleted: false,
         status: 'active'
