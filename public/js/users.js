@@ -102,3 +102,16 @@ if(btnDeniedFriends.length > 0) {
         });  
     });
 }
+
+// Xử lý sự kiện Hủy kết bạn
+const btnUnFriends = document.querySelectorAll('[btn-unfriend]');
+if(btnUnFriends.length > 0) {
+    btnUnFriends.forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const cardBody = btn.closest('.card-body');
+            cardBody.classList.remove('friend');
+
+            socket.emit('CLIENT_UNFRIEND', btn.getAttribute('btn-unfriend'));
+        });
+    });
+}

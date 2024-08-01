@@ -48,7 +48,7 @@ module.exports.requestFriend = async (req, res) => {
         _id: me.requestFriends,
         deleted: false,
         status: 'active'
-    });
+    }).select('avatar fullName');
 
     res.render('./client/pages/users/request.pug', {
         title: 'Bạn bè',
@@ -71,9 +71,32 @@ module.exports.acceptFriend = async (req, res) => {
         _id: me.acceptFriends,
         deleted: false,
         status: 'active'
-    });
+    }).select('avatar fullName');
 
     res.render('./client/pages/users/accept.pug', {
+        title: 'Bạn bè',
+        users: users
+    });
+}
+
+module.exports.friendsFriend = async (req, res) => {
+    // Socket
+    usersSocket(res);
+    // End Socket
+    const userId = res.locals.user.id;
+    const me = await User.findOne({
+        _id: userId
+    });
+
+    const arrId = me.friendList.map(item => item.userId);
+
+    const users = await User.find({
+        _id: arrId,
+        deleted: false,
+        status: 'active'
+    });
+    
+    res.render('./client/pages/users/friends.pug', {
         title: 'Bạn bè',
         users: users
     });

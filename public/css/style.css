@@ -669,6 +669,8 @@ input[type="number"]::-webkit-inner-spin-button {
     visibility: hidden;
 }
 
+.card-user .card-body [btn-unfriend],
+.card-user .card-body [btn-inbox],
 .card-user .card-body [noti-accepted],
 .card-user .card-body [noti-denied],
 .card-user .card-body [btn-cancel-friend],
@@ -677,11 +679,18 @@ input[type="number"]::-webkit-inner-spin-button {
     display: none;
 }
 
+.card-user .card-body.friend [btn-unfriend],
+.card-user .card-body.friend [btn-inbox] {
+    display: block;
+}
+
 .card-user .card-body.request [btn-accept-friend],
 .card-user .card-body.request [btn-denied-friend] {
     display: block;
 }
 
+.card-user .card-body.friend [btn-add-friend],
+.card-user .card-body.friend [btn-del-friend],
 .card-user .card-body.denied [btn-add-friend],
 .card-user .card-body.denied [btn-del-friend],
 .card-user .card-body.accept [btn-add-friend],
@@ -698,9 +707,11 @@ input[type="number"]::-webkit-inner-spin-button {
 .card-user .card-body.denied [noti-denied] {
     display: block;
 }
+
 /* End card users */
 
 .map-container iframe {
-    width: 100%;
-    height: 100%;
+    width: 400px;
+    max-height: 300px;
+    aspect-ratio: 1/1;
 }

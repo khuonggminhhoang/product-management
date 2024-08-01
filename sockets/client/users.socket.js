@@ -156,7 +156,31 @@ module.exports = (res) => {
                 $pull: { requestFriends: fromUserId }
             });
 
+        });
+
+        // Hủy kết bạn
+        socket.on('CLIENT_UNFRIEND', async (toUserId) => {
+            await User.updateOne({
+                _id: fromUserId
+            }, {
+                $pull: {
+                    friendList: { 
+                        userId: toUserId
+                    }
+                }
+            });
             
+            await User.updateOne({
+                _id: toUserId
+            }, {
+                $pull: {
+                    friendList: { 
+                        userId: fromUserId
+                    }
+                }
+            });
+
+            // Gửi socket tới client để chỉnh giao diện ...
         });
 
     });
