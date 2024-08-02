@@ -16,3 +16,4 @@
             a(class='form-control btn btn-sm btn-light' href='/users/accept') 
                 i(class="fa-solid fa-user-plus mr-2")
                 | Lời mời kết bạn
+                span(class='badge badge-info rounded-circle ml-2' badge-noti-accept) #{user.acceptFriends.length <= 99 ? user.acceptFriends.length:'+99'}

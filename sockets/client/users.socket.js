@@ -5,7 +5,6 @@ module.exports = (res) => {
     _io.once('connection', (socket) => {
         // objectId lưu cặp toUserId - socketId tương ứng để hiển thị thông báo ra giao diện
         objectId[fromUserId] = socket.id;
-        
         // Thêm bạn bè
         socket.on('CLIENT_ADD_FRIEND', async (toUserId) => {
             // Lưu id của toUserId vào requestFriends của fromUserId
@@ -35,9 +34,18 @@ module.exports = (res) => {
                 });
             }
 
+            const toUser = await User.findOne({_id: toUserId}).select('acceptFriends');
+            const fromUser = await User.findOne({_id: fromUserId}).select('avatar fullName');
+
             if(objectId[toUserId]) {
                 // gửi tới client để sửa giao diện card nút thêm bạn bè thành nút xác nhận
                 socket.to( objectId[toUserId] ).emit('SERVER_NOTIFICATION_ADD_FRIEND', fromUserId);
+
+                // gửi tới client để chỉnh giao diện số lời mời kết bạn
+                socket.to( objectId[toUserId] ).emit('SERVER_RETURN_ACCEPT_QUANTITY', {
+                    acceptQty: toUser.acceptFriends.length,
+                    fromUser: fromUser
+                });
             }
         });
 
@@ -72,10 +80,10 @@ module.exports = (res) => {
                 });
             }
 
-            if(objectId[toUserId]) {
-                // gửi tới client để sửa giao diện card đã gửi thành thêm và xóa
-                socket.to( objectId[toUserId] ).emit('SERVER_NOTIFICATION_DENIED_FRIEND', fromUserId);
-            }
+            // if(objectId[toUserId]) {
+            //     // gửi tới client để sửa giao diện card đã gửi thành thêm và xóa
+            //     socket.to( objectId[toUserId] ).emit('SERVER_NOTIFICATION_DENIED_FRIEND', fromUserId);
+            // }
 
         });
 
@@ -109,9 +117,17 @@ module.exports = (res) => {
                 });
             }
 
+            const toUser = await User.findOne({_id: toUserId}).select('acceptFriends');
+            const fromUser = await User.findOne({_id: fromUserId}).select('avatar fullName');
+
             if(objectId[toUserId]) {
                 // gửi tới client để sửa giao diện card xác nhận thành thêm bạn và xóa
                 socket.to( objectId[toUserId] ).emit('SERVER_NOTIFICATION_CANCEL_FRIEND', fromUserId);
+                // gửi tới client để chỉnh giao diện số lời mời kết bạn
+                socket.to( objectId[toUserId] ).emit('SERVER_RETURN_ACCEPT_QUANTITY', {
+                    acceptQty: toUser.acceptFriends.length,
+                    fromUser: fromUser
+                });
             }
 
         });
@@ -180,7 +196,11 @@ module.exports = (res) => {
                 }
             });
 
-            // Gửi socket tới client để chỉnh giao diện ...
+            if(objectId[toUserId]) {
+                // gửi tới client để sửa giao diện card thành thêm bạn và xóa
+                socket.to( objectId[toUserId] ).emit('SERVER_NOTIFICATION_UNFRIEND', fromUserId);
+            }
+
         });
 
     });

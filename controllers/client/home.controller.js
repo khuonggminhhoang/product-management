@@ -8,13 +8,13 @@ const index = async (req, res) => {
             featured: true,
             status: 'active',
             deleted: false
-        }).limit(6); 
+        }).limit(12); 
 
         // lấy ra mảng các sp mới
         const newProducts = await Product.find({
             status: 'active',
             deleted: false
-        }).sort({position: 'desc'}).limit(12);
+        }).sort({position: 'desc'}).limit(24);
 
         res.render('./client/pages/home/index.pug', {
             title: 'Trang chủ',
