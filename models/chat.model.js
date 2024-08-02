@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const chatSchema = new mongoose.Schema({
     userId: String,
-    roomId: String,
+    roomChatId: String,
     content: String,
     images: Array,
     deleted: {
