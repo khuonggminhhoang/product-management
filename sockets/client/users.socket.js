@@ -1,4 +1,5 @@
 const User = require('./../../models/user.model');
+const RoomChat = require('./../../models/room-chat.model');
 
 module.exports = (res) => {
     const fromUserId = res.locals.user.id;
@@ -141,28 +142,61 @@ module.exports = (res) => {
             });
 
             // đẩy toUserId vào friendList của fromUserId
-            await User.updateOne({
-                _id: fromUserId
-            }, {
-                $push: {
-                    friendList: { 
-                        userId: toUserId, 
-                        roomChatId: ''
+            const existBinA = await User.findOne({
+                _id: fromUserId,
+                'friendList.userId': toUserId
+            }); 
+
+            const existAinB = await User.findOne({
+                _id: toUserId,
+                'friendList.userId': fromUserId
+            }); 
+
+            let roomChat;
+            if(!existAinB && !existBinA) {
+                roomChat = new RoomChat({
+                    typeRoom: 'friend',
+                    users: [
+                        {
+                            userId: fromUserId,
+                            role: 'superAdmin'            // superAdmin / admin / user
+                        }, 
+                        {
+                            userId: toUserId,
+                            role: 'superAdmin'            // superAdmin / admin / user
+                        }
+                    ]
+                });
+
+                await roomChat.save();
+            }
+
+            if(!existBinA) {
+                await User.updateOne({
+                    _id: fromUserId
+                }, {
+                    $push: {
+                        friendList: { 
+                            userId: toUserId, 
+                            roomChatId: roomChat.id
+                        }
                     }
-                }
-            });
+                });
+            }
 
             // đẩy fromUserId vào friendList của toUserId
-            await User.updateOne({
-                _id: toUserId
-            }, {
-                $push: {
-                    friendList: { 
-                        userId: fromUserId,
-                        roomChatId: ''
+            if(!existAinB) {
+                await User.updateOne({
+                    _id: toUserId
+                }, {
+                    $push: {
+                        friendList: { 
+                            userId: fromUserId,
+                            roomChatId: roomChat.id
+                        }
                     }
-                }
-            });
+                });
+            }
 
             // xóa fromUserId trong requestFriends của toUserId
             await User.updateOne({

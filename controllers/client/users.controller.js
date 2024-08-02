@@ -1,6 +1,7 @@
 const User = require('./../../models/user.model');
 const usersSocket = require('./../../sockets/client/users.socket');
 
+// [GET] /users/not-friend
 module.exports.notFriend = async (req, res) => {
     // Socket
     usersSocket(res);
@@ -34,6 +35,7 @@ module.exports.notFriend = async (req, res) => {
     });
 };
 
+// [GET] /users/request
 module.exports.requestFriend = async (req, res) => {
     // Socket
     usersSocket(res);
@@ -57,6 +59,7 @@ module.exports.requestFriend = async (req, res) => {
 
 }
 
+// [GET] /users/accept
 module.exports.acceptFriend = async (req, res) => {
     // Socket
     usersSocket(res);
@@ -79,6 +82,7 @@ module.exports.acceptFriend = async (req, res) => {
     });
 }
 
+// [GET] /users/friends
 module.exports.friendsFriend = async (req, res) => {
     // Socket
     usersSocket(res);
@@ -88,13 +92,18 @@ module.exports.friendsFriend = async (req, res) => {
         _id: userId
     });
 
-    const arrId = me.friendList.map(item => item.userId);
+    const friendList = me.friendList;
+    const friendListId = friendList.map(item => item.userId);
 
     const users = await User.find({
-        _id: arrId,
+        _id: friendListId,
         deleted: false,
         status: 'active'
-    });
+    }).select('fullName avatar statusOnline');
+
+    for(let i = 0; i < users.length; ++i) {
+        users[i].roomChatId = friendList[i].roomChatId;
+    }
     
     res.render('./client/pages/users/friends.pug', {
         title: 'Bạn bè',
