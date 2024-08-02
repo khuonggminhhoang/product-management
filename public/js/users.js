@@ -189,6 +189,27 @@ socket.on('SERVER_RETURN_ACCEPT_QUANTITY', ({ acceptQty, fromUser }) => {
     if (badgeNotiAccept) {
         badgeNotiAccept.innerHTML = acceptQty;
     }
-
-
 });
+
+// realtime cho đèn báo trạng thái online
+socket.on('SERVER_RETURN_USER_ONLINE', (userId) => {
+    const cardUser = document.querySelector(`.card-user[user-id="${userId}"]`);
+    if(cardUser) {
+        const statusLight = cardUser.querySelector('.status-light');
+        if(statusLight) {
+            statusLight.setAttribute('status', 'online');
+        }
+    }
+});
+
+socket.on('SERVER_RETURN_USER_OFFLINE', (userId) => {
+    const cardUser = document.querySelector(`.card-user[user-id="${userId}"]`);
+    if(cardUser) {
+        const statusLight = cardUser.querySelector('.status-light');
+        if(statusLight) {
+            statusLight.setAttribute('status', 'offline');
+        }
+    }
+});
+// end
+

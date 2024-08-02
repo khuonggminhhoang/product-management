@@ -49,7 +49,6 @@ module.exports = (res) => {
             }
         });
 
-
         // Từ chối kết bạn
         socket.on('CLIENT_DENIED_FRIEND', async (toUserId) => {
             // kiểm tra xem toUserId có nằm trong acceptFriends không
@@ -202,6 +201,5 @@ module.exports = (res) => {
             }
 
         });
-
     });
 }

@@ -13,6 +13,7 @@ block main
             each user in users
                 .col-2.card-user(user-id=user.id)
                     .card.mb-2
+                        span(class='status-light' status=user.statusOnline)
                         img.card-img-top(src=user.avatar alt='avatar')
                         .card-body.friend 
                             p.card-title <b>#{user.fullName}</b>
