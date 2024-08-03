@@ -2,11 +2,15 @@ const Chat = require('./../../models/chat.model');
 
 const uploadToCloudinaryHelper = require('./../../helpers/uploadToCloudinary');
 
-module.exports = (res) => {
+module.exports = (req, res) => {
     const userId = res.locals.user.id;
     const fullName = res.locals.user.fullName;
+    const roomChatId = req.params.roomChatId;
 
     _io.once('connection', (socket) => {
+        // join socket vào phòng
+        socket.join(roomChatId);    
+
         socket.on('CLIENT_SEND_MESSAGES', async (blockInfo) => {
             // Gửi lại tới client
             const images = [];
@@ -18,11 +22,13 @@ module.exports = (res) => {
             const chat = new Chat({
                 userId: userId,
                 content: blockInfo.content,
-                images: images
+                images: images,
+                roomChatId: roomChatId
             });
             await chat.save();
 
-            _io.emit('SERVER_RETURN_MESSAGES', {
+            // gửi đến tất cả mọi người trong phòng chat, kể cả người gửi
+            _io.to(roomChatId).emit('SERVER_RETURN_MESSAGES', {
                 avatar: res.locals.user.avatar,
                 userId: userId,
                 fullName: fullName,
@@ -31,9 +37,11 @@ module.exports = (res) => {
             }); 
         });
 
+        // Hiệu ứng typing
         let timer;          // set time cho dấu nháy sau 3 giây mới ngắt
         socket.on('CLIENT_SEND_TYPING', (state) => {
-            socket.broadcast.emit('SERVER_RETURN_TYPING', {
+            // gửi sự kiện này tới tất cả mọi người, trừ người gửi
+            socket.to(roomChatId).emit('SERVER_RETURN_TYPING', {
                 fullName: fullName,
                 state: state
             });
