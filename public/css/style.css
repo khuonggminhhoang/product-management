@@ -536,6 +536,11 @@ input[type="number"]::-webkit-inner-spin-button {
     border: #17A2B8 solid 1px;
 }
 
+.inner-head .inner-avatar img {
+    width: 2.5em;
+    height: 2.5em;
+}
+
 
 /* End Chat */
 
@@ -740,3 +745,30 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 /* End Status light */
+.inner-head  .inner-avatar {
+    display: inline-block;
+    position: relative;
+}
+
+.inner-head  .inner-avatar .status-light {
+    top: 30px;
+    right: 0;
+    position: absolute;
+}
+
+.inner-head .inner-name {
+    display: inline-block;
+    font-weight: 700;
+    font-size: 16px;
+    position: relative;
+    top: 12px;
+}
+
+.inner-head .inner-name span {
+    display: block;
+}
+
+.inner-head .inner-name .status-online {
+    font-weight: 500;
+    font-size: smaller;
+}

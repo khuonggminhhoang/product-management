@@ -7,6 +7,7 @@ module.exports.isAccess = async (req, res, next) => {
 
         const exist = await RoomChat.findOne({
             _id: roomChatId,
+            deleted: false,
             'users.userId': currUserId
         });
         if(!exist) {

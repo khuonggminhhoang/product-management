@@ -40,7 +40,7 @@ module.exports = (req, res) => {
         // Hiệu ứng typing
         let timer;          // set time cho dấu nháy sau 3 giây mới ngắt
         socket.on('CLIENT_SEND_TYPING', (state) => {
-            // gửi sự kiện này tới tất cả mọi người, trừ người gửi
+            // gửi sự kiện này tới tất cả mọi người, trừ người gửi 
             socket.to(roomChatId).emit('SERVER_RETURN_TYPING', {
                 fullName: fullName,
                 state: state

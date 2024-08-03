@@ -1,3 +1,5 @@
+const roomChatModel = require('../../models/room-chat.model');
+const RoomChat = require('../../models/room-chat.model');
 const Chat = require('./../../models/chat.model');
 const User = require('./../../models/user.model');
 
@@ -8,6 +10,20 @@ module.exports.index = async (req, res) => {
     // SOCKET IO
     chatSocket(req, res);
     // End Socket io
+
+    // Xử lý phần header
+    const roomChat = await RoomChat.findOne({
+        _id: req.params.roomChatId,
+        deleted: false
+    });
+
+    if(roomChat.typeRoom == 'friend') {
+        const infoUserOfRoom = roomChat.users.find(item => item.userId != res.locals.user.id);
+        const otherUser = await User.findOne({_id: infoUserOfRoom.userId, deleted: false});
+        roomChat.title = otherUser.fullName;
+        roomChat.avatar = otherUser.avatar;
+    }
+    
 
     const chats = await Chat.find({
         deleted: false, 
@@ -27,7 +43,8 @@ module.exports.index = async (req, res) => {
     // END
     res.render('./client/pages/chat/index.pug', {
         title: 'Chat',
-        chats: chats
+        chats: chats,
+        roomChat: roomChat
     });
 }
 
