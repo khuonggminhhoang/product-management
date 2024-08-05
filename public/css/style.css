@@ -453,7 +453,7 @@ input[type="number"]::-webkit-inner-spin-button {
 
 .chat .inner-body {
     overflow-y: auto;
-    height: 450px;
+    height: 600px;
 }
 
 .chat .inner-incoming {
@@ -745,6 +745,8 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 
 /* End Status light */
+
+/* Header chat*/
 .inner-head  .inner-avatar {
     display: inline-block;
     position: relative;
@@ -772,3 +774,43 @@ input[type="number"]::-webkit-inner-spin-button {
     font-weight: 500;
     font-size: smaller;
 }
+/* End Header chat*/
+
+/* Label chat */
+.label-chat .inner-avatar {
+    display: inline-block;
+    position: relative;
+    top: -12px;
+}
+
+.label-chat .inner-avatar .status-light {
+    top: 20px;
+    right: 0;
+    position: absolute;
+    width: 8px;
+    height: 8px;
+}
+
+.label-chat .inner-name {
+    display: inline-block;
+    font-weight: 600;
+    font-size: 12px;
+    position: relative;
+    top: -2px;
+}
+
+.label-chat .inner-name span{
+    display: block;
+}
+.label-chat .inner-name .inner-content{
+    font-weight: 400;
+    font-size: smaller;
+}
+
+.label {
+    overflow-y: auto;
+    height: 700px;
+}
+
+/* End Label chat */
+

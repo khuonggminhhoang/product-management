@@ -1,0 +1,38 @@
+extends ../../layouts/default.pug
+include ../../mixins/box-head.pug
+
+block main 
+    .container.my-5 
+        .row 
+            .col-12
+                +box-head('Nhóm chat mới')
+    
+        .row 
+            .col-12
+                .card 
+                    .card-header.text-right 
+                        button.btn.btn-info.submit(disabled) Tạo 
+                
+                    .card-body 
+                        .div 
+                            input.form-control(name='title' placeholder='Tên nhóm (bắt buộc)' required)
+                        
+                        hr
+                        p.text-muted.mb-2 Gợi ý
+
+                        .box-user
+                            each friend in friends
+                                .d-flex.align-items-center
+                                    .inner-check-box 
+                                        input(type='checkbox' name='userId' id=friend._id)
+                                    .inner-avatar 
+                                        img(src=friend.avatar)
+                                    label(for=friend._id) #{friend.fullName}
+
+block script 
+    script(src="/js/group-chat.js") 
+
+                                
+                        
+
+        

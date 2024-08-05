@@ -1,0 +1,53 @@
+extends ../../layouts/default.pug
+
+block main 
+    .container.my-2
+        .row    
+            .col-3.my-5.label
+                .d-flex.justify-content-between
+                    .mt-1.font-weight-bold Đoạn chat
+                    .mt-1 
+                        a(title='Tạo nhóm chat' class='btn btn-sm btn-light border border-dark rounded-circle' href='/group-chat/create') 
+                            i(class="fa-solid fa-plus") 
+
+                form.mt-1()
+                    .input-group.input-group-sm
+                        input(
+                            type="text" 
+                            class="form-control"     
+                            placeholder="Tìm kiếm..." 
+                            name="keyword"
+                            value=keyword || undefined
+                        )
+
+                        .input-group-append
+                            button(
+                                type="submit" 
+                                class=`btn btn-secondary`
+                            ) 
+                                i(class="fa-solid fa-magnifying-glass")
+                    
+                hr.mt-1
+                .btn-group-vertical.btn-block 
+                    each roomChat in roomsChat
+                        a(class='form-control btn btn-sm btn-light text-left label-chat border-top border-bottom' href=`/chat/${roomChat._id}`) 
+                            .inner-avatar 
+                                img(
+                                    src=(roomChat.avatar || '/images/group-chat-avatar.jpg')
+                                    )  
+                                span(class='status-light' status=roomChat.statusOnline)
+                            .inner-name 
+                                span #{roomChat.title}
+                                span.inner-content.p-0.text-muted Bạn: :))
+
+            
+                            
+
+            .col-9 
+                .row.my-5 
+                    .col-12
+                        p.text-center.text-muted Vui lòng chọn đoạn chat.
+
+        
+block script                     
+    script(type='module' src="/js/chat.js") 

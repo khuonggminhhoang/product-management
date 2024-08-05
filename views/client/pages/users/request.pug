@@ -2,28 +2,32 @@ extends ../../layouts/default.pug
 include ./../../mixins/box-head.pug
 
 block main 
-    include ../../partials/list-btn-users.pug
-
     .container.my-3
-        .row 
-            .col-12 
-                +box-head("Yêu cầu kết bạn")
-
         .row    
-            each user in users
-                .col-2.card-user(user-id=user.id)
-                    .card.mb-2
-                        img.card-img-top(src=user.avatar alt='avatar')
-                        .card-body.add
-                            p.card-title <b>#{user.fullName}</b>
-                            small.sent-friend Đã gửi lời mời
-                            button.btn-block.btn.btn-info.btn-sm( btn-add-friend = user.id) Thêm bạn bè
-                            button.btn-block.btn.btn-info.btn-sm.mt-0(btn-accept-friend = user.id) Xác nhận
-                            button.btn-block.btn.btn-secondary.btn-sm(btn-del-friend) Xóa
-                            button.btn-block.btn.btn-secondary.btn-sm(btn-cancel-friend = user.id) Hủy lời mời
-                            button.btn-block.btn.btn-secondary.btn-sm(btn-denied-friend = user.id) Từ chối lời mời
-                            button.btn-block.btn.btn-secondary.btn-sm.mt-3(noti-accepted disabled) Đã chấp nhận kết bạn
-                            button.btn-block.btn.btn-secondary.btn-sm.mb-3(noti-denied disabled) Đã Từ chối kết bạn
+            .col-3.my-5
+                include ../../partials/list-btn-users.pug
+                
+
+            .col-9
+                .row 
+                    .col-12 
+                        +box-head("Yêu cầu kết bạn")
+            
+                .row     
+                    each user in users
+                        .col-3.card-user(user-id=user.id)
+                            .card.mb-2
+                                img.card-img-top(src=user.avatar alt='avatar')
+                                .card-body.add
+                                    p.card-title <b>#{user.fullName}</b>
+                                    small.sent-friend Đã gửi lời mời
+                                    button.btn-block.btn.btn-info.btn-sm( btn-add-friend = user.id) Thêm bạn bè
+                                    button.btn-block.btn.btn-info.btn-sm.mt-0(btn-accept-friend = user.id) Xác nhận
+                                    button.btn-block.btn.btn-secondary.btn-sm(btn-del-friend) Xóa
+                                    button.btn-block.btn.btn-secondary.btn-sm(btn-cancel-friend = user.id) Hủy lời mời
+                                    button.btn-block.btn.btn-secondary.btn-sm(btn-denied-friend = user.id) Từ chối lời mời
+                                    button.btn-block.btn.btn-secondary.btn-sm.mt-3(noti-accepted disabled) Đã chấp nhận kết bạn
+                                    button.btn-block.btn.btn-secondary.btn-sm.mb-3(noti-denied disabled) Đã Từ chối kết bạn
 
                             
 block script

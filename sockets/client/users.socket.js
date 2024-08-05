@@ -152,8 +152,18 @@ module.exports = (res) => {
                 'friendList.userId': fromUserId
             }); 
 
-            let roomChat;
-            if(!existAinB && !existBinA) {
+            // cần tìm xem đoạn chat có tồn tại trước khi kết bạn hay chưa
+            let roomChat = await RoomChat.findOne({
+                typeRoom: 'friend',
+                users: {
+                    $all: [
+                        { $elemMatch: { userId: fromUserId } },
+                        { $elemMatch: { userId: toUserId } }
+                    ]
+                }
+            });
+
+            if(!existAinB && !existBinA && !roomChat) {
                 roomChat = new RoomChat({
                     typeRoom: 'friend',
                     users: [

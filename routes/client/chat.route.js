@@ -6,4 +6,6 @@ const middleware = require('./../../middlewares/client/room-chat.middleware');
 
 router.get('/:roomChatId', middleware.isAccess, controller.index);
 
+router.get('/', controller.home);
+
 module.exports = router;
