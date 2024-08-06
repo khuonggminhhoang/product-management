@@ -18,6 +18,7 @@ block main
                             placeholder="Tìm kiếm..." 
                             name="keyword"
                             value=keyword || undefined
+                            autocomplete = 'off'
                         )
 
                         .input-group-append
@@ -40,14 +41,7 @@ block main
                                 span #{roomChat.title}
                                 span.inner-content.p-0.text-muted Bạn: :))
 
-            
-                            
-
             .col-9 
                 .row.my-5 
                     .col-12
                         p.text-center.text-muted Vui lòng chọn đoạn chat.
-
-        
-block script                     
-    script(type='module' src="/js/chat.js") 

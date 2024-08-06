@@ -1,7 +1,20 @@
 include ../mixins/sub-menu.pug
 include ../mixins/form-search.pug
 
-header.header 
+header.header
+    .container 
+        .row.align-item-center
+            .col-12.text-right
+                if (user)
+                    div(class='multi-menu mt-1')  
+                        a(href='/user/info' class='btn btn-outline-dark btn-sm' style='border-radius:40px; background-color: inherit;color: inherit;' title='Thông tin cá nhân') 
+                            image(src=user.avatar class='mini-avatar border') 
+                            span(style='font-weight:400; text-transform: capitalize') #{user.fullName}
+
+                        a(href='/user/logout' class='btn btn-outline-dark btn-sm' style='border-radius:40px; background-color: inherit;color: inherit;' title='Đăng xuất')
+                            i(class="fa-solid fa-right-from-bracket ml-2")
+                            span.ml-2 Đăng xuất
+                
     .container 
         .row.align-item-center.pt-2 
             .col-2.pr-5
@@ -10,7 +23,7 @@ header.header
                         img(src=settingGeneral.logo alt='logo' height='auto' width='100%')
 
             .col-4
-                .inner-menu 
+                .inner-menu.d-flex.justify-content-around 
                     ul 
                         li 
                             a(href='/') Trang chủ
@@ -34,31 +47,27 @@ header.header
 
             .col-3 
                 .inner-menu
-                    ul 
+                    ul.d-flex.justify-content-around
                         li.mr-2 
                             a(href='/cart' class='mini-cart' title='Giỏ hàng') 
                                 i(class="fa-solid fa-cart-shopping")
                                 span(class='badge badge-info') #{miniCart ? miniCart.total : 0}
                         
-                        if (!user)
-                            li
-                                a(href='/user/login' class='btn btn-outline-dark btn-sm' style='border-radius:40px; background-color: inherit;color: inherit;') 
-                                    i(class="fa-solid fa-circle-user mr-2") 
-                                    span(style='font-weight:400; text-transform: capitalize') Đăng nhập
-                        else    
+                        if (user)
                             li 
                                 a(href='/users/friends' title='Bạn bè') 
                                     i(class="fa-solid fa-users-viewfinder")
-
-                            li(class='multi-menu mt-1')  
-                                a(href='/user/info' class='btn btn-outline-dark btn-sm' style='border-radius:40px; background-color: inherit;color: inherit;' title='Thông tin cá nhân') 
-                                    image(src=user.avatar class='mini-avatar border') 
-                                    span(style='font-weight:400; text-transform: capitalize') #{user.fullName}
-
-                                .inner-menu
-                                    a(href='/user/logout')
-                                        <i class="fa-solid fa-right-from-bracket mr-2"></i>
-                                        span(style='font-weight:400; text-transform: capitalize') Đăng xuất
-                                    hr.m-0 
+                            
+                            li 
+                                a(href='/chat' title='Tin nhắn') 
+                                    i(class="fa-solid fa-comment-dots")
+                        else 
+                            li(class="btn-group btn-group-toggle btn-sm" data-toggle="buttons")
+                                label(class="btn active p-0 border-right")
+                                    a(href='/user/login' class='btn btn-sm btn-light p-0') 
+                                        span(style='font-weight:600;text-transform: capitalize') Đăng nhập
+                                label(class="btn active p-0")
+                                    a(href='/user/register' class='btn btn-sm btn-light p-0') 
+                                        span(style='font-weight:600;text-transform: capitalize') Đăng ký
                                     
                                         

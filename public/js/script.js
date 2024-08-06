@@ -117,4 +117,3 @@ if(countDown){
 }
 
 /* END count down */
-
