@@ -187,3 +187,36 @@ const gallery = new Viewer(document.querySelector('.inner-body'), {
     rotatable: false,
     tooltip: false,
 });
+
+
+// setting chat
+const settingChat = document.querySelector('.chat .setting-chat');
+const settingChatIcon = document.querySelector('.chat .setting-chat-icon'); 
+if(settingChat && settingChatIcon) {
+    settingChatIcon.addEventListener('click', () => {
+        settingChat.classList.toggle('d-none');
+    });
+
+    const itemSetting = settingChat.querySelectorAll('.item-setting');
+    for(let item of itemSetting) {
+        const chevronRight = item.querySelector('.fa-chevron-right');
+        const chevronDown = item.querySelector('.fa-chevron-down');
+        const itemListSettings = item.querySelectorAll('.list-setting .item-list-setting');
+        const itemSetting = item.querySelector('.item-setting .item-list-setting');
+
+        itemSetting.addEventListener('click', () => {
+            chevronRight.classList.toggle('d-none');
+            chevronDown.classList.toggle('d-none');
+
+            itemListSettings.forEach(ils => {
+                const arr = [...ils.classList];
+                if(arr.includes('d-none')) {
+                    ils.classList.remove('d-none');
+                }
+                else {
+                    ils.classList.add('d-none');
+                }
+            });
+        });
+    }
+}

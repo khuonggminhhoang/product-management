@@ -39,26 +39,92 @@ block main
                                 span(class='status-light' status=roomChat.statusOnline)
                             .inner-name 
                                 span #{roomChat.title}
-                                span.inner-content.p-0.text-muted Bạn: :))
-
-            
-                            
+                                span.inner-content.p-0.text-muted Bạn: :))                   
 
             .col-9 
-
                 .row.my-5 
                     .col-12
                         .chat(my-id=user.id)
-                            .inner-head 
-                                .inner-avatar 
-                                    img(
-                                        src=(currRoomChat.avatar ||'/images/group-chat-avatar.jpg')
-                                        )  
-                                    span(class='status-light' status=currRoomChat.statusOnline)
-                                .inner-name 
-                                    span #{currRoomChat.title}
-                                    span.status-online.text-muted #{(currRoomChat.statusOnline == 'online') ? 'Online' : 'Offline'}
-                            
+                            .inner-head.d-flex.justify-content-between.align-items-center 
+                                div
+                                    .inner-avatar 
+                                        img(
+                                            src=(currRoomChat.avatar ||'/images/group-chat-avatar.jpg')
+                                            )  
+                                        span(class='status-light' status=currRoomChat.statusOnline)
+                                    .inner-name 
+                                        span #{currRoomChat.title}
+                                        span.status-online.text-muted #{(currRoomChat.statusOnline == 'online') ? 'Online' : 'Offline'}
+                                div.mr-3 
+                                    if (currRoomChat.typeRoom == 'group')
+                                        button.btn.btn-light.rounded-circle.setting-chat-icon
+                                            i(class="fa-solid fa-list-ul")
+                                    
+                                        div(class="card setting-chat border border-info d-none" style="width: 18rem;")
+                                            div(class="card-body")
+                                                .inner-avatar.text-center 
+                                                    img(src=(currRoomChat.avatar || '/images/group-chat-avatar.jpg'))
+                                                .inner-name.text-center 
+                                                    b #{currRoomChat.title}
+
+                                            ul(class="list-group list-group-flush")
+                                                li(class="list-group-item pr-2 pl-2 pt-1 pb-1 item-setting") 
+                                                    div.d-flex.justify-content-between.align-items-center.item-list-setting 
+                                                        small Tùy chỉnh đoạn chat
+                                                        small(style='font-size: 10px') 
+                                                            i(class="fa-solid fa-chevron-right")
+                                                            i(class="fa-solid fa-chevron-down d-none")
+                                                    
+                                                    div.list-setting
+                                                        p.m-0.item-list-setting.d-none 
+                                                            small(style='font-size: 10px')
+                                                                i(class="fa-solid fa-pen-to-square mr-2") 
+                                                                | Đổi tên đoạn chat 
+
+                                                        p.m-0.item-list-setting.d-none  
+                                                            small(style='font-size: 10px') 
+                                                                i(class="fa-solid fa-image mr-2")
+                                                                |Thay đổi ảnh 
+
+                                                li(class="list-group-item pr-2 pl-2 pt-1 pb-1 item-setting") 
+                                                    div.d-flex.justify-content-between.align-items-center.item-list-setting 
+                                                        small Thành viên trong đoạn chat
+                                                        small(style='font-size: 10px') 
+                                                            i(class="fa-solid fa-chevron-right")
+                                                            i(class="fa-solid fa-chevron-down d-none")
+                                                    
+                                                    div.list-setting
+                                                        each user of currRoomChat.infoUsers
+                                                            p.m-0.item-list-setting.d-none 
+                                                                span.inner-avatar 
+                                                                    img(src=user.avatar)
+                                                                span.inner-name #{user.fullName}  
+                                                                span.setting-user 
+                                                                    i(class="fa-solid fa-ellipsis")
+
+                                                        p.m-0.item-list-setting.d-none 
+                                                            small(style='font-size: 10px')
+                                                                i(class="fa-solid fa-plus mr-2") 
+                                                                | Thêm người 
+
+                                                li(class="list-group-item pr-2 pl-2 pt-1 pb-1 item-setting") 
+                                                    div.d-flex.justify-content-between.align-items-center.item-list-setting 
+                                                        small Quyền riêng tư & bảo mật
+                                                        small(style='font-size: 10px') 
+                                                            i(class="fa-solid fa-chevron-right")
+                                                            i(class="fa-solid fa-chevron-down d-none")
+                                                    
+                                                    div.list-setting
+                                                        p.m-0.item-list-setting.d-none
+                                                            small(style='font-size: 10px')
+                                                                i(class="fa-solid fa-right-from-bracket mr-2")
+                                                                | Rời nhóm
+                                                        p.m-0.item-list-setting.d-none
+                                                            small(style='font-size: 10px')
+                                                                i(class="fa-solid fa-trash mr-2")
+                                                                | Xóa nhóm 
+
+
                             .inner-body 
                                 each chat in chats 
                                     div(class = (user.id == chat.userInfo.id ? 'inner-outgoing' : 'inner-incoming'))
@@ -103,6 +169,7 @@ block main
                                     
     div(class="tooltip" role="tooltip") 
         emoji-picker(class='light')
-        
+
+ 
 block script                     
     script(type='module' src="/js/chat.js") 

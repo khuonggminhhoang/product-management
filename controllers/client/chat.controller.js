@@ -30,6 +30,9 @@ module.exports.index = async (req, res) => {
     }
     else if(currRoomChat.typeRoom == 'group') {
         currRoomChat.statusOnline = 'online';
+        const usersId = currRoomChat.users.map(item => item.userId);
+        const infoUsers = await User.find({_id: usersId}).select('avatar fullName');
+        currRoomChat.infoUsers = infoUsers;
     }
     // END
 
