@@ -267,3 +267,36 @@ if(settingUsers.length > 0) {
         });
     }
 }
+
+// Thêm người vào group chat
+const innerCheckBoxs = document.querySelectorAll('.modal .inner-check-box input[name="userId"]');
+const submitAddFriendRoomChat = document.querySelector('[submit-add-friend-room-chat]');
+
+if(submitAddFriendRoomChat && innerCheckBoxs.length > 0) {
+    submitAddFriendRoomChat.addEventListener('click', () => {
+        const arrayUserId = []; 
+        for(let checkbox of innerCheckBoxs) {
+            if(checkbox.checked) {
+                arrayUserId.push(checkbox.id);
+            }
+        }
+
+        socket.emit('CLIENT_ADD_FRIEND_GROUP_CHAT', arrayUserId);
+    });
+}
+
+// Rời nhóm
+const outGroupChat = document.querySelector('.out-group-chat');
+if(outGroupChat) {
+    outGroupChat.addEventListener('click', () => {
+        socket.emit('CLIENT_OUT_GROUP_CHAT');
+    });
+}
+
+// Xóa nhóm
+const deleteGroupChat = document.querySelector('.delete-group-chat');
+if(deleteGroupChat) {
+    deleteGroupChat.addEventListener('click', () => {
+        socket.emit('CLIENT_DELETE_GROUP_CHAT');
+    });
+}

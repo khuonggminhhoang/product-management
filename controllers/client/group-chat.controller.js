@@ -17,7 +17,7 @@ module.exports.createPOST = async (req, res) => {
     const infoRoomChat = JSON.parse(req.body.infoRoomChat);
     infoRoomChat.users.push({
         userId: res.locals.user.id,
-        role: 'superAdmin'
+        role: 'super admin'
     })
     infoRoomChat.typeRoom = 'group';
     const roomChat = new RoomChat(infoRoomChat);

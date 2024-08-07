@@ -79,7 +79,48 @@ module.exports = (req, res) => {
                 }
             });
             socket.emit('RELOAD_PAGE');
-        })
+        });
 
+        socket.on('CLIENT_ADD_FRIEND_GROUP_CHAT', async (arrayUserId) => {
+            for(let userId of arrayUserId) {
+                await RoomChat.updateOne({
+                    _id: roomChatId
+                }, {
+                    $push: {
+                        users: {
+                            userId: userId,
+                            role: 'user'
+                        }
+                    }
+                    
+                })
+            }
+
+            socket.emit('RELOAD_PAGE');
+        });
+
+        socket.on('CLIENT_OUT_GROUP_CHAT', async () => {
+            await RoomChat.updateOne({
+                _id: roomChatId
+            }, {
+                $pull: {
+                    users: {
+                        userId: userId
+                    }
+                }
+            })
+
+            socket.emit('RELOAD_PAGE');
+        });
+
+        socket.on('CLIENT_DELETE_GROUP_CHAT', async () => {
+            await RoomChat.updateOne({
+                _id: roomChatId
+            }, {
+                deleted: true
+            });
+
+            socket.emit('RELOAD_PAGE');
+        })
     });
 }

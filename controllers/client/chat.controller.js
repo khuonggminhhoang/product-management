@@ -33,6 +33,8 @@ module.exports.index = async (req, res) => {
         const usersId = currRoomChat.users.map(item => item.userId);
         const infoUsers = await User.find({_id: usersId}).select('avatar fullName');
         currRoomChat.infoUsers = infoUsers;
+        const roleUser = currRoomChat.users.find(item => item.userId == res.locals.user.id);
+        currRoomChat.roleUser = roleUser.role;
     }
     // END
 
@@ -71,7 +73,8 @@ module.exports.index = async (req, res) => {
                 $and: [
                     {'users.userId' : res.locals.user.id},
                     {'users.userId' : friends.map(item => item._id)},
-                ]
+                ],
+                deleted: false
             };
         }
         else {
@@ -79,7 +82,8 @@ module.exports.index = async (req, res) => {
                 $and: [
                     {'users.userId' : res.locals.user.id},
                     {title: objectSearch.regex}
-                ]
+                ],
+                deleted: false
             };
         }
     
@@ -87,7 +91,8 @@ module.exports.index = async (req, res) => {
     }
     else {
         roomsChat = await RoomChat.find({
-            'users.userId' : res.locals.user.id
+            'users.userId' : res.locals.user.id,
+            deleted: false
         });
     }
 
@@ -104,12 +109,22 @@ module.exports.index = async (req, res) => {
         }
     }
 
+    const friendListId = res.locals.user.friendList.map(item => item.userId);
+    const avoidListId = currRoomChat.users.map(item => item.userId);
+    const friends = await User.find({
+        _id: {
+            $in: friendListId,
+            $nin: avoidListId
+        }
+    });
+
     res.render('./client/pages/chat/index.pug', {
         title: 'Chat',
         chats: chats,
         currRoomChat: currRoomChat,
         roomsChat: roomsChat,
-        objectSearch: objectSearch
+        objectSearch: objectSearch,
+        friends: friends
     });
 }
 
@@ -134,7 +149,8 @@ module.exports.home = async (req, res) => {
                 $and: [
                     {'users.userId' : res.locals.user.id},
                     {'users.userId' : friends.map(item => item._id)},
-                ]
+                ],
+                deleted: false
             };
         }
         else {
@@ -142,7 +158,8 @@ module.exports.home = async (req, res) => {
                 $and: [
                     {'users.userId' : res.locals.user.id},
                     {title: objectSearch.regex}
-                ]
+                ],
+                deleted: false
             };
         }
     
@@ -150,7 +167,8 @@ module.exports.home = async (req, res) => {
     }
     else {
         roomsChat = await RoomChat.find({
-            'users.userId' : res.locals.user.id
+            'users.userId' : res.locals.user.id,
+            deleted: false
         });
     }
 
