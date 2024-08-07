@@ -1,4 +1,5 @@
 const Chat = require('./../../models/chat.model');
+const RoomChat = require('./../../models/room-chat.model');
 
 const uploadToCloudinaryHelper = require('./../../helpers/uploadToCloudinary');
 
@@ -53,6 +54,20 @@ module.exports = (req, res) => {
                     socket.broadcast.emit('SERVER_RETURN_TYPING', 'hidden');
                 }, 3000);
             }
+        });
+
+        socket.on('CLIENT_EDIT_NAME_GROUP_CHAT', async (title) => {
+            await RoomChat.updateOne({_id: roomChatId}, {title: title});
+            socket.emit('RELOAD_PAGE');
+        })
+
+        socket.on('CLIENT_CHANGE_AVATAR_GROUP_CHAT', async (buffer) => {
+            const linkImage = await uploadToCloudinaryHelper.uploadImages(buffer);
+            await RoomChat.updateOne({_id: roomChatId}, {
+                avatar: linkImage
+            });
+
+            socket.emit('RELOAD_PAGE');
         });
 
     });

@@ -220,3 +220,39 @@ if(settingChat && settingChatIcon) {
         });
     }
 }
+
+// Đổi tên đoạn chat
+socket.on('RELOAD_PAGE', () => {
+    location.reload();
+});
+
+const submitNameChat = document.querySelector('[submit-name-chat]');
+if(submitNameChat) {
+    submitNameChat.addEventListener('click', () => {
+        const titleChat = document.querySelector('.modal input[name="title"]');
+        socket.emit('CLIENT_EDIT_NAME_GROUP_CHAT', titleChat.value);
+    });
+}
+
+// Đổi ảnh đoạn chat
+const editImage = document.querySelector('.edit-image');
+if(editImage) {
+    const inputAvatar = editImage.querySelector('input[name="avatar"]');
+    editImage.addEventListener('click', () => {
+        inputAvatar.click();
+    });
+
+    inputAvatar.addEventListener('change', () => {
+        const file = inputAvatar.files[0];
+        
+        if(file) {
+            const reader = new FileReader();
+
+            reader.readAsDataURL(file); // bắt đầu đọc file
+            reader.onload = (event) => {    
+                const buffer = event.target.result;
+                socket.emit('CLIENT_CHANGE_AVATAR_GROUP_CHAT', buffer);
+            }
+        }
+    });
+}
