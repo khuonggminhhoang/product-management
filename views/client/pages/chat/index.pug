@@ -113,13 +113,15 @@ block main
                                                             i(class="fa-solid fa-chevron-down d-none")
                                                     
                                                     div.list-setting
-                                                        each user of currRoomChat.infoUsers
+                                                        each item of currRoomChat.infoUsers
                                                             p.m-0.item-list-setting.d-none 
                                                                 span.inner-avatar 
-                                                                    img(src=user.avatar)
-                                                                span.inner-name #{user.fullName}  
-                                                                span.setting-user 
-                                                                    i(class="fa-solid fa-ellipsis")
+                                                                    img(src=item.avatar)
+                                                                span.inner-name #{item.fullName}  
+                                                                if (item.id != user.id)
+                                                                    span.setting-user(style='font-size: 10px' user-id=item.id).mt-2 
+                                                                        i(class="fa-solid fa-xmark")
+
 
                                                         p.m-0.item-list-setting.d-none 
                                                             small(style='font-size: 10px')

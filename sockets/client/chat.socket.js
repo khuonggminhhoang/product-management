@@ -70,5 +70,16 @@ module.exports = (req, res) => {
             socket.emit('RELOAD_PAGE');
         });
 
+        socket.on('CLIENT_REMOVE_USER_GROUP_CHAT', async (removeUserId) => {
+            await RoomChat.updateOne({_id: roomChatId}, {
+                $pull: {
+                    users: {
+                        userId: removeUserId
+                    } 
+                }
+            });
+            socket.emit('RELOAD_PAGE');
+        })
+
     });
 }

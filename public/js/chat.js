@@ -256,3 +256,14 @@ if(editImage) {
         }
     });
 }
+
+// Xóa người dùng khỏi đoạn chat
+const settingUsers = document.querySelectorAll('.item-setting .list-setting .setting-user');
+if(settingUsers.length > 0) {
+    for(let settingUser of settingUsers) {
+        settingUser.addEventListener('click', () => {
+            const removeUserId = settingUser.getAttribute('user-id');
+            socket.emit('CLIENT_REMOVE_USER_GROUP_CHAT', removeUserId);
+        });
+    }
+}
