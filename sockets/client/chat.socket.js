@@ -117,7 +117,8 @@ module.exports = (req, res) => {
             await RoomChat.updateOne({
                 _id: roomChatId
             }, {
-                deleted: true
+                deleted: true,
+                deletedAt: new Date()
             });
 
             socket.emit('RELOAD_PAGE');
